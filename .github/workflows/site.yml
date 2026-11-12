@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]        # à chaque modification du site
   schedule:
-    - cron: "0 5 * * *"     # chaque jour vers 6 h (heure de Paris en hiver)
+    - cron: "*/15 * * * *"  # toutes les 15 minutes (GitHub peut décaler un passage de quelques minutes)
   workflow_dispatch:        # bouton « Run workflow » dans l'onglet Actions
 
 permissions:
@@ -24,6 +24,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les outils d'image
+        continue-on-error: true   # sans eux, les chiffres se mettent quand même à jour (seules les icônes restent celles de la page)
+        run: pip install --quiet pillow numpy scipy
 
       - name: Récupérer les chiffres du clan
         continue-on-error: true   # si l'API ne répond pas, le site est publié quand même avec les chiffres écrits dans la page
