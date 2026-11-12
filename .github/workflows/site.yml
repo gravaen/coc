@@ -1,0 +1,41 @@
+name: Chiffres du clan et publication du site
+
+on:
+  push:
+    branches: [main]        # à chaque modification du site
+  schedule:
+    - cron: "0 5 * * *"     # chaque jour vers 6 h (heure de Paris en hiver)
+  workflow_dispatch:        # bouton « Run workflow » dans l'onglet Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Récupérer les chiffres du clan
+        continue-on-error: true   # si l'API ne répond pas, le site est publié quand même avec les chiffres écrits dans la page
+        env:
+          COC_TOKEN: ${{ secrets.COC_TOKEN }}
+        run: python3 scripts/clan.py
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
