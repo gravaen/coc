@@ -29,7 +29,7 @@ jobs:
         continue-on-error: true   # si l'API ne répond pas, le site est publié quand même avec les chiffres écrits dans la page
         env:
           COC_TOKEN: ${{ secrets.COC_TOKEN }}
-        run: python3 scripts/clan.py
+        run: python3 .github/workflows/scripts/clan.py
 
       - uses: actions/configure-pages@v5
 
