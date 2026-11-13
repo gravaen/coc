@@ -20,6 +20,7 @@ import urllib.request
 
 TAG = "#2C0CVRCPV"  # clan principal
 TAG2 = "#2J0UPJVQJ"  # clan secondaire
+WAR_TAG = TAG2  # clan affiché dans « En ce moment » (test sur le clan secondaire ; mettre TAG pour le clan principal)
 API = os.environ.get("COC_API_BASE", "https://cocproxy.royaleapi.dev/v1")
 CK = "https://raw.githubusercontent.com/ClashKingInc/ClashKingAssets/main/assets/leagues/"
 ROMAN = {"I": "1", "II": "2", "III": "3"}
@@ -99,10 +100,21 @@ def style(png_bytes):
     return buf.getvalue()
 
 
-def icon(name, url):
-    """Télécharge, applique l'effet et enregistre data/icons/<name>.webp ; renvoie le chemin ou None."""
+def raw_webp(png_bytes):
+    """Image d'origine, en couleurs, simplement réduite (220 px de large au plus)."""
+    from PIL import Image
+    img = Image.open(io.BytesIO(png_bytes)).convert("RGBA")
+    if img.width > 220:
+        img = img.resize((220, round(img.height * 220 / img.width)), Image.LANCZOS)
+    buf = io.BytesIO()
+    img.save(buf, "WEBP", quality=88, method=6)
+    return buf.getvalue()
+
+
+def icon(name, url, raw=False):
+    """Télécharge l'image (avec l'effet, ou en couleurs d'origine si raw) et l'enregistre dans data/icons/<name>.webp."""
     try:
-        data = style(get_bytes(url))
+        data = raw_webp(get_bytes(url)) if raw else style(get_bytes(url))
     except Exception as e:  # une icône qui manque ne doit jamais bloquer le reste
         print(f"  icône {name} non préparée : {e}", file=sys.stderr)
         return None
@@ -144,6 +156,9 @@ if badge:
     p = icon("blason-" + badge.rstrip("/").split("/")[-1].split(".")[0][:12], badge)
     if p:
         data["icons"]["badge"] = p
+    p = icon("blason-couleur-" + badge.rstrip("/").split("/")[-1].split(".")[0][:12], badge, raw=True)
+    if p:
+        data["icons"]["badgeRaw"] = p  # pour « En ce moment » : blasons en couleurs d'origine
 
 def conditions(c):
     """Infos pratiques des cartes : HDV requis, ligue classée requise, membres."""
@@ -154,10 +169,68 @@ def conditions(c):
 
 
 data["clans"] = {"main": conditions(clan)}
+clan2 = None
 try:
-    data["clans"]["second"] = conditions(get_json(API + "/clans/" + urllib.parse.quote(TAG2)))
+    clan2 = get_json(API + "/clans/" + urllib.parse.quote(TAG2))
+    data["clans"]["second"] = conditions(clan2)
 except Exception as e:
     print(f"  clan secondaire non récupéré : {e}", file=sys.stderr)
+
+def side(x):
+    x = x or {}
+    return x.get("stars"), round(x.get("destructionPercentage") or 0, 1)
+
+
+def get_or_none(url):
+    try:
+        return get_json(url)
+    except Exception as e:  # journal privé, pas de guerre, API indisponible…
+        print(f"  {url.rsplit('/', 1)[-1]} : {e}", file=sys.stderr)
+        return None
+
+
+def when(t):
+    """20261112T180000.000Z -> 2026-11-12T18:00:00Z"""
+    try:
+        return datetime.datetime.strptime(t[:15], "%Y%m%dT%H%M%S").strftime("%Y-%m-%dT%H:%M:%SZ")
+    except (TypeError, ValueError):
+        return None
+
+
+# « En ce moment » : la guerre en cours, sinon la dernière guerre terminée
+q = urllib.parse.quote(WAR_TAG)
+war_clan = clan if WAR_TAG == TAG else clan2
+war = None
+cw = get_or_none(API + f"/clans/{q}/currentwar")
+if cw and cw.get("state") in ("preparation", "inWar", "warEnded"):
+    us, them = cw.get("clan") or {}, cw.get("opponent") or {}
+    war = {"state": cw["state"], "start": when(cw.get("startTime")), "end": when(cw.get("endTime")),
+           "opponent": them.get("name"), "badge": (them.get("badgeUrls") or {}).get("large")}
+    war["us"], war["usPct"] = side(us)
+    war["them"], war["themPct"] = side(them)
+else:
+    log = get_or_none(API + f"/clans/{q}/warlog?limit=10") or {}
+    for w in log.get("items", []):
+        them = w.get("opponent") or {}
+        if w.get("result") in ("win", "lose", "tie") and them.get("name"):  # les guerres de Ligue de clans n'ont pas d'adversaire nommé
+            war = {"state": "last", "result": w["result"], "end": when(w.get("endTime")),
+                   "opponent": them.get("name"), "badge": (them.get("badgeUrls") or {}).get("large")}
+            war["us"], war["usPct"] = side(w.get("clan"))
+            war["them"], war["themPct"] = side(them)
+            break
+if war:
+    if war.get("badge"):
+        p = icon("adversaire-" + war["badge"].rstrip("/").split("/")[-1].split(".")[0][:12], war["badge"], raw=True)
+        if p:
+            war["badgeIcon"] = p
+    war.pop("badge", None)
+    our = ((war_clan or {}).get("badgeUrls") or {}).get("large")
+    if our:
+        p = icon("notre-blason-" + our.rstrip("/").split("/")[-1].split(".")[0][:12], our, raw=True)
+        if p:
+            war["usBadge"] = p
+    war["usName"] = (war_clan or {}).get("name") or "Gravaen"
+    data["war"] = war
 
 os.makedirs("data", exist_ok=True)
 with open("data/clan.json", "w", encoding="utf-8") as f:
