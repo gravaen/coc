@@ -138,27 +138,37 @@ data = {
     "warWins": clan.get("warWins"),
     # présent seulement si le journal de guerre du clan est public
     "warLosses": clan.get("warLosses"),
+    "warTies": clan.get("warTies"),
     "icons": {},
 }
 
 # le nom de fichier change avec la ligue, pour que les navigateurs ne gardent pas l'ancienne image en cache
 if slug(war_league):
-    p = icon("ligue-clans-" + slug(war_league), CK + "cwl/" + slug(war_league) + ".png")
+    p = icon("ligue-clans-o-" + slug(war_league), CK + "cwl/" + slug(war_league) + ".png", raw=True)
     if p:
         data["icons"]["war"] = p
 if slug(capital_league):
-    p = icon("ligue-capitale-" + slug(capital_league), CK + "capital-leagues/" + slug(capital_league) + ".png")
+    p = icon("ligue-capitale-o-" + slug(capital_league), CK + "capital-leagues/" + slug(capital_league) + ".png", raw=True)
     if p:
         data["icons"]["capital"] = p
 badge = (clan.get("badgeUrls") or {}).get("large")
+data["badgeUrl"] = badge  # blason officiel, affiché tel quel depuis les serveurs de Supercell
 if badge:
-    p = icon("blason-" + badge.rstrip("/").split("/")[-1].split(".")[0][:12], badge)
+    p = icon("blason-o-" + badge.rstrip("/").split("/")[-1].split(".")[0][:12], badge, raw=True)
     if p:
         data["icons"]["badge"] = p
 
+# tuiles du haut : dons de la saison et HDV moyen des membres du clan principal
+_members = clan.get("memberList") or []
+if _members:
+    data["donations"] = sum(m.get("donations", 0) for m in _members)
+    _ths = [m.get("townHallLevel") for m in _members if m.get("townHallLevel")]
+    if _ths:
+        data["thAvg"] = round(sum(_ths) / len(_ths), 1)
+
 def conditions(c):
     """Infos pratiques des cartes : HDV requis, ligue classée requise, membres."""
-    out = {"th": c.get("requiredTownhallLevel"), "members": c.get("members")}
+    out = {"th": c.get("requiredTownhallLevel"), "members": c.get("members"), "wf": c.get("warFrequency")}
     if "requiredLeagueTier" in c:  # absent sur les anciennes réponses : la page garde alors son texte
         out["league"] = (c.get("requiredLeagueTier") or {}).get("name") or "Unranked"
     return out
@@ -225,3 +235,175 @@ os.makedirs("data", exist_ok=True)
 with open("data/clan.json", "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=1)
 print(json.dumps(data, ensure_ascii=False))
+
+
+# ---------------------------------------------------------------------------
+# Simulateur de score « meilleur joueur de la saison » et liste noire
+# Écrit data/players.json : pour chaque membre des deux clans, ses chiffres de la saison,
+# ses points par catégorie (grille du site) et sa place dans un classement commun aux deux clans.
+# Les compteurs « depuis le début de la saison » ont besoin d'un point de départ :
+# il est repris du fichier déjà en ligne, et remis à zéro à chaque nouvelle saison.
+# ---------------------------------------------------------------------------
+PAGES = os.environ.get("PAGES_URL", "https://gravaen.github.io/coc/")
+GRID = {"cwl": (5, 15), "gdc": (4, 10), "cap": (3, 10), "rk": (2, 10), "act": (1.5, 10), "don": (1, 10)}
+# Liste noire : points retirés par faute, avec un plafond par faute (total au plus -100)
+BLACK = {"rad": 30, "man": 25, "des": 25, "piq": 10, "tou": 10}
+
+
+def season_start(now):
+    """Les saisons de Clash of Clans changent le dernier lundi du mois à 5 h UTC."""
+    def last_monday(y, m):
+        nxt = datetime.datetime(y + (m == 12), m % 12 + 1, 1, 5, tzinfo=datetime.timezone.utc)
+        d = nxt - datetime.timedelta(days=1)
+        while d.weekday() != 0:
+            d -= datetime.timedelta(days=1)
+        return d.replace(hour=5)
+    s = last_monday(now.year, now.month)
+    if now < s:
+        y, m = (now.year - 1, 12) if now.month == 1 else (now.year, now.month - 1)
+        s = last_monday(y, m)
+    return s.strftime("%Y-%m-%d")
+
+
+def previous_players():
+    try:
+        with urllib.request.urlopen(PAGES + "data/players.json?ts=" + str(int(datetime.datetime.now().timestamp())), timeout=20) as r:
+            return json.loads(r.read().decode())
+    except Exception as e:
+        print(f"  players.json précédent introuvable : {e}", file=sys.stderr)
+        return {}
+
+
+def rank_points(values, top, tie=None):
+    """values : {tag: valeur}. 1er = top pts, 2e = top-1… ; égalité parfaite = mêmes points, au meilleur rang ; 0 = absent."""
+    key = (lambda t: (values[t], tie[t])) if tie else (lambda t: values[t])
+    order = sorted([t for t in values if values[t] > 0], key=key, reverse=True)
+    pts, prev, prev_rank = {}, None, 0
+    for i, t in enumerate(order):
+        r = prev_rank if prev is not None and key(t) == prev else i + 1
+        prev, prev_rank = key(t), r
+        if r <= top:
+            pts[t] = (top + 1 - r, r)
+    return pts
+
+
+def bad(m, foe, stars):
+    """Attaques ratées (0 ou 1 étoile) sur une cible de niveau d'HDV égal ou inférieur : viser plus haut n'est pas puni."""
+    th = m.get("townhallLevel") or 0
+    return sum(1 for a in m.get("attacks") or []
+               if a.get("stars", 0) == stars and foe.get(a.get("defenderTag"), 0) <= th)
+
+
+def season_scores():
+    now = datetime.datetime.now(datetime.timezone.utc)
+    season = season_start(now)
+    old = previous_players()
+    same = old.get("season") == season
+    base = old.get("base", {}) if same else {}
+    cwl_log = old.get("cwlLog", {}) if same else {}
+    war_log = old.get("warLog", {}) if same else {}    # guerres classiques de la saison
+    raid_log = old.get("raidLog", {}) if same else {}  # week-ends de raid de la saison
+    out = {"season": season, "updated": data["updated"], "base": base, "cwlLog": cwl_log,
+           "warLog": war_log, "raidLog": raid_log, "players": {}}
+    season_iso = season.replace("-", "")  # 20261026, comparable aux dates de l'API
+
+    vals = {k: {} for k in GRID}  # un seul classement pour les deux clans
+    tie = {}
+    for key, tag, c in (("main", TAG, clan), ("second", TAG2, clan2)):
+        if not c:
+            continue
+        # Ligue de clans : étoiles et destruction de chaque guerre, gardées guerre par guerre
+        g = get_or_none(API + f"/clans/{urllib.parse.quote(tag)}/currentwar/leaguegroup")
+        for rnd in (g or {}).get("rounds") or []:
+            for wt in rnd.get("warTags") or []:
+                if not wt or wt == "#0":
+                    continue
+                cw = get_or_none(API + "/clanwarleagues/wars/" + urllib.parse.quote(wt))
+                if not cw or cw.get("state") not in ("inWar", "warEnded"):
+                    continue
+                side_ = cw["clan"] if (cw.get("clan") or {}).get("tag") == tag else cw.get("opponent") if (cw.get("opponent") or {}).get("tag") == tag else None
+                if not side_:
+                    continue
+                ended = cw.get("state") == "warEnded"
+                other = cw["opponent"] if side_ is cw["clan"] else cw["clan"]
+                foe = {x["tag"]: x.get("townhallLevel", 0) for x in other.get("members") or []}
+                cwl_log[wt] = {m["tag"]: [sum(a.get("stars", 0) for a in m.get("attacks") or []),
+                                           sum(a.get("destructionPercentage", 0) for a in m.get("attacks") or []),
+                                           bad(m, foe, 0), bad(m, foe, 1),
+                                           1 if ended and not m.get("attacks") else 0]
+                               for m in side_.get("members") or []}
+
+        # Guerre classique en cours ou juste finie : attaques ratées et attaques oubliées
+        cw = get_or_none(API + f"/clans/{urllib.parse.quote(tag)}/currentwar")
+        if cw and cw.get("state") in ("inWar", "warEnded") and (cw.get("startTime") or "")[:8] >= season_iso:
+            per = cw.get("attacksPerMember") or 2
+            ended = cw["state"] == "warEnded"
+            foe = {x["tag"]: x.get("townhallLevel", 0) for x in (cw.get("opponent") or {}).get("members") or []}
+            war_log[tag + cw["startTime"]] = {m["tag"]: [bad(m, foe, 0), bad(m, foe, 1),
+                                                        max(0, per - len(m.get("attacks") or [])) if ended else 0]
+                                              for m in (cw.get("clan") or {}).get("members") or []}
+
+        # Raids de la capitale terminés pendant la saison : attaques non jouées par membre
+        rs = get_or_none(API + f"/clans/{urllib.parse.quote(tag)}/capitalraidseasons?limit=5") or {}
+        for it in rs.get("items") or []:
+            k = tag + (it.get("startTime") or "")
+            if it.get("state") != "ended" or (it.get("startTime") or "")[:8] < season_iso or k in raid_log:
+                continue
+            done = {m["tag"]: max(0, (m.get("attackLimit") or 5) - (m.get("attacks") or 0)) for m in it.get("members") or []}
+            # les membres présents qui n'ont pas joué du tout : 5 attaques perdues
+            raid_log[k] = {m["tag"]: done.get(m["tag"], 5) for m in c.get("memberList") or []}
+
+        for m in c.get("memberList") or []:
+            p = get_or_none(API + "/players/" + urllib.parse.quote(m["tag"]))
+            if not p:
+                continue
+            t = p["tag"]
+            now_v = {"ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0), "tr": p.get("trophies", 0)}
+            b = base.setdefault(t, now_v)  # nouveau venu : on part de ses chiffres du jour
+            cs = sum(w[t][0] for w in cwl_log.values() if t in w)
+            cd = sum(w[t][1] for w in cwl_log.values() if t in w)
+            v = {"cwl": cs, "gdc": max(0, now_v["ws"] - b["ws"] - cs), "cap": max(0, now_v["cap"] - b["cap"]),
+                 "rk": max(0, now_v["tr"] - b["tr"]), "act": p.get("attackWins", 0), "don": p.get("donations", 0)}
+            for k in GRID:
+                vals[k][t] = v[k]
+            tie[t] = cd
+            out["players"][t] = {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "v": v, "cwlPct": cd}
+
+            # Liste noire
+            wars = [w[t] for w in cwl_log.values() if t in w and len(w[t]) >= 5]
+            zero = sum(x[2] for x in wars) + sum(w[t][0] for w in war_log.values() if t in w)
+            one = sum(x[3] for x in wars) + sum(w[t][1] for w in war_log.values() if t in w)
+            missed = sum(x[4] for x in wars) + sum(w[t][2] for w in war_log.values() if t in w)
+            days = (now - datetime.datetime.strptime(season, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)).days
+            m_ = {"rad": max(0, p.get("donationsReceived", 0) - p.get("donations", 0)) // 50,
+                  "man": 3 * zero + one,
+                  "des": 5 * missed,
+                  "piq": sum(r[t] for r in raid_log.values() if t in r),
+                  "tou": max(0, days - p.get("attackWins", 0))}
+            m_ = {k: min(BLACK[k], v_) for k, v_ in m_.items()}
+            out["players"][t]["m"] = m_
+            out["players"][t]["bl"] = -sum(m_.values())
+
+    pts = {k: rank_points(vals[k], GRID[k][1], tie if k == "cwl" else None) for k in GRID}
+    tags = list(out["players"])
+    for t in tags:
+        x = out["players"][t]
+        x["p"] = {k: (pts[k][t][0] * GRID[k][0] if t in pts[k] else 0) for k in GRID}
+        x["r"] = {k: (pts[k][t][1] if t in pts[k] else None) for k in GRID}
+        x["score"] = round(sum(x["p"].values()), 1)
+    for i, t in enumerate(sorted(tags, key=lambda t: out["players"][t]["score"], reverse=True)):
+        out["players"][t]["rank"] = i + 1
+        out["players"][t]["of"] = len(tags)
+    # liste noire : le plus gros score négatif est 1er
+    for i, t in enumerate(sorted([t for t in tags if out["players"][t]["bl"] < 0], key=lambda t: out["players"][t]["bl"])):
+        out["players"][t]["blr"] = i + 1
+
+    with open("data/players.json", "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"  players.json : {len(out['players'])} joueurs, saison du {season}")
+
+
+try:
+    season_scores()
+except Exception as e:  # le simulateur ne doit jamais bloquer la mise à jour du site
+    print(f"  simulateur non mis à jour : {e}", file=sys.stderr)
