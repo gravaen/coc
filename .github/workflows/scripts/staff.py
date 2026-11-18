@@ -187,34 +187,61 @@ def snapshot():
     return snap
 
 
+# Score d'activité de la semaine, sur 100 : ce qui compte pour le clan, avec un plafond par critère
+ACT = (("don", "Dons", 30, 350), ("win", "Victoires", 25, 14), ("ws", "Guerre", 30, 6), ("cap", "Capitale", 15, 25000))
+
+
+def delta(o, n, k):
+    """Progression sur la semaine ; dons et victoires repartent à zéro à chaque saison."""
+    d = n.get(k, 0) - o.get(k, 0)
+    return n.get(k, 0) if d < 0 else d
+
+
+def act_score(o, n):
+    return round(sum(w * min(1, delta(o, n, k) / cap) for k, _, w, cap in ACT))
+
+
 def inactive_report(old, new, days):
-    """Inactif = aucun compteur n'a augmenté (dons et victoires repartent à zéro à chaque saison)."""
-    by_clan = {}
+    """Score d'activité de chacun, avec en premier les inactifs (rien fait) et les peu actifs."""
+    tip = {"member": "exclure ?", "admin": "rétrograder en Membre ?", "coLeader": "à contacter", "leader": "—"}
+    order = ["leader", "coLeader", "admin", "member"]
+    rows = []
     for tag, n in new.items():
         o = old.get(tag)
         if not o:
-            continue  # arrivé dans la semaine
-        moved = (n["ws"] > o["ws"] or n["cap"] > o["cap"]
-                 or n["don"] > o["don"] or n["win"] > o["win"]
-                 or (n["don"] < o["don"] and n["don"] > 0) or (n["win"] < o["win"] and n["win"] > 0))
-        if not moved:
-            by_clan.setdefault(n["c"], []).append(n)
-    tip = {"member": "exclure ?", "admin": "rétrograder en Membre ?", "coLeader": "à contacter", "leader": "—"}
-    fields = []
+            continue  # arrivé dans la semaine : pas encore de recul
+        d = {k: delta(o, n, k) for k, *_ in ACT}
+        rows.append({**n, "s": act_score(o, n), "d": d})
+
+    def detail(r):
+        return f"{r['d']['don']} dons · {r['d']['win']} vict. · {r['d']['ws']} ⭐ · {r['d']['cap'] // 1000}k or"
+
+    fields, total_zero = [], 0
     for label, _ in CLANS:
-        rows = sorted(by_clan.get(label, []), key=lambda n: ["leader", "coLeader", "admin", "member"].index(n["r"]) if n["r"] in ROLE else 9)
-        fields.append({"name": f"{label} · {len(rows)} inactif(s)",
-                       "value": cut([f"• **{n['n']}** ({ROLE.get(n['r'], '?')}, HDV {n['th']}) → {tip.get(n['r'], '?')}" for n in rows],
-                                    "Personne, tout le monde a joué cette semaine 👏")})
-    total = sum(len(v) for v in by_clan.values())
+        rs = [r for r in rows if r["c"] == label]
+        if not rs:
+            continue
+        avg = round(sum(r["s"] for r in rs) / len(rs))
+        zero = sorted([r for r in rs if r["s"] == 0], key=lambda r: order.index(r["r"]) if r["r"] in order else 9)
+        low = sorted([r for r in rs if 0 < r["s"] < 30], key=lambda r: r["s"])
+        top = sorted([r for r in rs if r["s"] > 0], key=lambda r: -r["s"])[:5]
+        total_zero += len(zero)
+        fields.append({"name": f"━━ {label} · activité moyenne {avg}/100 ━━", "value": f"{len(rs)} membres suivis · {len(zero)} inactif(s) · {len(low)} peu actif(s)"})
+        fields.append({"name": "😴 Inactifs (0/100)",
+                       "value": cut([f"• **{r['n']}** ({ROLE.get(r['r'], '?')}, HDV {r['th']}) → {tip.get(r['r'], '?')}" for r in zero], "Personne 👏")})
+        fields.append({"name": "🟠 Peu actifs (moins de 30/100)",
+                       "value": cut([f"• **{r['n']}** — **{r['s']}**/100 ({ROLE.get(r['r'], '?')}) · {detail(r)}" for r in low], "Personne")})
+        fields.append({"name": "🔥 Les plus actifs",
+                       "value": cut([f"{i + 1}. **{r['n']}** — **{r['s']}**/100 · {detail(r)}" for i, r in enumerate(top)], "Personne")})
     return {
         "username": "Gravaen · staff",
         "embeds": [{
             "author": {"name": "Rapport d'activité de la semaine"},
-            "title": f"😴 {total} membre(s) sans aucune activité depuis {days} jours",
-            "color": 0xC8412F if total else 0x2F8F55,
-            "description": "Aucun don, aucune victoire en multijoueur, aucune étoile de guerre et aucun or de capitale sur la période.",
-            "fields": fields,
+            "title": f"😴 {total_zero} membre(s) sans aucune activité depuis {days} jours",
+            "color": 0xC8412F if total_zero else 0x2F8F55,
+            "description": ("**Score d'activité sur 100**, calculé sur les 7 derniers jours :\n"
+                            "dons 30 pts (350 troupes) · victoires 25 pts (14) · étoiles de guerre 30 pts (6) · or de capitale 15 pts (25 000)."),
+            "fields": fields[:25],
             "footer": {"text": "Rapport automatique du lundi · Gravaen"},
         }],
     }
