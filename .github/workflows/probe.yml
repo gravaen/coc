@@ -1,0 +1,12 @@
+name: Sonde API ClashKing (temporaire)
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for u in "openapi.json" "war/%232C0CVRCPV/previous?limit=2" "war/%232J0UPJVQJ/previous?limit=2" "cwl/%232C0CVRCPV/2026-11" "cwl/%232C0CVRCPV/2026-10" "player/%23QP2GUL2Y/warhits?limit=3" "capital/%232C0CVRCPV?limit=1"; do
+            echo "=== $u"; curl -s -m 25 -w '\nHTTP %{http_code}\n' "https://api.clashk.ing/$u" | head -c 1500; echo; done
+          echo "=== chemins openapi"; curl -s -m 25 https://api.clashk.ing/openapi.json | python3 -c "import json,sys; d=json.load(sys.stdin); print('\n'.join(sorted(d.get('paths',{}))))" | head -120
