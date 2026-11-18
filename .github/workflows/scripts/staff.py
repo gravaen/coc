@@ -430,6 +430,14 @@ def main():
             print("meilleurs joueurs de la saison postés :", old_pj["season"])
         except Exception as e:
             print(f"  meilleurs joueurs non postés : {e}", file=sys.stderr)
+    if os.environ.get("STAFF_TEST_SAISON") == "true":  # diagnostic dans le journal
+        from collections import Counter
+        P = new_pj.get("players") or {}
+        print("joueurs par clan :", dict(Counter(x.get("c") for x in P.values())))
+        for x in sorted(P.values(), key=lambda x: -(x.get("score") or 0))[:15]:
+            print("  ", x.get("c"), x.get("n"), x.get("score"), x.get("v"))
+        for x in [x for x in P.values() if x.get("c") == "main"][:8]:
+            print("  main", x.get("n"), x.get("score"), x.get("v"), x.get("p"))
     if HOOK and os.environ.get("STAFF_TEST_SAISON") == "true" and new_pj.get("players"):
         try:
             post(season_report(new_pj, test=True))
