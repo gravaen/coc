@@ -430,7 +430,7 @@ def main():
             print("meilleurs joueurs de la saison postés :", old_pj["season"])
         except Exception as e:
             print(f"  meilleurs joueurs non postés : {e}", file=sys.stderr)
-    if os.environ.get("STAFF_TEST_SAISON") == "true":  # diagnostic dans le journal
+    if True:  # diagnostic dans le journal
         from collections import Counter
         P = new_pj.get("players") or {}
         print("joueurs par clan :", dict(Counter(x.get("c") for x in P.values())))
