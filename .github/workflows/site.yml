@@ -39,6 +39,13 @@ jobs:
           COC_TOKEN: ${{ secrets.COC_TOKEN }}
         run: python3 .github/workflows/scripts/clan.py
 
+      - name: Bilans de guerre et rapport d'activité pour le staff (Discord)
+        continue-on-error: true   # un souci ici ne bloque jamais la publication du site
+        env:
+          COC_TOKEN: ${{ secrets.COC_TOKEN }}
+          DISCORD_STAFF_WEBHOOK: ${{ secrets.DISCORD_STAFF_WEBHOOK }}
+        run: python3 .github/workflows/scripts/staff.py
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
