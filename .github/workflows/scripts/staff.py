@@ -6,9 +6,9 @@ DISCORD_STAFF_WEBHOOK n'existe pas.
 1. Bilan de guerre : dès qu'une guerre (classique ou de Ligue de clans) est terminée,
    un message avec le résultat, les meilleurs attaquants, les attaques oubliées ou ratées
    et une suggestion pour la prochaine guerre.
-2. Inactivité : chaque lundi soir, la liste des membres qui n'ont rien fait depuis 7 jours
-   (aucun don, aucune victoire, aucune étoile de guerre, aucun or de capitale),
-   avec une suggestion selon leur grade.
+2. Activité (façon ClashPerk) : à chaque passage, les compteurs de chaque membre sont relus ;
+   dès que l'un bouge, le joueur était en ligne. Chaque lundi soir : « vu il y a… »,
+   score d'activité sur 7 jours, inactifs et peu actifs en premier, suggestion selon le grade.
 
 Mémoire d'un passage à l'autre : data/staff.json (publié avec le site, relu au passage suivant).
 """
@@ -172,76 +172,110 @@ def wars_done(state):
 
 
 # ---------------------------------------------------------------------------
-# 2. Inactivité
+# 2. Activité, façon ClashPerk : à chaque passage (toutes les 15 min), on relit les compteurs
+#    de chaque membre ; dès qu'un compteur bouge, le joueur était en ligne.
+#    On en tire « vu il y a… » et un score d'activité sur les 7 derniers jours.
 # ---------------------------------------------------------------------------
-def snapshot():
-    """Compteurs de chaque membre : dons, victoires, étoiles de guerre, or de capitale."""
-    snap = {}
+# succès du jeu qui bougent quand le joueur joue (pillage, dons, obstacles, capitale, jeux de clan…)
+ACHV = ("Gold Grab", "Elixir Escapade", "Heroic Heist", "Friend in Need", "Sharing is caring", "Siege Sharer",
+        "Nice and Tidy", "Conqueror", "War Hero", "War League Legend", "Games Champion", "Aggressive Capitalism",
+        "Most Valuable Clanmate", "Well Seasoned", "Un-Build It", "Superb Work", "Counterspell", "Monolith Masher",
+        "Get those Goblins!", "Bust This!", "Humiliator")
+
+
+def fingerprint(p):
+    a = {x["name"]: x.get("value", 0) for x in p.get("achievements") or []}
+    keys = [p.get(k, 0) for k in ("donations", "donationsReceived", "attackWins", "warStars", "clanCapitalContributions",
+                                  "expLevel", "builderBaseTrophies", "townHallLevel")]
+    keys += [a.get(n, 0) for n in ACHV]
+    keys += [sum(h.get("level", 0) for h in p.get("heroes") or []), sum(t.get("level", 0) for t in p.get("troops") or []),
+             sum(t.get("level", 0) for t in p.get("spells") or []), p.get("name")]
+    return "|".join(map(str, keys))
+
+
+def track(state):
+    """Met à jour, pour chaque membre, son empreinte, sa dernière activité et ses heures d'activité."""
+    seen = state.setdefault("seen", {})
+    hour = NOW.strftime("%Y-%m-%dT%H")
+    limit = (NOW - datetime.timedelta(days=8)).strftime("%Y-%m-%dT%H")
+    members = {}
     for label, tag in CLANS:
         c = api_or_none(f"/clans/{q(tag)}") or {}
         for m in c.get("memberList") or []:
-            p = api_or_none(f"/players/{q(m['tag'])}") or {}
-            snap[m["tag"]] = {"n": m.get("name"), "r": m.get("role"), "c": label, "th": m.get("townHallLevel"),
-                              "don": p.get("donations", m.get("donations", 0)), "win": p.get("attackWins", 0),
-                              "ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0)}
-    return snap
+            p = api_or_none(f"/players/{q(m['tag'])}")
+            if not p:
+                continue
+            fp = fingerprint(p)
+            s = seen.setdefault(m["tag"], {"since": NOW.isoformat(timespec="seconds"), "h": []})
+            if "fp" in s and s["fp"] != fp:
+                s["last"] = NOW.isoformat(timespec="seconds")
+                if hour not in s["h"]:
+                    s["h"].append(hour)
+            s["fp"] = fp
+            s["h"] = [h for h in s["h"] if h >= limit]
+            s.update(n=m.get("name"), r=m.get("role"), c=label, th=m.get("townHallLevel"))
+            members[m["tag"]] = s
+    state["seen"] = members  # les partis sortent du suivi
+    state.setdefault("tracking", NOW.isoformat(timespec="seconds"))
 
 
-# Score d'activité de la semaine, sur 100 : ce qui compte pour le clan, avec un plafond par critère
-ACT = (("don", "Dons", 30, 350), ("win", "Victoires", 25, 14), ("ws", "Guerre", 30, 6), ("cap", "Capitale", 15, 25000))
+def ago(iso):
+    if not iso:
+        return "pas vu depuis le début du suivi"
+    d = NOW - datetime.datetime.fromisoformat(iso)
+    if d < datetime.timedelta(hours=1):
+        return "vu il y a moins d'1 h"
+    if d < datetime.timedelta(days=1):
+        return f"vu il y a {int(d.total_seconds() // 3600)} h"
+    return f"vu il y a {d.days} j"
 
 
-def delta(o, n, k):
-    """Progression sur la semaine ; dons et victoires repartent à zéro à chaque saison."""
-    d = n.get(k, 0) - o.get(k, 0)
-    return n.get(k, 0) if d < 0 else d
+def activity(s, days):
+    """Score sur 100 : jours où il a joué (70 pts) + nombre d'heures actives (30 pts), sur la période."""
+    start = (NOW - datetime.timedelta(days=days)).strftime("%Y-%m-%dT%H")
+    hrs = [h for h in s["h"] if h >= start]
+    d = len({h[:10] for h in hrs})
+    return round(70 * min(1, d / days) + 30 * min(1, len(hrs) / (3 * days))), d, len(hrs)
 
 
-def act_score(o, n, weeks=1):
-    return round(sum(w * min(1, delta(o, n, k) / (cap * weeks)) for k, _, w, cap in ACT))
-
-
-def inactive_report(old, new, days, test=False):
-    """Score d'activité de chacun, avec en premier les inactifs (rien fait) et les peu actifs."""
+def activity_report(state, test=False):
+    since = datetime.datetime.fromisoformat(state["tracking"])
+    days = max(1, min(7, round((NOW - since).total_seconds() / 86400)))
     tip = {"member": "exclure ?", "admin": "rétrograder en Membre ?", "coLeader": "à contacter", "leader": "—"}
     order = ["leader", "coLeader", "admin", "member"]
-    rows = []
-    for tag, n in new.items():
-        o = old.get(tag)
-        if not o:
-            continue  # arrivé dans la semaine : pas encore de recul
-        d = {k: delta(o, n, k) for k, *_ in ACT}
-        rows.append({**n, "s": act_score(o, n, max(1, days / 7)), "d": d})
-
-    def detail(r):
-        return f"{r['d']['don']} dons · {r['d']['win']} vict. · {r['d']['ws']} ⭐ · {r['d']['cap'] // 1000}k or"
-
     fields, total_zero = [], 0
     for label, _ in CLANS:
-        rs = [r for r in rows if r["c"] == label]
+        rs = []
+        for s in state["seen"].values():
+            if s.get("c") != label:
+                continue
+            sc, d, h = activity(s, days)
+            rs.append({**s, "s": sc, "d": d, "hh": h})
         if not rs:
             continue
         avg = round(sum(r["s"] for r in rs) / len(rs))
         zero = sorted([r for r in rs if r["s"] == 0], key=lambda r: order.index(r["r"]) if r["r"] in order else 9)
-        low = sorted([r for r in rs if 0 < r["s"] < 30], key=lambda r: r["s"])
-        top = sorted([r for r in rs if r["s"] > 0], key=lambda r: -r["s"])[:5]
+        low = sorted([r for r in rs if 0 < r["s"] < 40], key=lambda r: r["s"])
+        top = sorted([r for r in rs if r["s"] >= 40], key=lambda r: (-r["s"], -r["hh"]))[:5]
         total_zero += len(zero)
-        fields.append({"name": f"━━ {label} · activité moyenne {avg}/100 ━━", "value": f"{len(rs)} membres suivis · {len(zero)} inactif(s) · {len(low)} peu actif(s)"})
-        fields.append({"name": "😴 Inactifs (0/100)",
-                       "value": cut([f"• **{r['n']}** ({ROLE.get(r['r'], '?')}, HDV {r['th']}) → {tip.get(r['r'], '?')}" for r in zero], "Personne 👏")})
-        fields.append({"name": "🟠 Peu actifs (moins de 30/100)",
-                       "value": cut([f"• **{r['n']}** — **{r['s']}**/100 ({ROLE.get(r['r'], '?')}) · {detail(r)}" for r in low], "Personne")})
+        fields.append({"name": f"━━ {label} · activité moyenne {avg}/100 ━━",
+                       "value": f"{len(rs)} membres · {len(zero)} inactif(s) · {len(low)} peu actif(s)"})
+        fields.append({"name": f"😴 Inactifs (aucune activité en {days} j)",
+                       "value": cut([f"• **{r['n']}** ({ROLE.get(r['r'], '?')}, HDV {r['th']}) · {ago(r.get('last'))} → {tip.get(r['r'], '?')}" for r in zero], "Personne 👏")})
+        fields.append({"name": "🟠 Peu actifs (moins de 40/100)",
+                       "value": cut([f"• **{r['n']}** — **{r['s']}**/100 · actif {r['d']}/{days} j · {ago(r.get('last'))}" for r in low], "Personne")})
         fields.append({"name": "🔥 Les plus actifs",
-                       "value": cut([f"{i + 1}. **{r['n']}** — **{r['s']}**/100 · {detail(r)}" for i, r in enumerate(top)], "Personne")})
+                       "value": cut([f"{i + 1}. **{r['n']}** — **{r['s']}**/100 · actif {r['d']}/{days} j · {r['hh']} h" for i, r in enumerate(top)], "Personne")})
+    note = (f"⚠️ Test : suivi commencé le <t:{int(since.timestamp())}:f>, les scores se précisent avec le temps.\n" if test else "")
     return {
         "username": "Gravaen · staff",
         "embeds": [{
             "author": {"name": ("🧪 TEST · " if test else "") + "Rapport d'activité de la semaine"},
-            "title": f"😴 {total_zero} membre(s) sans aucune activité depuis {days} jours",
+            "title": f"😴 {total_zero} membre(s) sans aucune activité depuis {days} jour(s)",
             "color": 0xC8412F if total_zero else 0x2F8F55,
-            "description": ((f"⚠️ Rapport de test : calculé sur {days} jours (depuis le début de la saison), seuils ajustés à la durée.\n" if test else "")
-                            + "**Score d'activité sur 100**, calculé sur les 7 derniers jours :\n"
-                            "dons 30 pts (350 troupes) · victoires 25 pts (14) · étoiles de guerre 30 pts (6) · or de capitale 15 pts (25 000)."),
+            "description": (note + f"**Score d'activité sur 100**, sur les {days} derniers jours : relevé toutes les 15 min, "
+                            "le joueur est compté actif dès qu'un de ses compteurs bouge (dons, pillage, attaques, capitale, améliorations…).\n"
+                            "70 pts = nombre de jours joués · 30 pts = nombre d'heures actives."),
             "fields": fields[:25],
             "footer": {"text": "Rapport automatique du lundi · Gravaen"},
         }],
@@ -251,7 +285,7 @@ def inactive_report(old, new, days, test=False):
 def main():
     state = load_state()
     state.setdefault("wars", [])
-    state.setdefault("snaps", [])
+    state.pop("snaps", None)  # ancienne méthode (photo quotidienne), remplacée par le suivi continu
 
     if not HOOK:
         print("DISCORD_STAFF_WEBHOOK absent : rien n'est posté.")
@@ -265,43 +299,26 @@ def main():
                 print(f"  bilan {wid} non posté : {e}", file=sys.stderr)
     state["wars"] = state["wars"][-60:]
 
-    # une photo des compteurs par jour, gardée 10 jours
-    last = state["snaps"][-1]["t"] if state["snaps"] else None
-    if not last or NOW - datetime.datetime.fromisoformat(last) > datetime.timedelta(hours=20):
-        state["snaps"].append({"t": NOW.isoformat(timespec="seconds"), "p": snapshot()})
-        state["snaps"] = state["snaps"][-10:]
+    track(state)
 
-    # rapport du lundi soir (à partir de 18 h, heure de Paris), une fois par semaine
+    # rapport du lundi soir (à partir de 18 h, heure de Paris), une fois par semaine, après 6 jours de suivi
     weekly = state.get("weekly")
     due = NOW.weekday() == 0 and NOW.hour >= 17 and (not weekly or NOW - datetime.datetime.fromisoformat(weekly) > datetime.timedelta(days=6))
     if HOOK and due:
-        olds = [s for s in state["snaps"] if datetime.timedelta(days=6, hours=12) <= NOW - datetime.datetime.fromisoformat(s["t"]) <= datetime.timedelta(days=9)]
-        if olds:
-            o = olds[0]
-            days = round((NOW - datetime.datetime.fromisoformat(o["t"])).total_seconds() / 86400)
+        if NOW - datetime.datetime.fromisoformat(state["tracking"]) >= datetime.timedelta(days=6):
             try:
-                post(inactive_report(o["p"], state["snaps"][-1]["p"], days))
+                post(activity_report(state))
                 state["weekly"] = NOW.isoformat(timespec="seconds")
                 print("rapport d'activité posté")
             except Exception as e:
                 print(f"  rapport d'activité non posté : {e}", file=sys.stderr)
         else:
-            print("rapport d'activité : pas encore 7 jours d'historique")
+            print("rapport d'activité : suivi trop récent")
 
-    # rapport de test, lancé à la main depuis l'onglet Actions : période = depuis le début de la saison
-    if HOOK and os.environ.get("STAFF_TEST") == "true" and state["snaps"]:
+    # rapport de test, lancé à la main depuis l'onglet Actions
+    if HOOK and os.environ.get("STAFF_TEST") == "true":
         try:
-            with urllib.request.urlopen(PAGES + "data/players.json?ts=" + str(int(NOW.timestamp())), timeout=20) as r:
-                pj = json.loads(r.read().decode())
-        except Exception:
-            pj = {}
-        start = datetime.datetime.strptime(pj.get("season") or NOW.strftime("%Y-%m-01"), "%Y-%m-%d").replace(hour=5, tzinfo=datetime.timezone.utc)
-        days = max(1, round((NOW - start).total_seconds() / 86400))
-        base = pj.get("base", {})
-        new = state["snaps"][-1]["p"]
-        old = {t: {**n, "don": 0, "win": 0, "ws": base.get(t, {}).get("ws", n["ws"]), "cap": base.get(t, {}).get("cap", n["cap"])} for t, n in new.items()}
-        try:
-            post(inactive_report(old, new, days, test=True))
+            post(activity_report(state, test=True))
             print("rapport de test posté")
         except Exception as e:
             print(f"  rapport de test non posté : {e}", file=sys.stderr)
