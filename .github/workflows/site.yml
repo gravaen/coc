@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: "*/15 * * * *"  # toutes les 15 minutes (GitHub peut décaler un passage de quelques minutes)
   workflow_dispatch:        # bouton « Run workflow » dans l'onglet Actions
+    inputs:
+      test_rapport:
+        description: "Envoyer un rapport d'activité de test au staff"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -44,6 +49,7 @@ jobs:
         env:
           COC_TOKEN: ${{ secrets.COC_TOKEN }}
           DISCORD_STAFF_WEBHOOK: ${{ secrets.DISCORD_STAFF_WEBHOOK }}
+          STAFF_TEST: ${{ inputs.test_rapport }}
         run: python3 .github/workflows/scripts/staff.py
 
       - uses: actions/configure-pages@v5

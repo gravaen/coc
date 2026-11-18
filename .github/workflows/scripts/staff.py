@@ -197,11 +197,11 @@ def delta(o, n, k):
     return n.get(k, 0) if d < 0 else d
 
 
-def act_score(o, n):
-    return round(sum(w * min(1, delta(o, n, k) / cap) for k, _, w, cap in ACT))
+def act_score(o, n, weeks=1):
+    return round(sum(w * min(1, delta(o, n, k) / (cap * weeks)) for k, _, w, cap in ACT))
 
 
-def inactive_report(old, new, days):
+def inactive_report(old, new, days, test=False):
     """Score d'activité de chacun, avec en premier les inactifs (rien fait) et les peu actifs."""
     tip = {"member": "exclure ?", "admin": "rétrograder en Membre ?", "coLeader": "à contacter", "leader": "—"}
     order = ["leader", "coLeader", "admin", "member"]
@@ -211,7 +211,7 @@ def inactive_report(old, new, days):
         if not o:
             continue  # arrivé dans la semaine : pas encore de recul
         d = {k: delta(o, n, k) for k, *_ in ACT}
-        rows.append({**n, "s": act_score(o, n), "d": d})
+        rows.append({**n, "s": act_score(o, n, max(1, days / 7)), "d": d})
 
     def detail(r):
         return f"{r['d']['don']} dons · {r['d']['win']} vict. · {r['d']['ws']} ⭐ · {r['d']['cap'] // 1000}k or"
@@ -236,10 +236,11 @@ def inactive_report(old, new, days):
     return {
         "username": "Gravaen · staff",
         "embeds": [{
-            "author": {"name": "Rapport d'activité de la semaine"},
+            "author": {"name": ("🧪 TEST · " if test else "") + "Rapport d'activité de la semaine"},
             "title": f"😴 {total_zero} membre(s) sans aucune activité depuis {days} jours",
             "color": 0xC8412F if total_zero else 0x2F8F55,
-            "description": ("**Score d'activité sur 100**, calculé sur les 7 derniers jours :\n"
+            "description": ((f"⚠️ Rapport de test : calculé sur {days} jours (depuis le début de la saison), seuils ajustés à la durée.\n" if test else "")
+                            + "**Score d'activité sur 100**, calculé sur les 7 derniers jours :\n"
                             "dons 30 pts (350 troupes) · victoires 25 pts (14) · étoiles de guerre 30 pts (6) · or de capitale 15 pts (25 000)."),
             "fields": fields[:25],
             "footer": {"text": "Rapport automatique du lundi · Gravaen"},
@@ -286,6 +287,24 @@ def main():
                 print(f"  rapport d'activité non posté : {e}", file=sys.stderr)
         else:
             print("rapport d'activité : pas encore 7 jours d'historique")
+
+    # rapport de test, lancé à la main depuis l'onglet Actions : période = depuis le début de la saison
+    if HOOK and os.environ.get("STAFF_TEST") == "true" and state["snaps"]:
+        try:
+            with urllib.request.urlopen(PAGES + "data/players.json?ts=" + str(int(NOW.timestamp())), timeout=20) as r:
+                pj = json.loads(r.read().decode())
+        except Exception:
+            pj = {}
+        start = datetime.datetime.strptime(pj.get("season") or NOW.strftime("%Y-%m-01"), "%Y-%m-%d").replace(hour=5, tzinfo=datetime.timezone.utc)
+        days = max(1, round((NOW - start).total_seconds() / 86400))
+        base = pj.get("base", {})
+        new = state["snaps"][-1]["p"]
+        old = {t: {**n, "don": 0, "win": 0, "ws": base.get(t, {}).get("ws", n["ws"]), "cap": base.get(t, {}).get("cap", n["cap"])} for t, n in new.items()}
+        try:
+            post(inactive_report(old, new, days, test=True))
+            print("rapport de test posté")
+        except Exception as e:
+            print(f"  rapport de test non posté : {e}", file=sys.stderr)
 
     os.makedirs("data", exist_ok=True)
     with open("data/staff.json", "w", encoding="utf-8") as f:
