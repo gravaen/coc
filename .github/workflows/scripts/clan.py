@@ -203,13 +203,74 @@ def when(t):
         return None
 
 
+def roster(side_):
+    """Carte de guerre : une ligne par base, dans l'ordre de la carte (position, pseudo, HDV, étoiles concédées, attaques jouées)."""
+    out = []
+    for i, m in enumerate(sorted(side_.get("members") or [], key=lambda m: m.get("mapPosition", 99))):
+        b = m.get("bestOpponentAttack") or {}
+        out.append({"p": i + 1, "n": m.get("name"), "th": m.get("townhallLevel"),
+                    "s": b.get("stars", 0), "d": round(b.get("destructionPercentage") or 0),
+                    "a": len(m.get("attacks") or []), "x": [a.get("stars", 0) for a in m.get("attacks") or []]})
+    return out
+
+
+def details(w, cw, us, them):
+    """Détail affiché quand on clique sur la carte du clan : score, attaques, blasons et carte de guerre."""
+    w["size"] = cw.get("teamSize") or len(us.get("members") or [])
+    w["apm"] = cw.get("attacksPerMember") or 1
+    w["usAtk"], w["themAtk"] = us.get("attacks", 0), them.get("attacks", 0)
+    w["usBadge"] = (us.get("badgeUrls") or {}).get("small")
+    w["badge"] = (them.get("badgeUrls") or {}).get("small")
+    w["mine"], w["theirs"] = roster(us), roster(them)
+    for r in w["theirs"]:
+        r.pop("x", None)
+
+
+def cwl_war(tag):
+    """Pendant la Ligue de clans, /currentwar ne dit rien : la guerre du jour se trouve dans le groupe de ligue."""
+    q = urllib.parse.quote(tag)
+    g = get_or_none(API + f"/clans/{q}/currentwar/leaguegroup")
+    if not g or g.get("state") not in ("preparation", "inWar", "warEnded"):
+        return None, None
+    rounds = g.get("rounds") or []
+    found = []
+    for i in range(len(rounds) - 1, max(-1, len(rounds) - 3), -1):  # les deux dernières manches : préparation et bataille
+        for wt in rounds[i].get("warTags") or []:
+            if not wt or wt == "#0":
+                continue
+            cw = get_or_none(API + "/clanwarleagues/wars/" + urllib.parse.quote(wt))
+            if not cw:
+                continue
+            if (cw.get("opponent") or {}).get("tag") == tag:
+                cw["clan"], cw["opponent"] = cw.get("opponent"), cw.get("clan")
+            if (cw.get("clan") or {}).get("tag") == tag:
+                found.append((i, cw))
+                break
+    for st in ("inWar", "preparation", "warEnded"):
+        for i, cw in found:
+            if cw.get("state") == st:
+                return cw, {"round": i + 1, "rounds": len(rounds)}
+    return None, None
+
+
 def war_of(tag):
-    """Pastille des cartes : la guerre en cours, sinon la dernière guerre terminée (None si le journal est privé)."""
+    """Pastille des cartes : la guerre en cours (classique ou Ligue de clans), sinon la dernière guerre terminée."""
     q = urllib.parse.quote(tag)
     cw = get_or_none(API + f"/clans/{q}/currentwar")
+    cwl = None
+    if not cw or cw.get("state") not in ("preparation", "inWar", "warEnded"):
+        c2, cwl = cwl_war(tag)
+        if c2:
+            cw = c2
     if cw and cw.get("state") in ("preparation", "inWar", "warEnded"):
         us, them = cw.get("clan") or {}, cw.get("opponent") or {}
         w = {"state": cw["state"], "start": when(cw.get("startTime")), "end": when(cw.get("endTime")), "opponent": them.get("name")}
+        if cwl:
+            w["cwl"] = cwl
+        try:
+            details(w, cw, us, them)
+        except Exception as e:
+            print(f"  détail de guerre {tag} : {e}", file=sys.stderr)
     else:
         log = get_or_none(API + f"/clans/{q}/warlog?limit=10") or {}
         for item in log.get("items", []):

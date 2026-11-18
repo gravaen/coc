@@ -742,6 +742,68 @@ h2.eyeb{margin:0;font-family:var(--body);font-weight:800;font-size:16px;line-hei
 }
 .clan .in{position:relative}.cbadge{position:absolute;top:16px;right:18px;width:72px;height:72px;object-fit:contain}.clan .in>h3,.clan .in>.tagrow{padding-right:84px}
 @media (max-width:760px){.cbadge{top:14px;right:14px;width:60px;height:60px}.clan .in>h3,.clan .in>.tagrow{padding-right:70px}}
+
+/* guerre en cours : pastille cliquable + fenêtre « carte de guerre » (inspirée de ClashScout) */
+button.pill{border:0;font:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:0;text-align:left;transition:background .15s,transform .15s}
+button.pill b{overflow:hidden;text-overflow:ellipsis}
+button.pill .go{display:inline-flex;align-items:center;gap:3px;margin-left:10px;padding:3px 7px 3px 9px;background:var(--yellow);color:var(--ink);border-radius:2px;font-weight:800;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;flex:none}
+button.pill .go svg{width:12px;height:12px}
+button.pill:hover,button.pill:focus-visible{background:rgba(18,19,17,.92);transform:translateY(-1px)}
+button.pill:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+.shot.war-on{cursor:pointer}
+.shot.war-on img{transition:transform .5s}
+.shot.war-on:hover img{transform:scale(1.03)}
+.war-dlg{width:min(720px,calc(100% - 20px));max-height:calc(100dvh - 20px);padding:0;border:0;background:var(--paper);color:var(--text);box-shadow:0 24px 60px rgba(0,0,0,.4);overflow:auto;-webkit-overflow-scrolling:touch}
+.war-dlg::backdrop{background:rgba(20,21,19,.7)}
+.wv-top{background:var(--ink);color:var(--light);border-top:6px solid var(--yellow);position:sticky;top:0;z-index:2}
+.wv-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 10px 0 20px}
+.wv-state{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#CFCABB;display:flex;align-items:center;gap:8px}
+.wv-state i{width:8px;height:8px;border-radius:50%;background:#34C759;animation:nowpulse 2s infinite}
+.wv-state.prep i{background:var(--yellow);animation:none}
+.wv-board{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;padding:12px 20px 18px}
+.wv-side{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;gap:4px}
+.wv-side img{width:58px;height:58px;object-fit:contain}
+.wv-side .nm{font-family:var(--display);font-weight:800;font-size:17px;line-height:1.1;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wv-side .at{font-size:13px;color:#CFCABB}
+.wv-mid{text-align:center}
+.wv-score{font-family:var(--display);font-weight:900;font-stretch:110%;font-size:40px;line-height:1;display:flex;align-items:center;gap:10px;justify-content:center}
+.wv-score svg{width:26px;height:26px;color:var(--yellow)}
+.wv-pct{font-size:13px;color:#CFCABB;margin-top:6px;white-space:nowrap}
+.wv-time{margin-top:8px;display:inline-block;padding:4px 10px;background:rgba(255,255,255,.08);font-size:13px;font-weight:700;white-space:nowrap}
+.wv-body{padding:18px 20px 24px}
+.wv-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 10px;font-size:18px}
+.wv-h small{font-family:var(--body);font-size:13px;font-weight:700;color:var(--soft)}
+.wv-legend{display:grid;grid-template-columns:1fr 1fr;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);padding:0 0 8px;border-bottom:2px solid var(--ink)}
+.wv-legend span:last-child{text-align:right}
+.wv-map{list-style:none;margin:0;padding:0}
+.wv-map li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1px solid var(--line);position:relative}
+.wv-map li::after{content:"";position:absolute;left:50%;top:8px;bottom:8px;border-left:1px dashed var(--line)}
+.wv-map li:nth-child(odd){background:#FBF8EF}
+.wv-base{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 4px;min-width:0}
+.wv-base.r{flex-direction:row-reverse;text-align:right;padding:8px 4px 8px 10px}
+.wv-th{position:relative;flex:none;width:46px;height:46px}
+.wv-th img{width:46px;height:46px;object-fit:contain}
+.wv-th .no{position:absolute;left:-4px;top:-4px;min-width:20px;height:20px;padding:0 4px;display:grid;place-items:center;background:var(--ink);color:var(--light);font-size:11px;font-weight:800;border-radius:2px}
+.wv-base.r .wv-th .no{left:auto;right:-4px}
+.wv-th .lv{width:46px;height:46px;display:grid;place-items:center;background:var(--sand);font-weight:800;font-size:13px}
+.wv-info{min-width:0;display:flex;flex-direction:column;gap:3px}
+.wv-info .pn{font-weight:700;font-size:15px;line-height:1.2;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wv-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--soft);white-space:nowrap}
+.wv-base.r .wv-meta{justify-content:flex-end}
+.st{display:inline-flex;gap:1px}
+.st svg{width:13px;height:13px;color:#D6D0BE}
+.st svg.on{color:#E0A800}
+.wv-atk{display:inline-flex;gap:3px}
+.wv-atk i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--soft)}
+.wv-atk i.on{background:var(--ink);border-color:var(--ink)}
+.wv-note{margin:14px 0 0;font-size:13px;color:var(--soft)}
+@media (max-width:560px){
+ .wv-bar{padding:8px 6px 0 14px}.wv-board{padding:8px 12px 14px;gap:6px}.wv-side img{width:44px;height:44px}.wv-side .nm{font-size:14px}.wv-side .at{font-size:12px}
+ .wv-score{font-size:30px;gap:6px}.wv-score svg{width:20px;height:20px}.wv-pct,.wv-time{font-size:12px}
+ .wv-body{padding:14px 10px 20px}.wv-base{gap:7px;padding:7px 6px 7px 2px}.wv-base.r{padding:7px 2px 7px 6px}
+ .wv-th,.wv-th img,.wv-th .lv{width:38px;height:38px}.wv-info .pn{font-size:13px}.wv-meta{gap:5px;font-size:11px}.st svg{width:11px;height:11px}
+ button.pill .go{margin-left:8px;padding:3px 6px}
+}
 </style>
 </head>
 <body>
@@ -781,8 +843,8 @@ h2.eyeb{margin:0;font-family:var(--body);font-weight:800;font-size:16px;line-hei
  <div class="wrap">
   <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><div><p class="lede">Un clan pour la compétition, un clan pour progresser.</p></div></div>
   <div class="clans">
-   <article class="clan"><div class="top" style="background:var(--yellow)"></div><figure class="shot"><img src="image-08.webp" width="960" height="600" style="object-position:center 42%" alt="Le guerrier aux cheveux longs et le guerrier au casque de loup couronné, épée à la main, entre deux loups noirs devant un mur de flammes, image en noir et blanc" loading="lazy" decoding="async"><span class="pill" data-w="main" hidden></span></figure><div class="in"><img class="cbadge" data-cb="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="" hidden><h3>Gravaen</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau, avec un seul objectif : dominer.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Membres</dt><dd data-c="main-mem">44/50</dd></div></dl></div></article>
-   <article class="clan"><div class="top" style="background:var(--ink)"></div><figure class="shot"><img src="image-09.webp" width="960" height="600" style="object-position:center 30%" alt="Deux barbares, l’un blond, l’autre casqué, épée à la main devant un mur de flammes, image en noir et blanc" loading="lazy" decoding="async"><span class="pill" data-w="second" hidden></span></figure><div class="in"><img class="cbadge" src="loup-noir.svg" width="72" height="72" alt="Blason du clan secondaire"><h3>Gravaen</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Membres</dt><dd data-c="second-mem"></dd></div></dl></div></article>
+   <article class="clan"><div class="top" style="background:var(--yellow)"></div><figure class="shot"><img src="image-08.webp" width="960" height="600" style="object-position:center 42%" alt="Le guerrier aux cheveux longs et le guerrier au casque de loup couronné, épée à la main, entre deux loups noirs devant un mur de flammes, image en noir et blanc" loading="lazy" decoding="async"><button class="pill" type="button" data-w="main" hidden></button></figure><div class="in"><img class="cbadge" data-cb="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="" hidden><h3>Gravaen</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau, avec un seul objectif : dominer.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Membres</dt><dd data-c="main-mem">44/50</dd></div></dl></div></article>
+   <article class="clan"><div class="top" style="background:var(--ink)"></div><figure class="shot"><img src="image-09.webp" width="960" height="600" style="object-position:center 30%" alt="Deux barbares, l’un blond, l’autre casqué, épée à la main devant un mur de flammes, image en noir et blanc" loading="lazy" decoding="async"><button class="pill" type="button" data-w="second" hidden></button></figure><div class="in"><img class="cbadge" src="loup-noir.svg" width="72" height="72" alt="Blason du clan secondaire"><h3>Gravaen</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Membres</dt><dd data-c="second-mem"></dd></div></dl></div></article>
   </div>
  </div>
 </section>
@@ -842,6 +904,10 @@ h2.eyeb{margin:0;font-family:var(--body);font-weight:800;font-size:16px;line-hei
  </div>
 </section>
 </main>
+<dialog class="war-dlg" id="war-dlg" aria-labelledby="wv-title">
+ <div class="wv-top"><div class="wv-bar"><h2 class="wv-state" id="wv-title"></h2><button class="jd-x" type="button" id="wv-x" aria-label="Fermer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="wv-board" id="wv-board"></div></div>
+ <div class="wv-body"><h3 class="wv-h">Carte de guerre <small id="wv-size"></small></h3><div class="wv-legend"><span>Gravaen</span><span id="wv-opp"></span></div><ol class="wv-map" id="wv-map"></ol><p class="wv-note" id="wv-note">Étoiles : ce que l’adversaire a pris sur la base. Points : attaques jouées.</p></div>
+</dialog>
 <dialog class="join-dlg" id="join-dlg" aria-labelledby="join-title">
  <div class="jd-head"><h2 id="join-title">Postuler sur Discord</h2><button class="jd-x" type="button" id="join-x" aria-label="Fermer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
  <div class="jd-body">
@@ -992,7 +1058,8 @@ document.getElementById('grille-close').onclick=()=>{setG(false);gi.focus()};
   ['main','second'].forEach(function(k){
    var el=document.querySelector('.pill[data-w="'+k+'"]'),w=((d.clans||{})[k]||{}).war;if(!el||!w)return;
    var t={preparation:w.cwl?'Ligue de clans : préparation':'En préparation de guerre',inWar:w.cwl?'Ligue de clans en cours':'En guerre en ce moment'}[w.state];if(!t)return;
-   el.innerHTML='<i></i><b>'+t+'</b>';el.hidden=false;
+   el.innerHTML='<i></i><b>'+t+'</b>'+(w.mine?'<span class="go">Voir<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span>':'');el.hidden=false;
+   if(w.mine){el.setAttribute('aria-label',t+' : voir la guerre');var sh=el.closest('.shot');sh.classList.add('war-on');sh.onclick=function(){if(window.openWar)openWar(k,w)}}
   });
   if(d.updated){var dt=new Date(d.updated);if(!isNaN(dt)){
    var depuis=function(){var m=Math.max(0,Math.round((Date.now()-dt)/60000));
@@ -1088,6 +1155,49 @@ document.getElementById('grille-close').onclick=()=>{setG(false);gi.focus()};
    res.innerHTML='<p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée')+'</p><p class="jr-meta">Rejoins maintenant notre Discord : le staff a ton profil sous les yeux.</p><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a>';
   }).catch(function(err){b.disabled=false;b.textContent='Envoyer ma candidature';res.insertAdjacentHTML('beforeend','<p class="jd-err">'+esc(err.message)+'</p>')});
  }
+})();
+</script>
+<script>
+/* fenêtre « guerre en cours » : score, compte à rebours et carte de guerre, à partir de data/clan.json */
+(function(){
+ var dlg=document.getElementById('war-dlg');if(!dlg||!dlg.showModal)return;
+ var tick=null,STAR='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>';
+ function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ function nb(x){return String(x).replace('.',',')}
+ function stars(n){var h='';for(var i=0;i<3;i++)h+=STAR.replace('<svg','<svg class="'+(i<n?'on':'')+'"');return '<span class="st" aria-label="'+n+' étoile'+(n>1?'s':'')+'">'+h+'</span>'}
+ function th(n){return n>=7&&n<=18?'<img src="hdv-'+n+'.webp" width="46" height="46" alt="HDV '+n+'" loading="lazy">':'<span class="lv">HDV '+(n||'?')+'</span>'}
+ function left(iso){var m=Math.max(0,Math.round((new Date(iso)-Date.now())/60000));var h=Math.floor(m/60);return (h?h+' h ':'')+(m%60)+' min'}
+ function base(b,r,w,prep,mine){
+  if(!b)return '<div class="wv-base'+(r?' r':'')+'"></div>';
+  var meta='';
+  if(!prep){meta=stars(b.s||0)+(b.s||b.d?'<span>'+b.d+' %</span>':'');
+   if(mine){var a='';for(var i=0;i<(w.apm||1);i++)a+='<i class="'+(i<(b.a||0)?'on':'')+'"></i>';meta+='<span class="wv-atk" aria-label="'+(b.a||0)+' attaque(s) jouée(s)">'+a+'</span>'}}
+  return '<div class="wv-base'+(r?' r':'')+'"><span class="wv-th">'+th(b.th)+'<span class="no">'+b.p+'</span></span><span class="wv-info"><span class="pn">'+esc(b.n)+'</span>'+(meta?'<span class="wv-meta">'+meta+'</span>':'')+'</span></div>'}
+ window.openWar=function(k,w){
+  var prep=w.state==='preparation',tot=(w.size||0)*(w.apm||1);
+  var title=document.getElementById('wv-title');
+  title.className='wv-state'+(prep?' prep':'');
+  title.innerHTML='<i></i>'+(w.cwl?'Ligue de clans · manche '+w.cwl.round+'/'+w.cwl.rounds+' · ':'')+(prep?'Jour de préparation':'Jour de bataille');
+  var sideH=function(img,nm,atk){return '<div class="wv-side">'+(img?'<img src="'+esc(img)+'" width="58" height="58" alt="">':'')+'<span class="nm">'+esc(nm)+'</span>'+(prep?'':'<span class="at">'+atk+'/'+tot+' attaques</span>')+'</div>'};
+  var usImg=k==='second'?'loup.svg':(w.usBadge||(document.querySelector('[data-cb="main"]')||{}).src);
+  var timeEl='<span class="wv-time" id="wv-time"></span>';
+  document.getElementById('wv-board').innerHTML=sideH(usImg,'Gravaen',w.usAtk||0)+
+   '<div class="wv-mid"><div class="wv-score">'+(w.us||0)+STAR+(w.them||0)+'</div>'+(prep?'':'<div class="wv-pct">'+nb(w.usPct||0)+' % · '+nb(w.themPct||0)+' %</div>')+timeEl+'</div>'+
+   sideH(w.badge,w.opponent||'Adversaire',w.themAtk||0);
+  var upd=function(){var t=document.getElementById('wv-time');if(!t)return;
+   if(prep&&w.start)t.textContent='Bataille dans '+left(w.start);else if(w.state==='inWar'&&w.end)t.textContent='Fin dans '+left(w.end);else t.textContent='Guerre terminée'};
+  upd();clearInterval(tick);tick=setInterval(upd,30000);
+  document.getElementById('wv-size').textContent=(w.size||'')+' contre '+(w.size||'');
+  document.getElementById('wv-opp').textContent=w.opponent||'Adversaire';
+  var A=w.mine||[],B=w.theirs||[],n=Math.max(A.length,B.length),h='';
+  for(var i=0;i<n;i++)h+='<li>'+base(A[i],false,w,prep,true)+base(B[i],true,w,prep,false)+'</li>';
+  document.getElementById('wv-map').innerHTML=h;
+  document.getElementById('wv-note').hidden=prep;
+  dlg.showModal();dlg.scrollTop=0;
+ };
+ document.getElementById('wv-x').addEventListener('click',function(){dlg.close()});
+ dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+ dlg.addEventListener('close',function(){clearInterval(tick)});
 })();
 </script>
 </body>
