@@ -207,10 +207,15 @@ def track(state):
                 continue
             fp = fingerprint(p)
             s = seen.setdefault(m["tag"], {"since": NOW.isoformat(timespec="seconds"), "h": []})
+            season = NOW.strftime("%Y-%m-01") if NOW.day > 1 or NOW.hour >= 5 else (NOW - datetime.timedelta(days=1)).strftime("%Y-%m-01")
+            if s.get("ms") != season:  # nouvelle saison : on repart de zéro
+                s["ms"], s["md"] = season, []
             if "fp" in s and s["fp"] != fp:
                 s["last"] = NOW.isoformat(timespec="seconds")
                 if hour not in s["h"]:
                     s["h"].append(hour)
+                if NOW.strftime("%Y-%m-%d") not in s["md"]:
+                    s["md"].append(NOW.strftime("%Y-%m-%d"))
             s["fp"] = fp
             s["h"] = [h for h in s["h"] if h >= limit]
             s.update(n=m.get("name"), r=m.get("role"), c=label, th=m.get("townHallLevel"))
@@ -293,12 +298,8 @@ MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août
 
 
 def season_end(start):
-    """La saison suivante commence le dernier lundi du mois suivant, à 5 h UTC."""
-    y, m = (start.year + (start.month == 12), start.month % 12 + 1)
-    nxt = datetime.datetime(y + (m == 12), m % 12 + 1, 1, 5, tzinfo=datetime.timezone.utc) - datetime.timedelta(days=1)
-    while nxt.weekday() != 0:
-        nxt -= datetime.timedelta(days=1)
-    return nxt.replace(hour=5)
+    """La saison suivante commence le 1er du mois suivant, à 5 h UTC."""
+    return datetime.datetime(start.year + (start.month == 12), start.month % 12 + 1, 1, 5, tzinfo=datetime.timezone.utc)
 
 
 def pts(x):

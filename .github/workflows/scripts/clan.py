@@ -251,18 +251,56 @@ BLACK = {"rad": 30, "man": 25, "des": 25, "piq": 10, "tou": 10}
 
 
 def season_start(now):
-    """Les saisons de Clash of Clans changent le dernier lundi du mois à 5 h UTC."""
-    def last_monday(y, m):
-        nxt = datetime.datetime(y + (m == 12), m % 12 + 1, 1, 5, tzinfo=datetime.timezone.utc)
-        d = nxt - datetime.timedelta(days=1)
-        while d.weekday() != 0:
-            d -= datetime.timedelta(days=1)
-        return d.replace(hour=5)
-    s = last_monday(now.year, now.month)
+    """Les saisons de Clash of Clans changent le 1er de chaque mois à 5 h UTC (dates ClashKing)."""
+    s = datetime.datetime(now.year, now.month, 1, 5, tzinfo=datetime.timezone.utc)
     if now < s:
-        y, m = (now.year - 1, 12) if now.month == 1 else (now.year, now.month - 1)
-        s = last_monday(y, m)
+        s = datetime.datetime(now.year - (now.month == 1), (now.month - 2) % 12 + 1, 1, 5, tzinfo=datetime.timezone.utc)
     return s.strftime("%Y-%m-%d")
+
+
+CKAPI = "https://api.clashk.ing"
+
+
+def ck_warhits(tag, start, clans):
+    """Guerres du joueur depuis le début de la saison, d'après ClashKing (qui suit Gravaen en continu).
+    Renvoie étoiles et destruction en Ligue de clans, étoiles en guerre classique, attaques ratées et oubliées."""
+    url = (f"{CKAPI}/player/{urllib.parse.quote(tag)}/warhits?timestamp_start={int(start.timestamp())}"
+           f"&timestamp_end={int(datetime.datetime.now(datetime.timezone.utc).timestamp())}&limit=200")
+    req = urllib.request.Request(url, headers={"User-Agent": "gravaen-site (github.com/gravaen/coc)"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        items = json.load(r).get("items") or []
+    o = {"cs": 0, "cd": 0, "gs": 0, "zero": 0, "one": 0, "missed": 0, "wars": 0}
+    for it in items:
+        w, me = it.get("war_data") or {}, it.get("member_data") or {}
+        if (w.get("clan") or {}).get("tag") not in clans or w.get("type") == "friendly":
+            continue
+        atks = it.get("attacks") or []
+        th = me.get("townhallLevel") or 0
+        stars = sum(a.get("stars", 0) for a in atks)
+        o["wars"] += 1
+        if w.get("type") == "cwl":
+            o["cs"] += stars
+            o["cd"] += sum(a.get("destructionPercentage", 0) for a in atks)
+        else:
+            o["gs"] += stars
+        for a in atks:
+            if (a.get("defender") or {}).get("townhallLevel", 99) <= th:
+                o["zero"] += a.get("stars", 0) == 0
+                o["one"] += a.get("stars", 0) == 1
+        if w.get("state") == "warEnded":
+            per = 1 if w.get("type") == "cwl" else (w.get("attacksPerMember") or 2)
+            o["missed"] += max(0, per - len(atks))
+    return o
+
+
+def activity_days():
+    """Jours actifs de chaque membre sur la saison, relevés toutes les 15 min par staff.py (façon ClashPerk)."""
+    try:
+        with urllib.request.urlopen(PAGES + "data/staff.json?ts=" + str(int(datetime.datetime.now().timestamp())), timeout=20) as r:
+            st = json.loads(r.read().decode())
+    except Exception:
+        return {}, None
+    return {t: s for t, s in (st.get("seen") or {}).items()}, st.get("tracking")
 
 
 def previous_players():
@@ -322,6 +360,15 @@ def season_scores():
            "warLog": war_log, "raidLog": raid_log, "players": {}}
     season_iso = season.replace("-", "")  # 20261026, comparable aux dates de l'API
 
+    start = datetime.datetime.strptime(season, "%Y-%m-%d").replace(hour=5, tzinfo=datetime.timezone.utc)
+    # ClashKing : guerres du joueur depuis le début de la saison (relu au plus toutes les 2 h)
+    ck_old = old.get("ck", {}) if same else {}
+    ck_fresh = same and old.get("ckAt") and (now - datetime.datetime.fromisoformat(old["ckAt"])) < datetime.timedelta(hours=2)
+    ck = dict(ck_old) if ck_fresh else {}
+    out["ck"], out["ckAt"] = ck, (old.get("ckAt") if ck_fresh else now.isoformat(timespec="seconds"))
+    seen, tracking = activity_days()
+    raid_loot = {}
+
     vals = {k: {} for k in GRID}  # un seul classement pour les deux clans
     tie = {}
     for key, tag, c in (("main", TAG, clan), ("second", TAG2, clan2)):
@@ -359,7 +406,11 @@ def season_scores():
                                               for m in (cw.get("clan") or {}).get("members") or []}
 
         # Raids de la capitale terminés pendant la saison : attaques non jouées par membre
-        rs = get_or_none(API + f"/clans/{urllib.parse.quote(tag)}/capitalraidseasons?limit=5") or {}
+        rs = get_or_none(API + f"/clans/{urllib.parse.quote(tag)}/capitalraidseasons?limit=6") or {}
+        for it in rs.get("items") or []:
+            if (it.get("startTime") or "")[:8] >= season_iso:  # or de capitale pillé par chacun pendant la saison
+                for mm in it.get("members") or []:
+                    raid_loot[mm["tag"]] = raid_loot.get(mm["tag"], 0) + (mm.get("capitalResourcesLooted") or 0)
         for it in rs.get("items") or []:
             k = tag + (it.get("startTime") or "")
             if it.get("state") != "ended" or (it.get("startTime") or "")[:8] < season_iso or k in raid_log:
@@ -377,10 +428,22 @@ def season_scores():
             now_v = {"ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0), "tr": p.get("trophies", 0), "dee": heist}
             b = base.setdefault(t, now_v)  # nouveau venu : on part de ses chiffres du jour
             b.setdefault("dee", heist)
-            cs = sum(w[t][0] for w in cwl_log.values() if t in w)
-            cd = sum(w[t][1] for w in cwl_log.values() if t in w)
-            v = {"cwl": cs, "gdc": max(0, now_v["ws"] - b["ws"] - cs), "cap": max(0, now_v["cap"] - b["cap"]),
-                 "rk": max(0, now_v["tr"] - b["tr"]), "act": p.get("attackWins", 0), "don": p.get("donations", 0)}
+            if t not in ck:
+                try:
+                    ck[t] = ck_warhits(t, start, (TAG, TAG2))
+                except Exception as e:
+                    print(f"  ClashKing {t} : {e}", file=sys.stderr)
+            k_ = ck.get(t)
+            if k_:  # guerres de toute la saison, d'après ClashKing
+                cs, cd, gs = k_["cs"], k_["cd"], k_["gs"]
+            else:   # repli : seulement ce que le script a vu lui-même
+                cs = sum(w[t][0] for w in cwl_log.values() if t in w)
+                cd = sum(w[t][1] for w in cwl_log.values() if t in w)
+                gs = max(0, now_v["ws"] - b["ws"] - cs)
+            sn = seen.get(t) or {}
+            act_days = len([d for d in sn.get("md", []) if d >= season]) if sn else None
+            v = {"cwl": cs, "gdc": gs, "cap": raid_loot.get(t, max(0, now_v["cap"] - b["cap"])),
+                 "rk": now_v["tr"], "act": act_days if act_days is not None else p.get("attackWins", 0), "don": p.get("donations", 0)}
             for k in GRID:
                 vals[k][t] = v[k]
             tie[t] = cd
@@ -388,16 +451,21 @@ def season_scores():
                                  "dee": max(0, heist - b["dee"]), "hp": hero_progress(p)}
 
             # Liste noire
-            wars = [w[t] for w in cwl_log.values() if t in w and len(w[t]) >= 5]
-            zero = sum(x[2] for x in wars) + sum(w[t][0] for w in war_log.values() if t in w)
-            one = sum(x[3] for x in wars) + sum(w[t][1] for w in war_log.values() if t in w)
-            missed = sum(x[4] for x in wars) + sum(w[t][2] for w in war_log.values() if t in w)
-            days = (now - datetime.datetime.strptime(season, "%Y-%m-%d").replace(tzinfo=datetime.timezone.utc)).days
+            if k_:
+                zero, one, missed = k_["zero"], k_["one"], k_["missed"]
+            else:
+                wars = [w[t] for w in cwl_log.values() if t in w and len(w[t]) >= 5]
+                zero = sum(x[2] for x in wars) + sum(w[t][0] for w in war_log.values() if t in w)
+                one = sum(x[3] for x in wars) + sum(w[t][1] for w in war_log.values() if t in w)
+                missed = sum(x[4] for x in wars) + sum(w[t][2] for w in war_log.values() if t in w)
+            # Maître Bivouac : jours sans aucune activité, comptés depuis le début du suivi d'activité
+            t0 = max(start, datetime.datetime.fromisoformat(tracking)) if tracking else start
+            days = max(0, (now - t0).days)
             m_ = {"rad": max(0, p.get("donationsReceived", 0) - p.get("donations", 0)) // 50,
                   "man": 3 * zero + one,
                   "des": 5 * missed,
                   "piq": sum(r[t] for r in raid_log.values() if t in r),
-                  "tou": max(0, days - p.get("attackWins", 0))}
+                  "tou": max(0, days - act_days) if act_days is not None else max(0, days - p.get("attackWins", 0))}
             m_ = {k: min(BLACK[k], v_) for k, v_ in m_.items()}
             out["players"][t]["m"] = m_
             out["players"][t]["bl"] = -sum(m_.values())
