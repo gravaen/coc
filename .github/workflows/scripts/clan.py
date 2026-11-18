@@ -169,7 +169,6 @@ if _members:
 def conditions(c):
     """Infos pratiques des cartes : HDV requis, ligue classée requise, membres."""
     out = {"th": c.get("requiredTownhallLevel"), "members": c.get("members"), "wf": c.get("warFrequency")}
-    out["badge"] = (c.get("badgeUrls") or {}).get("medium")  # blason officiel, affiché tel quel
     if "requiredLeagueTier" in c:  # absent sur les anciennes réponses : la page garde alors son texte
         out["league"] = (c.get("requiredLeagueTier") or {}).get("name") or "Unranked"
     return out
