@@ -203,27 +203,29 @@ def when(t):
         return None
 
 
-def roster(side_):
-    """Carte de guerre : une ligne par base, dans l'ordre de la carte (position, pseudo, HDV, étoiles concédées, attaques jouées)."""
+def roster(side_, other):
+    """Une ligne par base, dans l'ordre de la carte : pseudo, HDV, attaques (cible, étoiles, %) et meilleure attaque subie."""
+    def order(s):
+        return sorted(s.get("members") or [], key=lambda m: m.get("mapPosition", 99))
+    pos = {m.get("tag"): i + 1 for i, m in enumerate(order(other))}
     out = []
-    for i, m in enumerate(sorted(side_.get("members") or [], key=lambda m: m.get("mapPosition", 99))):
-        b = m.get("bestOpponentAttack") or {}
-        out.append({"p": i + 1, "n": m.get("name"), "th": m.get("townhallLevel"),
-                    "s": b.get("stars", 0), "d": round(b.get("destructionPercentage") or 0),
-                    "a": len(m.get("attacks") or []), "x": [a.get("stars", 0) for a in m.get("attacks") or []]})
+    for i, m in enumerate(order(side_)):
+        atks = sorted(m.get("attacks") or [], key=lambda a: a.get("order", 0))
+        b = m.get("bestOpponentAttack")
+        out.append({"p": i + 1, "n": m.get("name"), "th": m.get("townhallLevel"), "a": len(atks),
+                    "x": [[pos.get(a.get("defenderTag")), a.get("stars", 0), round(a.get("destructionPercentage") or 0)] for a in atks],
+                    "b": [pos.get(b.get("attackerTag")), b.get("stars", 0), round(b.get("destructionPercentage") or 0)] if b else None})
     return out
 
 
 def details(w, cw, us, them):
-    """Détail affiché quand on clique sur la carte du clan : score, attaques, blasons et carte de guerre."""
+    """Détail affiché dans le Hall de guerre : score, attaques, blasons et les deux équipes."""
     w["size"] = cw.get("teamSize") or len(us.get("members") or [])
     w["apm"] = cw.get("attacksPerMember") or 1
     w["usAtk"], w["themAtk"] = us.get("attacks", 0), them.get("attacks", 0)
     w["usBadge"] = (us.get("badgeUrls") or {}).get("small")
     w["badge"] = (them.get("badgeUrls") or {}).get("small")
-    w["mine"], w["theirs"] = roster(us), roster(them)
-    for r in w["theirs"]:
-        r.pop("x", None)
+    w["mine"], w["theirs"] = roster(us, them), roster(them, us)
 
 
 def cwl_war(tag):

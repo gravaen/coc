@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hall de guerre · Gravaen</title>
+<meta name="description" content="La guerre en cours des clans Gravaen : score, temps restant et lignes de combat.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#111210">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Barlow:wght@500;700;800&display=swap">
+<link rel="icon" type="image/png" href="icone.png">
+<style>
+:root{--bg:#111210;--panel:#18191A;--panel2:#1E1F1C;--edge:rgba(248,240,217,.10);--cream:#F8F0D9;--soft:rgba(248,240,217,.64);--faint:rgba(248,240,217,.38);
+--display:'Archivo','Arial Black',sans-serif;--body:'Barlow','Helvetica Neue',Arial,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--body);font-weight:500;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
+.grain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;opacity:.1;mix-blend-mode:screen;z-index:50}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* barre du haut, posée sur le paysage (comme le classement) */
+.top{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:calc(14px + env(safe-area-inset-top)) 24px 14px}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 10px;border:1px solid var(--edge);color:var(--cream);text-decoration:none;font-weight:700;font-size:14px;background:rgba(17,18,16,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.back:hover{border-color:rgba(248,240,217,.35)}
+.back svg{width:18px;height:18px}
+.brand{font-family:var(--display);font-weight:900;font-stretch:125%;letter-spacing:-.03em;font-size:19px;text-decoration:none}
+/* le paysage du clan occupe tout l'écran à l'arrivée */
+.hero{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden;background:var(--bg)}
+/* fond animé : vidéo en boucle des deux étendards (sur PC : vidéo entière au centre, fond flouté autour) */
+.hero .blur{position:absolute;inset:-40px;background:url(hall-boucle.webp) center top/cover no-repeat;filter:blur(28px) brightness(.55);transform:scale(1.1)}
+.hero video,.hero .still{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 50%}
+.hero .still{background:url(hall-boucle.webp) center/contain no-repeat}
+.hero .ext{display:none}
+.hero video{opacity:0;transition:opacity 1s ease}.hero video.on{opacity:1}
+.flag{position:absolute;z-index:6;transform:translate(-50%,-50%);border:0;padding:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.flag:focus-visible{outline:2px solid var(--cream);outline-offset:4px}
+.flag:before{content:"";position:absolute;inset:-6% -10%;border-radius:40%;background:radial-gradient(closest-side,rgba(255,226,140,.28),rgba(255,226,140,0));opacity:0;animation:breathe 3.2s ease-in-out infinite;pointer-events:none}
+.flag[data-k="second"]:before{animation-delay:1.6s}
+@keyframes breathe{0%,100%{opacity:0;transform:scale(.92)}50%{opacity:1;transform:scale(1.04)}}
+.flag span{position:absolute;left:50%;bottom:-6px;transform:translate(-50%,100%);display:grid;place-items:center;width:42px;height:42px;border-radius:3px;background:rgba(17,18,16,.7);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border:1px solid rgba(248,240,217,.35);color:var(--cream);pointer-events:auto;cursor:pointer;box-shadow:0 0 0 0 rgba(248,240,217,.5);animation:tap 2.2s infinite;transition:background .25s,color .25s,border-color .25s}
+.flag span img{width:24px;height:24px}
+@keyframes tap{0%{box-shadow:0 0 0 0 rgba(248,240,217,.5)}70%{box-shadow:0 0 0 12px rgba(248,240,217,0)}100%{box-shadow:0 0 0 0 rgba(248,240,217,0)}}
+.flag.hit:before{animation:hit .9s ease-out forwards!important}
+@keyframes hit{0%{opacity:0;transform:scale(.9)}35%{opacity:1;transform:scale(1.12)}100%{opacity:0;transform:scale(1.25)}}
+.flag.hit span{background:var(--cream);color:#111210;border-color:var(--cream)}
+.flag[data-k="second"] span{width:36px;height:36px}.flag[data-k="second"] span img{width:20px;height:20px}
+.flag:hover span{background:rgba(17,18,16,.9);border-color:rgba(248,240,217,.5)}
+@media (prefers-reduced-motion:reduce){.flag:before,.flag span{animation:none}}
+.snd{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));bottom:22px;z-index:6;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--edge);background:rgba(17,18,16,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--cream);cursor:pointer}
+.snd svg{width:20px;height:20px}.snd .on{display:none}.snd[aria-pressed="true"] .on{display:block}.snd[aria-pressed="true"] .off{display:none}
+.hero:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(17,18,16,.32) 0%,rgba(17,18,16,0) 11%,rgba(17,18,16,0) 72%,var(--bg) 100%)}
+.cue{position:absolute;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));z-index:2;width:48px;height:48px;margin-left:-24px;display:grid;place-items:center;color:var(--cream);opacity:.85;animation:cue 2.2s ease-in-out infinite}
+.cue svg{width:30px;height:30px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+@keyframes cue{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(8px);opacity:1}}
+@media (max-width:820px){
+ .hero{height:100vh;height:100svh;min-height:0}.hero .blur{display:none}
+ .hero video,.hero .still{inset:auto;object-fit:fill;background-size:100% 100%}
+ .hero .ext{display:block;position:absolute;left:0;right:0;top:0;background:url(hall-ciel.webp) center bottom/100% 100% no-repeat}
+ .hero:after{background:linear-gradient(180deg,rgba(17,18,16,.4) 0%,rgba(17,18,16,0) 14%,rgba(17,18,16,0) 92%,rgba(17,18,16,.55) 100%)}
+
+ }
+main{max-width:1120px;margin:0 auto;padding:0 24px 0;scroll-margin-top:0;overflow-x:clip}
+/* choix du clan : deux icônes, au centre */
+.pick{display:flex;justify-content:center;padding-top:26px}
+.seg{display:inline-flex;border:1px solid var(--edge)}
+.seg button{min-height:52px;min-width:76px;display:flex;align-items:center;justify-content:center;padding:0 20px;border:0;background:none;cursor:pointer;transition:background .25s}
+.seg button+button{border-left:1px solid var(--edge)}
+.seg button img{width:32px;height:32px;object-fit:contain;transition:transform .25s}
+.seg button:hover img{transform:scale(1.08)}
+.seg button[aria-selected="true"],.seg .dbtn[aria-pressed="true"]{background:var(--cream)}
+.seg .dbtn img{width:34px;height:34px}.seg .dbtn[aria-pressed="true"] img{filter:brightness(.13)}
+/* détails de guerre : classement des deux équipes (même tuiles que la liste noire) */
+.tabs{display:flex;justify-content:center;margin:26px 0 12px}
+.tabs .t{display:inline-flex;border:1px solid var(--edge)}
+.tabs button{min-height:40px;padding:0 18px;border:0;background:none;font:800 14px var(--body);color:var(--soft);cursor:pointer}
+.tabs button+button{border-left:1px solid var(--edge)}
+.tabs button[aria-selected="true"]{background:var(--cream);color:var(--bg)}
+.rank{position:relative;list-style:none;margin:0;padding:0;display:grid;gap:4px}
+
+.rank li{display:grid;grid-template-columns:56px minmax(0,1fr) 110px;align-items:center;min-height:68px;background:var(--panel);box-shadow:inset 0 0 0 1px rgba(248,240,217,.06);transition:box-shadow .2s}
+.rank li:hover{box-shadow:inset 0 0 0 1px rgba(248,240,217,.28)}
+.rank li.top1{box-shadow:inset 0 0 0 1px rgba(248,240,217,.45)}
+.rank .n{text-align:center;font-family:var(--display);font-weight:900;font-stretch:115%;font-size:16px;color:var(--faint)}
+.rank .top1 .n{color:var(--cream)}
+.rank .nm{color:var(--cream);font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank .sc{display:flex;align-items:center;justify-content:flex-end;gap:6px;padding-right:20px;font-family:var(--display);font-weight:900;font-stretch:110%;font-size:20px;font-variant-numeric:tabular-nums}
+.rank .sc img{width:20px;height:20px}
+.rank .sc.z{color:var(--faint)}
+.rank li.line{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.rank li.line.in{opacity:1;transform:none}
+/* apparition : nos bases arrivent de la gauche, les leurs de la droite */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.line .base{opacity:0;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.line .base:not(.r){transform:translateX(-28px)}
+.line .base.r{transform:translateX(28px)}
+.line.in .base{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.pic,.rv,.line .base{transition:none!important;transform:none!important}.cue{animation:none}}
+/* tableau de score */
+.score{margin-top:26px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;padding:26px 8px 28px;border-top:1px solid var(--edge);border-bottom:1px solid var(--edge)}
+.state{grid-column:1/-1;margin:0 0 10px;text-align:center;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.side{display:flex;justify-content:center}
+.side img{width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+.mid{text-align:center;min-width:220px}
+.big{display:flex;align-items:center;justify-content:center;gap:18px;font-family:var(--display);font-weight:900;font-stretch:115%;font-size:64px;line-height:1;font-variant-numeric:tabular-nums}
+.big i{font-style:normal;font-weight:500;color:var(--faint)}
+.pct{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:baseline;margin-top:10px;font-size:15px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pct span:first-child{text-align:right}.pct span:last-child{text-align:left}
+.pct small{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.time{display:inline-block;margin-top:10px;padding:5px 12px;border:1px solid var(--edge);font-size:14px;font-weight:800;white-space:nowrap}
+/* lignes de combat : une tuile par position, HDV contre HDV */
+.h2{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:46px 0 14px}
+.h2 h2{margin:0;font-family:var(--display);font-weight:900;font-stretch:125%;letter-spacing:-.02em;font-size:clamp(22px,3vw,30px);text-transform:uppercase;line-height:1}
+.h2 small{color:var(--faint);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.lines{position:relative;isolation:isolate;overflow:hidden;list-style:none;margin:24px 0 0;padding:0;display:grid;gap:0}
+.line+.line{border-top:1px solid rgba(17,18,16,.9)}
+.line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0}
+.base{display:flex;align-items:center;gap:12px;min-width:0;min-height:72px;padding:8px 12px;border:0;font:inherit;color:inherit;text-align:left;background:var(--panel);box-shadow:inset 0 0 0 1px rgba(248,240,217,.06);transition:box-shadow .2s,background .2s,opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.base.r{flex-direction:row-reverse;text-align:right}
+.line+.line{border-top:0}.lines{gap:4px!important}
+button.base{cursor:pointer}
+button.base:hover{box-shadow:inset 0 0 0 1px rgba(248,240,217,.28)}
+.base[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--cream)}
+.base.hit{box-shadow:inset 0 0 0 1px rgba(248,200,1,.7)}
+.th{flex:none;width:52px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ds{display:flex;gap:1px;margin-top:-6px;position:relative}
+.ds img{width:14px;height:14px}
+.th>img{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.55))}
+.th .lv{font-weight:800;font-size:12px;color:var(--faint)}
+.info{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.pn{color:var(--cream);font-weight:800;font-size:16px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.base.r .meta{justify-content:flex-end}
+/* détail d'un joueur : ses attaques et la meilleure attaque subie */
+.det{grid-column:1/-1;background:rgba(17,18,16,.9);box-shadow:inset 0 0 0 1px rgba(248,240,217,.1);padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;animation:det .3s ease}
+@keyframes det{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.det h3{grid-column:1/-1;margin:0 0 4px;font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.det h3 b{color:var(--cream);letter-spacing:.04em;text-transform:none;font-size:14px;margin-left:6px}
+.dk{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 4px}
+.dr{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--edge);font-size:14px;font-weight:700;min-width:0}
+.dr .who{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--cream)}
+.dr .who small{color:var(--faint);font-weight:800;margin-right:6px}
+.dr .pc{font-variant-numeric:tabular-nums;color:var(--soft);min-width:44px;text-align:right}
+.dr.no{color:var(--faint);font-weight:600}
+.st{display:inline-flex;gap:2px;flex:none}
+.st img{width:15px;height:15px}
+.note{margin:14px 0 0;font-size:13px;color:var(--faint)}
+.empty{margin-top:18px;padding:34px 20px;background:var(--panel);border:1px solid var(--edge);text-align:center;color:var(--soft)}
+.empty b{display:block;color:var(--cream);font-family:var(--display);font-weight:900;font-size:20px;margin-bottom:6px}
+.foot{margin-top:40px;text-align:center;color:rgba(248,240,217,.26);font-size:10.5px;line-height:1.5}
+.foot a{color:rgba(248,240,217,.38)}
+.snd{transition:opacity .4s,visibility .4s}.snd.hide{opacity:0;visibility:hidden}
+@media (max-width:560px){
+ .top{padding-left:16px;padding-right:16px}main{padding:0 12px 56px}
+ .score{padding:20px 0 22px;gap:6px}.mid{min-width:0}
+ .side img{width:54px;height:54px}
+ .side>span{max-width:100%}.h2 h2{font-size:21px}.h2 small{white-space:nowrap}.time{white-space:normal;max-width:130px}
+ .big{font-size:40px;gap:10px}.pct{font-size:12.5px;gap:8px}.pct{grid-template-columns:1fr 1fr;row-gap:2px}.pct small{grid-column:1/-1;grid-row:2;font-size:9.5px;letter-spacing:.1em}.time{font-size:12px}.time{padding:4px 8px}
+ .base{gap:8px;padding:8px;min-height:62px}.th{width:42px}.th>img{width:40px;height:40px}.ds img{width:12px;height:12px}.pn{font-size:13.5px}.meta{gap:6px} .det{grid-template-columns:1fr;padding:12px}.rank li{grid-template-columns:38px minmax(0,1fr) 80px;min-height:58px}.rank .nm{font-size:15px}.rank .sc{padding-right:14px;font-size:17px}.seg button{min-width:64px;padding:0 14px}.dr{font-size:13px}
+}
+
+/* carte de guerre : nos bases posées dans les clairières de la vallée, la vallée continue en dessous (image retournée = suite du chemin) */
+.map{container-type:inline-size;position:relative;width:min(100vw,760px);margin:22px 0 0;left:50%;transform:translateX(-50%);overflow:hidden}
+.map .bgs{border-radius:0!important}
+@media (min-width:761px){.map{-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}}
+.map .bgs{position:absolute;inset:0;overflow:hidden;border-radius:2px}
+.map .bg{position:absolute;left:0;right:0;background:url(carte-allie.webp) center/100% 101.5% no-repeat}
+.map .bg.f{transform:scaleY(-1)}
+.map:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(17,18,16,.7) 0,rgba(17,18,16,0) 40px,rgba(17,18,16,0) calc(100% - 40px),rgba(17,18,16,.35) 100%),linear-gradient(90deg,rgba(17,18,16,.35),rgba(17,18,16,0) 18%,rgba(17,18,16,0) 82%,rgba(17,18,16,.35));z-index:1}
+.map.foe .bg{background-image:url(carte-ennemi.webp)}
+.slot{position:absolute;z-index:2;transform:translate(-50%,calc(-100% + 7.5cqw));display:flex;flex-direction:column;align-items:center;gap:1px;border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer;opacity:0;transition:opacity .5s ease,translate .6s cubic-bezier(.2,.8,.2,1);translate:0 14px}
+.slot.in{opacity:1;translate:0 0}
+.slot .nm{margin-bottom:2px;max-width:150px;padding:2px 8px;background:rgba(17,18,16,.72);font-weight:800;font-size:13px;line-height:1.35;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:2px}
+.slot .nm b{color:var(--faint);font-weight:800;margin-right:4px}
+.slot>img{width:15cqw;height:15cqw;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(0,0,0,.55));transition:transform .25s}
+.slot:hover>img,.slot:focus-visible>img{transform:translateY(-3px) scale(1.06)}
+.slot .ds{display:flex;align-items:flex-end;gap:1px;margin-bottom:2px}.slot .ds img{width:17px;height:17px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))}.slot .ds img:nth-child(2){width:21px;height:21px;transform:translateY(-5px)}
+.slot:focus-visible{outline:none}.slot:focus-visible .nm{outline:2px solid var(--cream)}
+.slot .ruin{position:relative;display:block;width:20.5cqw;height:15cqw}
+.slot .ruin img{position:absolute;left:50%;bottom:-1.2cqw;width:100%;height:auto;transform:translateX(-50%);filter:drop-shadow(0 4px 4px rgba(0,0,0,.4))}
+.slot .ruin i{position:absolute;left:52%;bottom:45%;width:3.4cqw;height:3.4cqw;border-radius:50%;background:radial-gradient(circle,rgba(70,66,60,.75),rgba(70,66,60,0) 70%);animation:smoke 3.6s ease-out infinite;pointer-events:none}
+.slot .ruin i+i{left:44%;animation-delay:1.8s}
+@keyframes smoke{0%{transform:translate(0,0) scale(.5);opacity:0}15%{opacity:.9}100%{transform:translate(2.5cqw,-9cqw) scale(2.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.slot .ruin i{animation:none;opacity:.4}}
+/* choix du camp : nos icônes, flèche d'échange au centre */
+.camp{display:grid;grid-template-columns:1fr 1fr 1fr;width:min(74vw,340px);aspect-ratio:1316/467;margin:28px auto 4px;padding:0 3.1% 0 4.1%;background:url(dalle.webp) center/100% 100% no-repeat;filter:drop-shadow(0 10px 16px rgba(0,0,0,.45))}
+.camp button{position:relative;display:grid;place-items:center;width:auto;height:auto;border:0;background:none;color:rgba(28,10,6,.75);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.camp button:focus-visible{outline:2px solid var(--cream);outline-offset:-6px}
+/* icônes gravées dans la pierre : creux sombre + liseré de lumière en bas */
+.camp button img{width:42%;max-width:44px;aspect-ratio:1;object-fit:contain;filter:brightness(0) drop-shadow(0 1.5px 0 rgba(255,196,150,.38));opacity:.62;transition:filter .35s,opacity .35s,transform .35s}
+.camp button[aria-selected="true"]:before{content:"";position:absolute;inset:14% 8%;background:radial-gradient(closest-side,rgba(248,200,1,.22),rgba(248,200,1,0));pointer-events:none}
+.camp button[aria-selected="true"] img{opacity:1;filter:drop-shadow(0 0 7px rgba(248,200,1,.5)) drop-shadow(0 1px 0 rgba(0,0,0,.55));transform:scale(1.04)}
+.camp button:hover img{opacity:.85}
+.camp .sw svg{width:32%;max-width:30px;filter:drop-shadow(0 1.5px 0 rgba(255,196,150,.38));transition:transform .35s}
+.camp .sw:hover svg{transform:rotate(180deg)}
+.tool{display:flex;justify-content:center;align-items:center;gap:10px;margin:28px 0 4px}
+.tool .camp{margin:0}
+.dbtn{width:clamp(48px,14vw,62px);height:clamp(48px,14vw,62px);display:grid;place-items:center;border:1px solid var(--edge);background:none;cursor:pointer;transition:background .25s}
+.dbtn img{width:30px;height:30px;transition:transform .25s}.dbtn:hover img{transform:scale(1.08)}
+.dbtn[aria-pressed="true"]{background:var(--cream)}.dbtn[aria-pressed="true"] img{filter:brightness(.13)}
+.tabs{align-items:center;gap:10px}.tabs .dbtn{height:42px;width:48px}.tabs .dbtn img{width:26px;height:26px}
+.map .fog{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.map .fog i{position:absolute;inset:-10% -60%;background:radial-gradient(ellipse 22% 9% at 30% 20%,rgba(255,246,228,.55),transparent 70%),radial-gradient(ellipse 26% 8% at 70% 47%,rgba(255,246,228,.48),transparent 70%),radial-gradient(ellipse 20% 7% at 45% 75%,rgba(255,246,228,.5),transparent 70%);background-size:100% 900px;background-repeat:repeat-y;filter:blur(6px);animation:fog 70s linear infinite}
+.map .fog i+i{background-position:0 420px;opacity:.7;animation-duration:110s;animation-direction:reverse}
+.map.foe .fog i{filter:blur(6px) brightness(.55)}
+@keyframes fog{from{transform:translateX(-12%)}to{transform:translateX(12%)}}
+@media (prefers-reduced-motion:reduce){.map .fog i{animation:none}}
+html.lock,html.lock body{overflow:hidden;overscroll-behavior:none}
+.up{display:grid;place-items:center;width:44px;height:44px;margin:14px auto 0;border:1px solid var(--edge);background:none;color:var(--soft);cursor:pointer;transition:color .2s,border-color .2s}
+.up:hover{color:var(--cream);border-color:rgba(248,240,217,.35)}.up svg{width:22px;height:22px}
+/* descente le long de la falaise, entre le paysage et la carte */
+.descent{position:relative;z-index:2;background:url(descente.webp) no-repeat transparent;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 var(--fd,200px));mask-image:linear-gradient(180deg,transparent 0,#000 var(--fd,200px));overflow:hidden;pointer-events:none}
+.descent .fog{position:absolute;inset:0;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 92%);mask-image:linear-gradient(180deg,#000 55%,transparent 92%)}
+.descent .fog i{position:absolute;inset:-10% -60%;background:radial-gradient(ellipse 24% 6% at 35% 30%,rgba(255,226,170,.14),transparent 70%),radial-gradient(ellipse 28% 7% at 65% 55%,rgba(255,226,170,.11),transparent 70%);background-size:100% 700px;filter:blur(8px);animation:fog 80s linear infinite}
+.descent .fog i+i{background-position:0 330px;animation-duration:120s;animation-direction:reverse;opacity:.8}
+/* score gravé sur la stèle de grès au fond du canyon */
+.score.stele{position:relative;display:block;container-type:inline-size;width:min(100%,540px);aspect-ratio:1152/1080;margin:-30px auto 0;padding:0;border:0;background:url(stele.webp) center/100% 100% no-repeat}
+.stele .face{position:absolute;left:18%;right:18%;top:16%;bottom:33%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;text-align:center}
+.stele .state{margin:0;font-size:2.3cqw;letter-spacing:.2em;color:rgba(248,240,217,.55)}
+.stele .row{display:grid;grid-template-columns:auto auto auto;align-items:center;gap:3cqw}
+.stele .side img{width:11cqw;height:11cqw}
+.stele .mid{min-width:0}
+.stele .big{font-size:10.5cqw;gap:2.4cqw;text-shadow:0 2px 0 rgba(0,0,0,.35),0 0 18px rgba(0,0,0,.35)}
+.stele .pct{margin-top:0;font-size:2.7cqw;gap:1.6cqw;grid-template-columns:1fr auto 1fr}
+.stele .pct small{font-size:1.8cqw}
+.stele .time{margin-top:.6cqw;font-size:2.5cqw;padding:.6cqw 2cqw;border-color:rgba(248,240,217,.25);background:rgba(17,18,16,.35)}
+.score.stele:before{content:"";position:absolute;inset:-25% -45% -10%;z-index:-1;background:radial-gradient(closest-side,rgba(150,88,40,.28),rgba(150,88,40,.1) 55%,transparent);pointer-events:none}
+#view{position:relative;isolation:isolate}
+.stele+.tool,.stele+.tabs{margin-top:-6px}
+/* effet barre : la dalle chevauche le bord haut de la carte (moitié sur le noir, moitié sur la carte) */
+.tool{position:relative;z-index:3}
+.tool+.map{margin-top:calc(-1 * min(74vw,340px) / 2.818 / 2 - 4px)!important}
+.tool .camp{filter:drop-shadow(0 12px 12px rgba(0,0,0,.6)) drop-shadow(0 3px 3px rgba(0,0,0,.45))}
+.tool .dbtn{background:rgba(17,18,16,.82)}
+.score.stele:after{content:"";position:absolute;left:0;right:0;top:100%;height:42%;z-index:-1;pointer-events:none;background:url(stele.webp) center bottom/100% 238% no-repeat;transform:scaleY(-1);transform-origin:top;margin-top:-3%;opacity:.55;filter:blur(1.5px) brightness(.7) saturate(.9);-webkit-mask-image:linear-gradient(0deg,transparent 0,#000 70%);mask-image:linear-gradient(0deg,transparent 0,#000 70%)}
+@media (max-width:560px){.score.stele{width:calc(100% + 20px);margin-left:-10px}.stele .pct{grid-template-columns:1fr 1fr;row-gap:.4cqw}.stele .pct small{grid-column:1/-1;grid-row:2}}
+/* brume qui couvre le passage entre la descente du canyon et la stèle */
+main{position:relative;margin-top:-180px!important}
+html{background:linear-gradient(180deg,#111210 0,#111210 50%,#a0763f 50%,#a0763f 100%)}
+.seam{position:absolute;left:50%;width:100vw;margin-left:-50vw;top:-300px;height:380px;z-index:3;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 35%,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 35%,#000 60%,transparent 100%)}
+.seam i{position:absolute;inset:0 -60%;background:radial-gradient(ellipse 30% 18% at 25% 45%,rgba(214,168,96,.32),transparent 70%),radial-gradient(ellipse 34% 16% at 62% 55%,rgba(214,168,96,.28),transparent 70%),radial-gradient(ellipse 26% 14% at 88% 40%,rgba(214,168,96,.24),transparent 70%);filter:blur(10px);animation:fog 60s linear infinite}
+.seam i:nth-child(2){animation-duration:95s;animation-direction:reverse;opacity:.8;transform:translateY(40px)}
+.seam i:nth-child(3){background:linear-gradient(180deg,transparent,rgba(120,86,46,.22) 45%,rgba(120,86,46,.18) 60%,transparent);animation:none;filter:none;inset:0}
+.up,#view{position:relative;z-index:4}
+@media (prefers-reduced-motion:reduce){.seam i{animation:none}}
+/* brume entre la stèle et la dalle des boutons, qui passe sous la dalle */
+.tool{position:relative}
+.tool:before{content:"";position:absolute;left:50%;width:100vw;margin-left:-50vw;top:-170px;bottom:-130px;z-index:-1;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent);
+ background:radial-gradient(ellipse 34% 26% at 22% 50%,rgba(120,84,48,.75),transparent 70%),radial-gradient(ellipse 38% 24% at 62% 44%,rgba(110,76,44,.7),transparent 70%),radial-gradient(ellipse 28% 22% at 90% 58%,rgba(120,84,48,.65),transparent 70%),linear-gradient(180deg,transparent,rgba(78,54,32,.88) 32%,rgba(84,58,34,.92) 64%,transparent);
+ background-size:200% 100%,200% 100%,200% 100%,100% 100%;filter:blur(8px);animation:mist 50s linear infinite alternate}
+@keyframes mist{from{background-position:0 0,100% 0,0 0,0 0}to{background-position:100% 0,0 0,100% 0,0 0}}
+@media (prefers-reduced-motion:reduce){.tool:before{animation:none}}
+/* fiche d'un joueur */
+dialog.sheet{border:0;padding:0;width:min(560px,calc(100% - 20px));background:#161715;color:var(--cream);box-shadow:0 0 0 1px rgba(248,240,217,.12),0 30px 80px rgba(0,0,0,.6)}
+dialog.sheet::backdrop{background:rgba(10,10,9,.6)}
+dialog.sheet .det{animation:none;box-shadow:none;background:none;padding:18px 18px 20px}
+dialog.sheet .x{position:absolute;top:6px;right:6px;width:40px;height:40px;border:0;background:none;color:var(--soft);font-size:26px;line-height:1;cursor:pointer}
+@media (max-width:560px){.slot .nm{font-size:11.5px;max-width:110px;padding:1px 6px}.slot .ds img{width:13px;height:13px}.slot .ds img:nth-child(2){width:16px;height:16px;transform:translateY(-4px)}
+ dialog.sheet{width:100%;max-width:none;margin:auto 0 0;max-height:80vh}dialog.sheet .det{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<svg class="grain" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<header class="top">
+ <a class="back" href="./#clans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Retour</a>
+ <a class="brand" href="./">Gravaen</a>
+</header>
+<section class="hero" id="hero" aria-labelledby="t">
+ <div class="blur" aria-hidden="true"></div>
+ <div class="still" role="img" aria-label="Deux étendards sur deux falaises au-dessus d’un canyon au coucher du soleil : le loup couronné doré au premier plan à gauche, le loup blanc à droite"></div>
+ <div class="ext" aria-hidden="true"></div>
+ <video id="hv" muted loop playsinline preload="auto" poster="hall-boucle.webp" aria-hidden="true"><source src="hall-boucle.mp4" type="video/mp4"></video>
+ <button type="button" class="flag" data-k="main" aria-label="Voir la guerre du clan principal"><span><img src="ic-epees.webp" width="24" height="24" alt=""></span></button>
+ <button type="button" class="flag" data-k="second" aria-label="Voir la guerre du clan secondaire"><span><img src="ic-epees.webp" width="24" height="24" alt=""></span></button>
+ <button type="button" class="snd" id="snd" aria-pressed="false" aria-label="Activer la musique" title="Musique"><svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l4 6M21 9l-4 6"/></svg><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button>
+ <h1 class="sr" id="t">Guerre en cours</h1>
+</section>
+<div class="descent" id="descent" aria-hidden="true"><div class="fog"><i></i><i></i></div></div>
+<main id="guerre">
+ <div class="seam" aria-hidden="true"><i></i><i></i><i></i></div>
+ <button type="button" class="up" id="up" aria-label="Remonter vers les étendards" title="Remonter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+ <div id="view" aria-live="polite"></div>
+ <dialog class="sheet" id="sheet" aria-label="Détail du joueur"><button class="x" type="button" id="sheet-x" aria-label="Fermer">×</button><div class="det" id="sheet-c"></div></dialog>
+</main>
+<script>
+(function(){
+ var SLF=[[155,128],[618,180],[342,298],[606,446],[165,502],[560,687],[215,797],[615,907],[255,1042],[170,1217],[565,1237]],SL=[[155,116],[618,180],[342,286],[606,446],[165,502],[560,687],[215,797],[615,907],[255,1042],[170,1217],[565,1237]],MW=768,MH=1376,OFF=200,camp='m',D=null,mode='map',team='m',cur=(new URLSearchParams(location.search).get('clan')==='second')?'second':'main',tick=null;
+ var STAR='<img src="etoile.webp" width="16" height="16" alt="">',NOSTAR='<img src="etoile-vide.webp" width="16" height="16" alt="">';
+ function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ function nb(x){return String(x).replace('.',',')}
+ function stars(n){var h='';for(var i=0;i<3;i++)h+=i<n?STAR:NOSTAR;return '<span class="st" role="img" aria-label="'+n+' étoile'+(n>1?'s':'')+'">'+h+'</span>'}
+ function th(n){return n>=1&&n<=18?'<img src="hdv-'+n+'.webp" width="56" height="56" alt="HDV '+n+'" loading="lazy">':'<span class="lv">HDV ?</span>'}
+ function left(iso){var m=Math.max(0,Math.round((new Date(iso)-Date.now())/60000)),h=Math.floor(m/60);return (h?h+' h ':'')+(m%60)+' min'}
+ function badge(k){return k==='second'?'loup.svg':'image-01.webp'}
+ function base(b,r,w,prep,i){
+  if(!b)return '<div class="base'+(r?' r':'')+'"></div>';
+  var ds=prep?'':'<span class="ds" role="img" aria-label="Base : '+((b.b&&b.b[1])||0)+' étoile(s) subie(s)">'+[0,1,2].map(function(k){return '<img src="'+(k<((b.b&&b.b[1])||0)?'etoile.webp':'etoile-vide.webp')+'" width="14" height="14" alt="">'}).join('')+'</span>';
+  var inner='<span class="th">'+th(b.th)+ds+'</span><span class="info"><span class="pn">'+esc(b.n)+'</span>';
+  if(prep)return '<div class="base'+(r?' r':'')+'">'+inner+'</span></div>';
+  return '<button type="button" class="base'+(r?' r':'')+'" data-side="'+(r?'t':'m')+'" data-i="'+i+'" aria-expanded="false">'+inner+'</span></button>'}
+ function detail(w,side,i){
+  var me=(side==='m'?w.mine:w.theirs)[i],op=side==='m'?w.theirs:w.mine;if(!me)return '';
+  var nm=function(p){var o=op.filter(function(x){return x.p===p})[0];return '<span class="who"><small>'+(p||'?')+'.</small>'+esc(o?o.n:'?')+'</span>'};
+  var h='<h3>'+(side==='m'?'Gravaen':esc(w.opponent||'Adversaire'))+'<b>'+esc(me.n)+'</b></h3>';
+  var row=function(p,st,pc){return '<div class="dr">'+nm(p)+stars(st)+'<span class="pc">'+pc+' %</span></div>'};
+  /* attaques reçues sur sa base (toutes, la meilleure en premier) */
+  var got=[];op.forEach(function(o){(o.x||[]).forEach(function(a){if(a[0]===me.p)got.push([o.p,a[1],a[2]])})});
+  if(!got.length&&me.b)got.push(me.b);
+  got.sort(function(a,b){return b[1]-a[1]||b[2]-a[2]});
+  h+='<div><p class="dk">Attaques subies</p>'+(got.length?got.map(function(g){return row(g[0],g[1],g[2])}).join(''):'<div class="dr no">Pas encore attaqué</div>')+'</div>';
+  h+='<div><p class="dk">Ses attaques</p>';
+  for(var k=0;k<(w.apm||1);k++){var a=(me.x||[])[k];h+=a?row(a[0],a[1],a[2]):'<div class="dr no">Attaque '+(k+1)+' pas encore jouée</div>'}
+  return h+'</div>'}
+ /* classement d'une équipe : étoiles gagnées, puis destruction */
+ function ranking(w,prep){
+  var L=(team==='m'?w.mine:w.theirs)||[];
+  var r=L.map(function(p){var s=0,d=0;(p.x||[]).forEach(function(a){s+=a[1]||0;d+=a[2]||0});return {n:p.n,s:s,d:d}}).sort(function(a,b){return b.s-a.s||b.d-a.d});
+  var h='<div class="tabs rv"><div class="t" role="tablist"><button role="tab" type="button" data-t="m" aria-selected="'+(team==='m')+'">Mon équipe</button><button role="tab" type="button" data-t="t" aria-selected="'+(team==='t')+'">Équipe ennemie</button></div>'+'<button type="button" class="dbtn" id="dbtn" aria-pressed="'+(mode==='det')+'" aria-label="Journal de guerre" title="Journal de guerre"><img src="ic-details.webp" width="30" height="30" alt=""></button>'+'</div><ol class="rank '+cur+'">';
+  r.forEach(function(p,i){h+='<li class="line'+(i===0&&p.s?' top1':'')+'"><span class="n">'+(i+1)+'</span><span class="nm">'+esc(p.n)+'</span><span class="sc'+(p.s?'':' z')+'">'+p.s+'<img src="etoile.webp" width="20" height="20" alt=" étoiles"></span></li>'});
+  return h+'</ol>'}
+ /* nos bases (ou les leurs) posées sur la carte, dans l'ordre : 1 en haut */
+ function mapView(w,prep){
+  var L=(camp==='m'?w.mine:w.theirs)||[],per=SL.length,nt=Math.max(1,Math.ceil(L.length/per)),bg='',sl='',P=[];
+  var asc=SL,desc=SLF.slice().sort(function(a,c){return c[1]-a[1]});
+  L.forEach(function(b,k){var t=Math.floor(k/per),q=(t%2?desc:asc)[k%per];P.push([q[0],OFF+t*MH+(t%2?MH-q[1]:q[1])])});
+  var H=Math.min(OFF+nt*MH,Math.max.apply(null,P.map(function(p){return p[1]}).concat([600]))+200);
+  for(var t=-1;t<nt;t++)bg+='<div class="bg'+(t%2?' f':'')+'" style="top:'+((OFF+t*MH)/H*100)+'%;height:calc('+(MH/H*100)+'% + 2px)"></div>';
+  L.forEach(function(b,k){var st=(b.b&&b.b[1])||0;
+   var ds=prep?'':'<span class="ds" role="img" aria-label="'+st+' étoile(s) subie(s)">'+[0,1,2].map(function(z){return '<img src="'+(z<st?'etoile.webp':'etoile-vide.webp')+'" width="15" height="15" alt="">'}).join('')+'</span>';
+   sl+='<button type="button" class="slot" data-i="'+k+'" style="left:'+(P[k][0]/MW*100)+'%;top:'+(P[k][1]/H*100)+'%">'+ds+'<span class="nm"><b>'+(k+1)+'.</b>'+esc(b.n)+'</span>'+(st===3&&!prep?'<span class="ruin"><img src="hdv-detruit.webp" width="360" height="247" alt="Base détruite"><i></i><i></i></span>':th(b.th).replace('width="56" height="56"','width="74" height="74"'))+'</button>'});
+  var us=badge(cur),them=w.badge;
+  return '<div class="tool rv"><div class="camp" role="tablist" aria-label="Camp affiché">'+
+   '<button role="tab" type="button" data-s="m" aria-selected="'+(camp==='m')+'" aria-label="Nos bases" title="Nos bases"><img src="'+us+'" alt=""></button>'+
+   '<button type="button" class="sw" data-sw aria-label="Changer de camp" title="Changer de camp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h14l-4-4M20 16H6l4 4"/></svg></button>'+
+   '<button role="tab" type="button" data-s="t" aria-selected="'+(camp==='t')+'" aria-label="Bases ennemies" title="Bases ennemies">'+(them?'<img src="'+esc(them)+'" alt="">':'<svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/></svg>')+'</button>'+
+   '</div>'+'<button type="button" class="dbtn" id="dbtn" aria-pressed="'+(mode==='det')+'" aria-label="Journal de guerre" title="Journal de guerre"><img src="ic-details.webp" width="30" height="30" alt=""></button>'+'</div>'+
+   '<div class="map'+(camp==='t'?' foe':'')+'" style="aspect-ratio:'+MW+' / '+H+'"><div class="bgs">'+bg+'</div><div class="fog" aria-hidden="true"><i></i><i></i></div>'+sl+'</div>'}
+ function show(){
+ document.querySelectorAll('.seg button[data-k]').forEach(function(t){t.setAttribute('aria-selected',t.dataset.k===cur?'true':'false')});
+  var lw=document.querySelector('.seg img.lw');if(lw)lw.src=cur==='second'?'loup-noir.svg':'loup.svg';
+  try{history.replaceState(null,'','?clan='+cur)}catch(e){}
+  var v=document.getElementById('view'),w=(((D||{}).clans||{})[cur]||{}).war;clearInterval(tick);
+  if(!D){v.innerHTML='';return}
+  if(!w||!w.mine||!(w.state==='preparation'||w.state==='inWar'||w.state==='warEnded')){
+   var txt=w&&w.state==='last'?'Dernière guerre contre '+esc(w.opponent)+' : '+(w.result==='win'?'victoire':w.result==='lose'?'défaite':'égalité')+' ('+w.us+' à '+w.them+').':'Le clan n’est pas en guerre en ce moment.';
+   v.innerHTML='<div class="empty"><b>Aucune guerre en cours</b>'+txt+'</div>';return}
+  var prep=w.state==='preparation',tot=(w.size||0)*(w.apm||1);
+  var side=function(img,nm){return '<div class="side">'+(img?'<img src="'+esc(img)+'" width="92" height="92" alt="'+esc(nm)+'" title="'+esc(nm)+'">':'<span class="sr">'+esc(nm)+'</span>')+'</div>'};
+  var A=w.mine||[],B=w.theirs||[],n=Math.max(A.length,B.length),rows='';
+  for(var i=0;i<n;i++)rows+='<li class="line">'+base(A[i],false,w,prep,i)+base(B[i],true,w,prep,i)+'</li>';
+  v.innerHTML='<section class="score stele rv" aria-label="Score"><div class="face"><p class="state">'+(w.cwl?'Ligue de clans · manche '+w.cwl.round+'/'+w.cwl.rounds+' · ':'')+(prep?'Jour de préparation':w.state==='inWar'?'Jour de bataille':'Guerre terminée')+'</p>'+
+   '<div class="row">'+side(badge(cur),'Gravaen')+'<div class="mid"><div class="big"><span data-n="'+(w.us||0)+'">0</span><i aria-label="à">-</i><span data-n="'+(w.them||0)+'">0</span></div></div>'+side(w.badge,w.opponent||'Adversaire')+'</div>'+
+   (prep?'':'<div class="pct"><span>'+nb(w.usPct||0)+'\u00a0%</span><small>Total de destruction</small><span>'+nb(w.themPct||0)+'\u00a0%</span></div>')+'<span class="time" id="time"></span></div></section>'+
+   (mode==='det'?ranking(w,prep):mapView(w,prep))+
+   '';
+  var upd=function(){var t=document.getElementById('time');if(!t)return;
+   t.textContent=prep&&w.start?'Bataille dans '+left(w.start):w.state==='inWar'&&w.end?'Fin dans '+left(w.end):'Guerre terminée'};
+  upd();tick=setInterval(upd,30000);
+  reveal();
+  v.querySelectorAll('.camp button[data-s]').forEach(function(b){b.addEventListener('click',function(){if(camp===b.dataset.s)return;camp=b.dataset.s;wind();show()})});
+  var swb=v.querySelector('[data-sw]');if(swb)swb.addEventListener('click',function(){camp=camp==='m'?'t':'m';wind();show()});
+  v.querySelectorAll('.slot').forEach(function(b){b.addEventListener('click',function(){
+   var c=document.getElementById('sheet-c');c.innerHTML=detail(w,camp,+b.dataset.i);var d=document.getElementById('sheet');if(d.showModal)d.showModal()})});
+  v.querySelectorAll('.tabs button').forEach(function(b){b.addEventListener('click',function(){team=b.dataset.t;show()})});
+  v.querySelectorAll('button.base').forEach(function(btn){btn.addEventListener('click',function(){
+   var open=btn.getAttribute('aria-expanded')==='true';
+   v.querySelectorAll('.det').forEach(function(d){d.remove()});v.querySelectorAll('.base').forEach(function(b){b.setAttribute('aria-expanded','false');b.classList.remove('hit')});
+   if(open)return;
+   var sd=btn.dataset.side,i=+btn.dataset.i,me=(sd==='m'?w.mine:w.theirs)[i];btn.setAttribute('aria-expanded','true');
+   /* les bases qu'il a attaquées s'allument dans l'autre colonne */
+   (me.x||[]).forEach(function(a){var t=v.querySelector('.base[data-side="'+(sd==='m'?'t':'m')+'"][data-i="'+(a[0]-1)+'"]');if(t)t.classList.add('hit')});
+   btn.closest('.line').insertAdjacentHTML('beforeend','<div class="det">'+detail(w,sd,i)+'</div>');
+  })});
+ }
+ /* les éléments apparaissent quand on descend ; le score défile jusqu'à sa valeur */
+ var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target;io.unobserve(el);
+   setTimeout(function(){el.classList.add('in');if(el.classList.contains('score'))count(el)},el._d||0)})},{threshold:.15}):null;
+ function count(el){el.querySelectorAll('[data-n]').forEach(function(x){var t=+x.dataset.n,t0=performance.now(),D=900;
+   (function f(now){var k=Math.min(1,(now-t0)/D);x.textContent=Math.round(t*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)})}
+ function reveal(){var els=document.querySelectorAll('#view .rv,#view .line,#view .slot');
+  if(!io||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('in');if(e.classList.contains('score'))e.querySelectorAll('[data-n]').forEach(function(x){x.textContent=x.dataset.n})});return}
+  var i=0;els.forEach(function(e){if(e.classList.contains('line')||e.classList.contains('slot')){e._d=(i++%4)*90}io.observe(e)})}
+ /* souffle de vent discret au changement de clan (comme sur le classement) */
+ var ctx,buf;function wind(){try{if(!ctx){var A=window.AudioContext||window.webkitAudioContext;if(!A)return;ctx=new A();var n=Math.floor(ctx.sampleRate*.6);buf=ctx.createBuffer(1,n,ctx.sampleRate);var d=buf.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1}
+  var s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain(),t=ctx.currentTime;s.buffer=buf;f.type='bandpass';f.Q.value=.8;f.frequency.setValueAtTime(380,t);f.frequency.exponentialRampToValueAtTime(1300,t+.25);f.frequency.exponentialRampToValueAtTime(260,t+.6);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+.12);g.gain.exponentialRampToValueAtTime(.001,t+.6);s.connect(f);f.connect(g);g.connect(ctx.destination);s.start(t);s.stop(t+.62)}catch(e){}}
+  (function(){var d=document.getElementById('sheet');document.getElementById('sheet-x').onclick=function(){d.close()};d.addEventListener('click',function(e){if(e.target===d)d.close()})})();
+ /* vidéo du haut : lecture en boucle sans son, bouton pour le son ; étendards cliquables (position calculée selon le cadrage) */
+ (function(){var c=document.querySelector('.cue');if(c)c.addEventListener('click',function(e){e.preventDefault();glide(document.getElementById('guerre'))})})();
+ (function(){var v=document.getElementById('hv'),b=document.getElementById('snd'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(v&&!rm){var go=function(){v.classList.add('on')};v.addEventListener('playing',go);var tryp=function(){var p=v.play();if(p&&p.catch)p.catch(function(){})};tryp();v.addEventListener('canplay',tryp,{once:true});document.addEventListener('touchstart',tryp,{once:true,passive:true});document.addEventListener('click',function first(e){document.removeEventListener('click',first);tryp();if(e.target.closest('#snd'))return;window.AU&&AU.unlock();if(!e.target.closest('.flag'))window.AU&&AU.set({heroW:true})})}
+  if(rm&&v){v.remove();v=null}
+  if(v)v.muted=true;
+  /* sons : musique du haut (boucle sans coupure) et musique de guerre quand on arrive sur la partie guerre ; fondus entre les deux */
+  var AU=window.AU=(function(){var AC,HG,WG,WEL,lastW=false,stopT=0,unl=false,muted=false,heroW=false,zone='hero';
+   function ramp(g,t,d){if(!g)return;var n=AC.currentTime;g.gain.cancelScheduledValues(n);g.gain.setValueAtTime(g.gain.value,n);g.gain.linearRampToValueAtTime(t,n+d)}
+   function unlock(){if(unl){if(AC.state==='suspended')AC.resume();return}try{var A=window.AudioContext||window.webkitAudioContext;if(!A)return;AC=new A();
+    HG=AC.createGain();HG.gain.value=0;HG.connect(AC.destination);WG=AC.createGain();WG.gain.value=0;WG.connect(AC.destination);
+    WEL=new Audio('hall-guerre.mp3');WEL.loop=true;WEL.preload='auto';WEL.setAttribute('playsinline','');AC.createMediaElementSource(WEL).connect(WG);var pp=WEL.play();if(pp&&pp.then)pp.then(function(){if(!lastW){WEL.pause();WEL.currentTime=0}}).catch(function(){});
+    unl=true;if(AC.state==='suspended')AC.resume();
+    fetch('hall-musique.wav').then(function(r){return r.arrayBuffer()}).then(function(d){return new Promise(function(ok,ko){AC.decodeAudioData(d,ok,ko)})}).then(function(bf){var sr=AC.createBufferSource();sr.buffer=bf;sr.loop=true;sr.connect(HG);sr.start();upd()}).catch(function(){})}catch(e){}}
+   function upd(){if(!unl)return;var h=!muted&&heroW&&zone==='hero',w=!muted&&zone==='war';ramp(HG,h?.55:0,h?1.2:.9);ramp(WG,w?.6:0,w?1.6:.9);
+    if(w&&!lastW){clearTimeout(stopT);try{WEL.currentTime=0}catch(e){}var pp=WEL.play();if(pp&&pp.catch)pp.catch(function(){})}
+    if(!w&&lastW){clearTimeout(stopT);stopT=setTimeout(function(){WEL.pause();try{WEL.currentTime=0}catch(e){}},950)}
+    lastW=w;
+    if(b){var on=h||w;b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Couper la musique':'Activer la musique')}}
+   return {unlock:unlock,upd:upd,set:function(o){for(var k in o){if(k==='muted')muted=o[k];if(k==='heroW')heroW=o[k];if(k==='zone')zone=o[k]}upd()}}})();
+  if(b)b.addEventListener('click',function(){AU.unlock();var on=b.getAttribute('aria-pressed')!=='true';AU.set(on?{muted:false,heroW:true}:{muted:true})});
+  var zt=0;function zone(){var g=document.getElementById('guerre');if(!g)return;var z=g.getBoundingClientRect().top<innerHeight*.55?'war':'hero';if(z!==zt){zt=z;AU.set({zone:z});if(b)b.classList.toggle('hide',z==='war')}}
+  addEventListener('scroll',function(){requestAnimationFrame(zone)},{passive:true});zone();
+ })();
+ var HV={sc:1,ox:0,oy:0},FL={main:[.24,.30,.44,.34],second:[.775,.46,.24,.19]};
+ function flags(){var h=document.getElementById('hero'),r=h.getBoundingClientRect(),mob=innerWidth<=820,iw=1080,ih=1920;
+  var W=r.width,Hh=r.height,sc,ox,oy;
+  if(mob){sc=Math.max(W/iw,Math.min(Math.max(W/iw,Hh/ih),W/979));ox=Math.min(0,Math.max(W-iw*sc,W/2-491.5*sc));oy=Hh-ih*sc;if(oy<0)oy=Math.max(oy,-.1*ih*sc);
+   ['hv','still'].forEach(function(id){var e=id==='hv'?document.getElementById('hv'):document.querySelector('.hero .still');if(!e)return;e.style.left=ox+'px';e.style.top=oy+'px';e.style.width=iw*sc+'px';e.style.height=ih*sc+'px';var m=oy>0?'linear-gradient(180deg,transparent 0,#000 90px)':'none';e.style.webkitMaskImage=m;e.style.maskImage=m});
+   var x=document.querySelector('.hero .ext');if(x){x.style.height=Math.max(0,oy+90)+'px'}}
+  else{sc=Math.min(W/iw,Hh/ih);ox=(W-iw*sc)*.5;oy=(Hh-ih*sc)*.5;['hv','still'].forEach(function(id){var e=id==='hv'?document.getElementById('hv'):document.querySelector('.hero .still');if(e)e.removeAttribute('style')})}
+  HV={sc:sc,ox:ox,oy:oy};
+  var dc=document.getElementById('descent');if(dc){var OV=700,EH=1756,FADE=Math.min(240,Hh*.2),r0=(Hh-oy)/sc-(1920-OV);
+   dc.style.marginTop=-FADE+'px';dc.style.setProperty('--fd',FADE+'px');dc.style.height=Math.max(0,(EH-r0)*sc+FADE-60)+'px';
+   dc.style.backgroundSize=(iw*sc)+'px '+(EH*sc)+'px';dc.style.backgroundPosition=ox+'px '+(FADE-r0*sc)+'px'}
+  document.querySelectorAll('.flag').forEach(function(f){var q=FL[f.dataset.k];f.style.left=(ox+q[0]*iw*sc)+'px';f.style.top=(oy+q[1]*ih*sc)+'px';f.style.width=(q[2]*iw*sc)+'px';f.style.height=(q[3]*ih*sc)+'px'})}
+ window.addEventListener('resize',flags);flags();
+ /* au clic : halo doré sur l'étendard, la musique démarre, puis descente douce vers la guerre */
+ /* défilement guidé : le paysage est verrouillé, on descend avec les épées et on remonte avec la flèche */
+ var LK={floor:null,busy:false,tok:0,dir:null};
+ function glide(el,done){var tok=++LK.tok,y0=scrollY,y1=el?el.getBoundingClientRect().top+scrollY:0,t0=null,D=1300;LK.busy=true;
+  var end=function(){if(tok!==LK.tok)return;LK.busy=false;LK.dir=null;done&&done()};
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){scrollTo(0,y1);end();return}
+  (function st(t){if(!t0)t0=t;var k=Math.min(1,(t-t0)/D),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;if(tok!==LK.tok)return;scrollTo(0,y0+(y1-y0)*e);if(k<1)requestAnimationFrame(st);else end()})(performance.now())}
+ function lock(on){document.documentElement.classList.toggle('lock',on)}
+ function safe(){clearTimeout(LK.st);LK.st=setTimeout(function(){LK.dir=null;LK.busy=false},2200)}
+ function goWar(){if(LK.dir==='down')return;LK.dir='down';safe();lock(true);var g=document.getElementById('guerre');glide(g,function(){lock(false);LK.floor=g.getBoundingClientRect().top+scrollY})}
+ function goTop(){if(LK.dir==='up')return;LK.dir='up';safe();LK.floor=null;lock(true);glide(null,function(){scrollTo(0,0)})}
+ addEventListener('scroll',function(){if(LK.busy||LK.floor===null)return;if(scrollY<LK.floor-1)scrollTo(0,LK.floor)},{passive:true});
+ var blockT=function(e){if(document.documentElement.classList.contains('lock'))e.preventDefault()};
+ addEventListener('touchmove',blockT,{passive:false});addEventListener('wheel',blockT,{passive:false});
+ addEventListener('keydown',function(e){if(document.documentElement.classList.contains('lock')&&['ArrowDown','PageDown',' ','End'].indexOf(e.key)>-1&&!e.target.closest('input,textarea'))e.preventDefault()});
+ lock(true);scrollTo(0,0);
+ var upb=document.getElementById('up');upb.addEventListener('click',goTop);upb.addEventListener('touchend',function(e){e.preventDefault();goTop()},{passive:false});
+ function music(){var b=document.getElementById('snd');if(!b||b.getAttribute('aria-pressed')==='true')return;b.click()}
+ document.querySelectorAll('.flag').forEach(function(f){f.addEventListener('click',function(){f.classList.remove('hit');void f.offsetWidth;f.classList.add('hit');window.AU&&AU.unlock();
+  var ch=cur!==f.dataset.k;cur=f.dataset.k;camp='m';mode='map';if(ch)wind();show();
+  setTimeout(goWar,450);setTimeout(function(){f.classList.remove('hit')},1000)})});
+ document.querySelectorAll('.seg button[data-k]').forEach(function(t){t.addEventListener('click',function(){if(cur===t.dataset.k)return;cur=t.dataset.k;wind();show()})});
+ document.getElementById('view').addEventListener('click',function(e){if(e.target.closest('#dbtn')){mode=mode==='det'?'map':'det';team='m';show()}});
+ requestAnimationFrame(function(){requestAnimationFrame(show)});
+
+ fetch('data/clan.json?ts='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){
+  D=d;show();
+ }).catch(function(){document.getElementById('view').innerHTML='<div class="empty"><b>Données indisponibles</b>Réessaie dans quelques minutes.</div>'});
+})();
+</script>
+</body>
+</html>
