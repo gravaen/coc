@@ -11,6 +11,10 @@ on:
         description: "Envoyer un rapport d'activité de test au staff"
         type: boolean
         default: false
+      test_saison:
+        description: "Envoyer le classement provisoire des meilleurs joueurs au staff"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -50,6 +54,7 @@ jobs:
           COC_TOKEN: ${{ secrets.COC_TOKEN }}
           DISCORD_STAFF_WEBHOOK: ${{ secrets.DISCORD_STAFF_WEBHOOK }}
           STAFF_TEST: ${{ inputs.test_rapport }}
+          STAFF_TEST_SAISON: ${{ inputs.test_saison }}
         run: python3 .github/workflows/scripts/staff.py
 
       - uses: actions/configure-pages@v5

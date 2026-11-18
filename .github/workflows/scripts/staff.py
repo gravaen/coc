@@ -282,6 +282,94 @@ def activity_report(state, test=False):
     }
 
 
+# ---------------------------------------------------------------------------
+# 3. Meilleurs joueurs de la saison : publié une fois, au changement de saison
+#    (classement de data/players.json, le même que le simulateur et la page classement)
+# ---------------------------------------------------------------------------
+CATS = {"cwl": "Ligue de clans", "gdc": "Guerre", "cap": "Capitale", "rk": "Classé", "act": "Activité", "don": "Dons"}
+BADGE = (("gdc", "⚔️ Chef de guerre"), ("cwl", "🛡️ Maître de la Ligue"), ("cap", "🏰 Bâtisseur de Capitale"),
+         ("rk", "🏆 Compétiteur"), ("act", "🔥 Infatigable"), ("don", "🤝 Cœur du clan"))
+MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+
+
+def season_end(start):
+    """La saison suivante commence le dernier lundi du mois suivant, à 5 h UTC."""
+    y, m = (start.year + (start.month == 12), start.month % 12 + 1)
+    nxt = datetime.datetime(y + (m == 12), m % 12 + 1, 1, 5, tzinfo=datetime.timezone.utc) - datetime.timedelta(days=1)
+    while nxt.weekday() != 0:
+        nxt -= datetime.timedelta(days=1)
+    return nxt.replace(hour=5)
+
+
+def pts(x):
+    return (f"{x:.1f}".rstrip("0").rstrip(".")).replace(".", ",")
+
+
+def rang(r):
+    return "1er" if r == 1 else f"{r}e"
+
+
+def phrase(i, x, poly):
+    rk = sorted([(r, k) for k, r in (x.get("r") or {}).items() if r], key=lambda t: t[0])
+    PREP = {"cwl": "en Ligue de clans", "gdc": "en Guerre", "cap": "en Capitale", "rk": "aux trophées", "act": "en Activité", "don": "aux dons"}
+    groups = {}
+    for r, k in rk[:3]:
+        groups.setdefault(r, []).append(PREP[k])
+    bits = []
+    for r, ks in groups.items():
+        bits.append(rang(r) + " " + (", ".join(ks[:-1]) + " et " + ks[-1] if len(ks) > 1 else ks[0]))
+    if poly:
+        bits.append("classé dans les 6 catégories")
+    if (x.get("hp") or 0) >= 0.97:
+        bits.append(f"HDV {x.get('th')} aux héros au max")
+    if not bits:
+        return ""
+    txt = ", ".join(bits)
+    lead = "Saison monstrueuse : " if i == 0 else "Très grosse saison : " if i < 3 else "Saison solide : " if i < 6 else ""
+    txt = lead + txt
+    end = ". Il porte Gravaen au sommet." if i == 0 else "."
+    return "> " + txt[0].upper() + txt[1:] + end
+
+
+def season_report(pj, test=False):
+    players = sorted((pj.get("players") or {}).values(), key=lambda x: -(x.get("score") or 0))
+    players = [x for x in players if (x.get("score") or 0) > 0]
+    start = datetime.datetime.strptime(pj["season"], "%Y-%m-%d").replace(hour=5, tzinfo=datetime.timezone.utc)
+    end = season_end(start)
+    name = MOIS[(end - datetime.timedelta(days=3)).month - 1].capitalize() + f" {(end - datetime.timedelta(days=3)).year}"
+    heist = sorted([x for x in players if (x.get("dee") or 0) > 0], key=lambda x: -x["dee"])[:3]
+    heist_names = {x["n"] for x in heist}
+    lines = []
+    medal = ["### 🥇 ", "### 🥈 ", "### 🥉 "]
+    for i, x in enumerate(players[:10]):
+        poly = sum(1 for v in (x.get("p") or {}).values() if v > 0) >= 6
+        badges = (["👑 Champion de la saison"] if i == 0 else []) + [b for k, b in BADGE if (x.get("r") or {}).get(k) == 1]
+        if poly:
+            badges.append("🌟 Polyvalent")
+        if (x.get("hp") or 0) >= 0.97:
+            badges.append("💎 Compte accompli")
+        if x["n"] in heist_names:
+            badges.append("💰 Braqueur")
+        head = (medal[i] if i < 3 else f"### {i + 1}. ") + f"{x['n']} — {pts(x['score'])} pts"
+        lines.append("\n".join([head] + badges + ([phrase(i, x, poly)] if phrase(i, x, poly) else [])))
+    top10 = {x["n"] for x in players[:10]}
+    out = [x["n"] for x in heist if x["n"] not in top10]
+    body = "\n\n".join(lines)
+    if out:
+        body += "\n\n-# 💰 Braqueur hors top 10 : " + ", ".join(out)
+    ab = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
+    sub = f"-# Saison du {start.day} {ab[start.month - 1]} au {end.day} {ab[end.month - 1]} · {len(players)} joueurs classés · deux clans réunis"
+    return {
+        "username": "Gravaen · staff",
+        "embeds": [{
+            "title": ("🧪 TEST · " if test else "") + f"🏆 Meilleurs joueurs – {name}",
+            "color": 0xF8C801,
+            "description": (sub + ("\n-# ⚠️ Saison en cours : classement provisoire" if test else "") + "\n\n" + (body or "Aucun joueur classé cette saison."))[:4096],
+            "footer": {"text": "Classement de la saison · Gravaen"},
+        }],
+    }
+
+
 def main():
     state = load_state()
     state.setdefault("wars", [])
@@ -322,6 +410,32 @@ def main():
             print("rapport de test posté")
         except Exception as e:
             print(f"  rapport de test non posté : {e}", file=sys.stderr)
+
+    # meilleurs joueurs : la saison vient de changer (clan.py a déjà écrit la nouvelle) → on publie l'ancienne
+    try:
+        with urllib.request.urlopen(PAGES + "data/players.json?ts=" + str(int(NOW.timestamp())), timeout=20) as r:
+            old_pj = json.loads(r.read().decode())
+    except Exception:
+        old_pj = {}
+    try:
+        with open("data/players.json", encoding="utf-8") as f:
+            new_pj = json.load(f)
+    except Exception:
+        new_pj = {}
+    done = state.setdefault("seasons", [])
+    if HOOK and old_pj.get("season") and new_pj.get("season") and old_pj["season"] != new_pj["season"] and old_pj["season"] not in done:
+        try:
+            post(season_report(old_pj))
+            done.append(old_pj["season"])
+            print("meilleurs joueurs de la saison postés :", old_pj["season"])
+        except Exception as e:
+            print(f"  meilleurs joueurs non postés : {e}", file=sys.stderr)
+    if HOOK and os.environ.get("STAFF_TEST_SAISON") == "true" and new_pj.get("players"):
+        try:
+            post(season_report(new_pj, test=True))
+            print("classement de test posté")
+        except Exception as e:
+            print(f"  classement de test non posté : {e}", file=sys.stderr)
 
     os.makedirs("data", exist_ok=True)
     with open("data/staff.json", "w", encoding="utf-8") as f:

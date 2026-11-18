@@ -294,6 +294,21 @@ def bad(m, foe, stars):
                if a.get("stars", 0) == stars and foe.get(a.get("defenderTag"), 0) <= th)
 
 
+# niveau max des héros par HDV (Roi, Reine, Prince, Gardien, Championne, Duc) : même table que le Worker des candidatures
+HERO_CAPS = {7: [10, 0, 0, 0, 0, 0], 8: [20, 10, 0, 0, 0, 0], 9: [30, 30, 10, 0, 0, 0], 10: [40, 40, 20, 0, 0, 0],
+             11: [50, 50, 30, 20, 0, 0], 12: [65, 65, 40, 40, 0, 0], 13: [75, 75, 50, 50, 25, 0], 14: [85, 85, 60, 60, 30, 0],
+             15: [90, 90, 70, 65, 40, 10], 16: [95, 95, 80, 70, 45, 15], 17: [100, 100, 90, 75, 50, 20], 18: [110, 110, 95, 85, 55, 25]}
+HERO_NAMES = ["Barbarian King", "Archer Queen", "Minion Prince", "Grand Warden", "Royal Champion", "Dragon Duke"]
+
+
+def hero_progress(p):
+    """Part des niveaux de héros atteints par rapport au max de son HDV (1 = compte accompli)."""
+    caps = HERO_CAPS.get(min(18, max(7, p.get("townHallLevel") or 7)))
+    lv = {h["name"]: h.get("level", 0) for h in p.get("heroes") or [] if h.get("village") == "home"}
+    tot = sum(caps)
+    return round(sum(min(lv.get(n, 0), c) for n, c in zip(HERO_NAMES, caps)) / tot, 3) if tot else 1
+
+
 def season_scores():
     now = datetime.datetime.now(datetime.timezone.utc)
     season = season_start(now)
@@ -358,8 +373,10 @@ def season_scores():
             if not p:
                 continue
             t = p["tag"]
-            now_v = {"ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0), "tr": p.get("trophies", 0)}
+            heist = next((a.get("value", 0) for a in p.get("achievements") or [] if a.get("name") == "Heroic Heist"), 0)
+            now_v = {"ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0), "tr": p.get("trophies", 0), "dee": heist}
             b = base.setdefault(t, now_v)  # nouveau venu : on part de ses chiffres du jour
+            b.setdefault("dee", heist)
             cs = sum(w[t][0] for w in cwl_log.values() if t in w)
             cd = sum(w[t][1] for w in cwl_log.values() if t in w)
             v = {"cwl": cs, "gdc": max(0, now_v["ws"] - b["ws"] - cs), "cap": max(0, now_v["cap"] - b["cap"]),
@@ -367,7 +384,8 @@ def season_scores():
             for k in GRID:
                 vals[k][t] = v[k]
             tie[t] = cd
-            out["players"][t] = {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "v": v, "cwlPct": cd}
+            out["players"][t] = {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "v": v, "cwlPct": cd,
+                                 "dee": max(0, heist - b["dee"]), "hp": hero_progress(p)}
 
             # Liste noire
             wars = [w[t] for w in cwl_log.values() if t in w and len(w[t]) >= 5]
