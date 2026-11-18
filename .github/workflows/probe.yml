@@ -8,15 +8,5 @@ jobs:
     steps:
       - run: |
           curl -s -m 25 https://api.clashk.ing/openapi.json > o.json
-          python3 - <<'PY'
-          import json
-          d=json.load(open('o.json'))
-          for p in ['/player/{player_tag}/warhits','/v2/clan/{clanTag}/member-activity','/v2/clan/{clanTag}/donations/summary','/v2/dates/season-start-end','/v2/exports/war/player-stats']:
-              for m,v in d['paths'].get(p,{}).items():
-                  print('###',m,p,v.get('summary'))
-                  for q in v.get('parameters',[]): print('   ',q.get('in'),q.get('name'),q.get('schema',{}).get('type'),q.get('schema',{}).get('default'))
-          caps=[p for p in d['paths'] if 'capital' in p or 'raid' in p or 'activity' in p]
-          print('\n'.join(caps))
-          PY
-          for u in "v2/clan/%232C0CVRCPV/member-activity" "v2/clan/%232C0CVRCPV/donations/summary" "v2/dates/season-start-end" "player/%2320RGY8082/warhits?timestamp_start=1761454800&limit=50"; do
+          for u in "v2/dates/current" "v2/dates/season-start-end?season=2026-11" "v2/dates/seasons" "v2/player/%2320RGY8082/activity-summary" "v2/player/%2320RGY8082/last-activity" "v2/dates/season-raid-dates"; do
             echo "=== $u"; curl -s -m 25 -w '\nHTTP %{http_code}\n' "https://api.clashk.ing/$u" | head -c 1200; echo; done
