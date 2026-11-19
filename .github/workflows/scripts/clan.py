@@ -255,6 +255,20 @@ def cwl_war(tag):
     return None, None
 
 
+def hist_of(tag):
+    """Dix dernières guerres du journal (résultat et étoiles) : None si le journal est privé ou le clan inconnu."""
+    if not tag:
+        return None
+    log = get_or_none(API + f"/clans/{urllib.parse.quote(tag)}/warlog?limit=10")
+    if log is None:
+        return None
+    out = []
+    for it in log.get("items", []):
+        us, them = it.get("clan") or {}, it.get("opponent") or {}
+        out.append({"r": it.get("result"), "s": us.get("stars"), "t": them.get("stars")})
+    return out
+
+
 def war_of(tag):
     """Pastille des cartes : la guerre en cours (classique ou Ligue de clans), sinon la dernière guerre terminée."""
     q = urllib.parse.quote(tag)
@@ -283,6 +297,7 @@ def war_of(tag):
                 break
         else:
             return None
+    w["hist"] = {"m": hist_of(tag), "t": hist_of(them.get("tag"))}
     w["us"], w["usPct"] = side(us)
     w["them"], w["themPct"] = side(them)
     return w
