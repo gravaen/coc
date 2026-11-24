@@ -55,7 +55,7 @@ jobs:
       - name: Publier le site sur Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: d3c759c515555f488f11bd3b164b0d77   # identifiant du compte Cloudflare (pas secret)
         run: |
           mkdir -p /tmp/site && rsync -a --exclude .git --exclude .github --exclude README.md ./ /tmp/site/
           npx --yes wrangler@3.99.0 pages project create gravaen --production-branch=main || true
