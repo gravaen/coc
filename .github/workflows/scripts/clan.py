@@ -175,10 +175,12 @@ def conditions(c):
 
 
 data["clans"] = {"main": conditions(clan)}
+data["clans"]["main"]["badge"] = (clan.get("badgeUrls") or {}).get("large")  # blason officiel, affiché sur la carte du clan
 clan2 = None
 try:
     clan2 = get_json(API + "/clans/" + urllib.parse.quote(TAG2))
     data["clans"]["second"] = conditions(clan2)
+    data["clans"]["second"]["badge"] = (clan2.get("badgeUrls") or {}).get("large")
 except Exception as e:
     print(f"  clan secondaire non récupéré : {e}", file=sys.stderr)
 
