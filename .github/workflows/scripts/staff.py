@@ -697,6 +697,21 @@ def main():
             except Exception as e:
                 print(f"  arrivée {t} non signalée : {e}", file=sys.stderr)
 
+    # fiche d'arrivée envoyée à la main (onglet Actions, champ « fiche_joueur »)
+    one = os.environ.get("FICHE_JOUEUR", "").strip().upper()
+    if HOOK and one:
+        one = "#" + one.lstrip("#")
+        p = api_or_none(f"/players/{q(one)}")
+        ctag = ((p or {}).get("clan") or {}).get("tag")
+        if p and ctag in NOM:
+            try:
+                post(join_message(one, ctag, p))
+                print("fiche envoyée :", one)
+            except Exception as e:
+                print(f"  fiche {one} non envoyée : {e}", file=sys.stderr)
+        else:
+            print(f"  fiche {one} : joueur introuvable ou hors de nos clans", file=sys.stderr)
+
     # rapport du lundi soir (à partir de 18 h, heure de Paris), une fois par semaine, après 6 jours de suivi
     weekly = state.get("weekly")
     due = NOW.weekday() == 0 and NOW.hour >= 17 and (not weekly or NOW - datetime.datetime.fromisoformat(weekly) > datetime.timedelta(days=6))

@@ -19,6 +19,10 @@ on:
         description: "Partager tout de suite les nouvelles bases et compos (sans attendre la vérification de l’heure)"
         type: boolean
         default: false
+      fiche_joueur:
+        description: "Envoyer au staff la fiche d'arrivée d'un joueur (son tag, ex. #LR8VQYUGR)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -55,6 +59,7 @@ jobs:
           DISCORD_GENERAL_WEBHOOK: ${{ secrets.DISCORD_GENERAL_WEBHOOK }}
           STAFF_TEST: ${{ inputs.test_rapport }}
           STAFF_TEST_SAISON: ${{ inputs.test_saison }}
+          FICHE_JOUEUR: ${{ inputs.fiche_joueur }}
         run: python3 .github/workflows/scripts/staff.py
 
       - name: Nouvelles bases et compos méta HDV 16 à 19 (Discord)
