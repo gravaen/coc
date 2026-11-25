@@ -3,7 +3,7 @@
 Source : les articles de Blueprint CoC (flux Atom de leur blog, un par HDV).
 - Liens « copier la base » (action OpenLayout)  -> salon des bases  (secret DISCORD_BASES_WEBHOOK)
 - Liens « copier l'armée » (action CopyArmy)    -> salon des compos (secret DISCORD_COMPOS_WEBHOOK)
-- La vidéo YouTube de l'article, s'il y en a une, accompagne le message (lecteur affiché par Discord).
+- La vidéo YouTube de l'article, s'il y en a une, accompagne le message : vignette en grand et lien « Regarder la vidéo ».
 
 Vérifié toutes les heures : chaque nouvelle base ou compo part dès qu'elle est publiée. Chaque lien n'est partagé qu'une seule fois.
 Au tout premier passage, seuls les liens de l'article le plus récent de chaque HDV sont envoyés
@@ -123,13 +123,15 @@ def message(th, kind, items):
     for it in items:
         if it.get("video") and it["video"] not in vids:
             vids.append(it["video"])
+    # vignette de la vidéo (image YouTube) en grand dans le message, et lien « Regarder la vidéo » en tête
+    vid_id = re.search(r"v=([A-Za-z0-9_-]{11})", vids[0]).group(1) if vids else None
+    head = (f"🎬 **[Regarder la vidéo]({vids[0]})**\n\n" if vids else "")
     return {
-        # la vidéo de l'article est mise hors du cadre : Discord affiche alors le lecteur YouTube sous le message
-        **({"content": "🎬 Vidéo : " + " ".join(vids[:2])} if vids else {}),
         "username": "Gravaen · bases" if is_base else "Gravaen · compos",
         "embeds": [{
             "author": {"name": ("Nouvelles bases" if is_base else "Compos méta") + f" · HDV {th}"},
-            "description": "\n\n".join(lines) + "\n\n-# Source : " + " · ".join(srcs[:3]) + " (Blueprint CoC)",
+            **({"image": {"url": f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg"}} if vid_id else {}),
+            "description": head + "\n\n".join(lines) + "\n\n-# Source : " + " · ".join(srcs[:3]) + " (Blueprint CoC)",
             "color": 0xF8C801 if is_base else 0x2F8F55,
             "footer": {"text": "Touchez un lien depuis votre téléphone pour l’ouvrir dans Clash of Clans"},
         }],
