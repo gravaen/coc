@@ -30,7 +30,7 @@ FORCE = os.environ.get("BASES_FORCE") == "true"
 NOW = datetime.datetime.now(datetime.timezone.utc)
 UA = "Mozilla/5.0 (compatible; GravaenBot/1.0; +https://gravaen.pages.dev)"
 FIRST_MAX, RUN_MAX = 3, 6
-LINK = re.compile(r'href="(https://link\.clashofclans\.com/[^"]*?action=(OpenLayout|CopyArmy)[^"]*)"', re.I)
+LINK = re.compile(r"(https://link\.clashofclans\.com/[^\s\"'<>]*?action=(OpenLayout|CopyArmy)[^\s\"'<>]*)", re.I)
 HEAD = re.compile(r"<h[1-4][^>]*>(.*?)</h[1-4]>", re.I | re.S)
 
 
@@ -60,7 +60,7 @@ def entries(th):
         url = html.unescape(m.group(1)) if m else "https://blueprintcoc.com"
         pub = (re.search(r"<published>(.*?)</published>", e) or re.search(r"<updated>(.*?)</updated>", e)).group(1)
         c = re.search(r"<content[^>]*>(.*?)</content>", e, re.S)
-        body = html.unescape(c.group(1)) if c else ""
+        body = html.unescape(html.unescape(c.group(1))) if c else ""   # contenu parfois échappé deux fois
         links, seen, head = [], set(), ""
         pos = 0
         for m2 in re.finditer(HEAD.pattern + "|" + LINK.pattern, body, re.I | re.S):
@@ -68,6 +68,7 @@ def entries(th):
                 head = text(m2.group(1))
                 continue
             href, kind = html.unescape(m2.group(2)), m2.group(3)
+            href = href.rstrip(".,);")
             key = re.sub(r"[?&](?:utm_[^&]*)", "", href)
             if key in seen or "army-link-here" in href:
                 continue
