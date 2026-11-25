@@ -15,6 +15,10 @@ on:
         description: "Envoyer le classement provisoire des meilleurs joueurs au staff"
         type: boolean
         default: false
+      bases_maintenant:
+        description: "Partager tout de suite les nouvelles bases et compos (sans attendre 24 h)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -52,6 +56,14 @@ jobs:
           STAFF_TEST: ${{ inputs.test_rapport }}
           STAFF_TEST_SAISON: ${{ inputs.test_saison }}
         run: python3 .github/workflows/scripts/staff.py
+
+      - name: Nouvelles bases et compos méta HDV 16 à 19 (Discord)
+        continue-on-error: true   # un souci ici ne bloque jamais la publication du site
+        env:
+          DISCORD_BASES_WEBHOOK: ${{ secrets.DISCORD_BASES_WEBHOOK }}
+          DISCORD_COMPOS_WEBHOOK: ${{ secrets.DISCORD_COMPOS_WEBHOOK }}
+          BASES_FORCE: ${{ inputs.bases_maintenant }}
+        run: python3 .github/workflows/scripts/bases.py
 
       - name: Publier le site sur Cloudflare Pages
         env:
