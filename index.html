@@ -1022,6 +1022,19 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }
 @media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl b{font-size:16px}section.s#grades .pyr .pl span{font-size:14.5px;line-height:1.45}}
 .pyr .pl span span{display:inline!important;font-size:inherit!important}.pyr .nb{white-space:nowrap;font-weight:600;color:var(--ink)}
+/* stratégie : sous-partie « Nos règles » en on fait / on ne fait pas */
+.regles{margin-top:26px}
+.regles h3.rg-t{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:17px;font-weight:600;color:var(--ink)}
+.regles h3.rg-t:before{content:"";width:16px;height:4px;background:var(--yellow)}
+.rg-box{background:var(--paper);display:grid;grid-template-columns:1fr 1fr;gap:0 36px;padding:16px 22px}
+.rg-k{margin:0 0 6px;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.rg-k.ok,.rg-m.ok{color:#3B6D11}.rg-k.ko,.rg-m.ko{color:#A32D2D}
+.rg-i{display:flex;gap:10px;margin:0 0 8px;font-size:15px;line-height:1.45;color:var(--text)}
+.rg-i:last-child{margin-bottom:0}
+.rg-i b{font-weight:600;color:var(--ink)}
+.rg-m{font-weight:600;flex:none;width:14px}
+@media (max-width:760px){.regles{margin-top:14px}.regles h3.rg-t{font-size:15px;margin-bottom:8px}.rg-box{grid-template-columns:1fr;padding:12px 14px;gap:10px}.rg-i{font-size:13.5px;line-height:1.38;margin-bottom:5px}.rg-k{font-size:11.5px;margin-bottom:4px}}
+@media (max-width:760px) and (max-height:700px){section.strat .step{padding:8px 10px!important}section.strat .step .lv{font-size:11.5px!important}section.strat .step h3{font-size:14px!important;margin:0 0 2px!important}section.strat .step p{font-size:12.5px!important;line-height:1.3!important;margin:0!important}.regles{margin-top:10px}.regles h3.rg-t{margin-bottom:6px;font-size:14px}.rg-box{padding:10px 12px;gap:6px}.rg-i{font-size:12.5px;line-height:1.3;margin-bottom:3px}.rg-k{margin-bottom:2px}section.s.strat{padding-bottom:8px!important}}
 </style>
 </head>
 <body>
@@ -1089,12 +1102,19 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
    <div class="step"><div class="top" style="background:var(--yellow)"></div><div class="lv">2<sup>e</sup> attaque</div><h3>Le rattrapage</h3><p>Une attaque ratée de ton niveau, selon les chefs et aînés.</p></div>
    <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">12 dernières heures</div><h3>Les oubliés</h3><p>Les villages jamais attaqués, puis les étoiles manquantes.</p></div>
   </div>
-  <ul class="rules">
-   <li><b>Deux attaques</b>, toujours. Un oubli = un avertissement.</li>
-   <li><b>Compo prête</b>&nbsp;: camps, sorts et héros. Pas de test en guerre.</li>
-   <li><b>Pas de vol de cible</b>&nbsp;: on échange d’un commun accord.</li>
-   <li><b>Pas d’attaque butin</b>, sauf feu vert des chefs en fin de guerre.</li>
-  </ul>
+  <div class="regles">
+   <h3 class="rg-t">Nos règles</h3>
+   <div class="rg-box">
+    <div class="rg-col"><p class="rg-k ok">On fait</p>
+     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Deux attaques</b>, toujours. Un oubli = un avertissement.</span></p>
+     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Compo prête</b>&nbsp;: camps, sorts et héros.</span></p>
+    </div>
+    <div class="rg-col"><p class="rg-k ko">On ne fait pas</p>
+     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Voler une cible</b>&nbsp;: on échange d’un commun accord.</span></p>
+     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Tester en guerre</b>, ou attaquer pour le butin sans feu vert des chefs en fin de guerre.</span></p>
+    </div>
+   </div>
+  </div>
  </div>
 </section>
 
