@@ -262,7 +262,7 @@ def best_of_season():
 
 def activity_report(state, test=False):
     """Rapport du lundi, ultra court : qui exclure, rétrograder, promouvoir, selon nos règles.
-    Aîné = 1 000 dons et 3 guerres de clans · Adjoint = 3 mois dans le clan et meilleur joueur de la saison.
+    Aîné = très actif et 3 guerres de clans · Adjoint = 3 mois dans le clan et meilleur joueur de la saison.
     Exclusion = Membre inactif 4 jours, Aîné inactif 7 jours (le non-respect de la stratégie reste à l'appréciation du chef)."""
     since = datetime.datetime.fromisoformat(state["tracking"])
     days = max(1, min(7, round((NOW - since).total_seconds() / 86400)))
@@ -292,10 +292,10 @@ def activity_report(state, test=False):
                 excl.append(f"{who} Aîné · {idle_txt}")
             elif r == "coLeader" and idle >= 7:
                 demote.append(f"{who} Adjoint → Aîné · {idle_txt}")
-            elif r == "admin" and sc < 40 and don < 300 and NOW.day >= 10:
-                demote.append(f"{who} Aîné → Membre · actif {d}/{days} j · {don} dons")
-            elif r == "member" and don >= 1000 and sc >= 50:
-                promo.append(f"{who} Membre → Aîné · {don} dons · actif {d}/{days} j · *vérifier 3 GDC*")
+            elif r == "admin" and sc < 40:
+                demote.append(f"{who} Aîné → Membre · actif {d}/{days} j seulement")
+            elif r == "member" and sc >= 70:
+                promo.append(f"{who} Membre → Aîné · actif {d}/{days} j · *vérifier 3 GDC*")
             if r == "admin" and best.get(label) == tag:
                 anc = "3 mois ✓" if months >= 3 else ("ancienneté à vérifier" if months < 3 and (NOW - since).days < 92 else f"{months:.0f} mois ✗")
                 adj.append(f"{who} Aîné → Adjoint · meilleur joueur de la saison · {anc}")
@@ -319,7 +319,7 @@ def activity_report(state, test=False):
             "color": 0xC8412F if excl else (0xE08A1E if demote else 0x2F8F55),
             "description": note + "Activité moyenne : " + " · ".join(moy) + f" (sur {days} j)",
             "fields": fields,
-            "footer": {"text": "Règles : exclusion à 4 j d'inactivité (Membre), 7 j (Aîné) · Aîné = 1 000 dons + 3 GDC · Adjoint = 3 mois + meilleur joueur · P/S = principal/secondaire"},
+            "footer": {"text": "Règles : exclusion à 4 j d'inactivité (Membre), 7 j (Aîné) · Aîné = actif + 3 GDC · Adjoint = 3 mois + meilleur joueur · P/S = principal/secondaire"},
         }],
     }
 
