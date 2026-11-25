@@ -1007,6 +1007,20 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media (max-width:760px) and (max-height:700px){section.s#clans .head h2{font-size:30px!important}section.s#clans .head{margin-bottom:8px!important}section.s#clans .clan p{font-size:13.5px!important;line-height:1.35}section.s#clans .facts dd{font-size:15px!important}section.s#clans .clan .in>.tagrow{min-height:30px}}
 @media (max-width:400px){section.s#clans .facts dt{letter-spacing:0!important;font-size:11px!important;white-space:nowrap}section.s#clans .facts{gap:6px 12px!important}}
 @media (max-width:760px) and (max-height:700px){section.strat .head{margin-bottom:10px!important}section.strat .head h2{font-size:30px!important}section.strat .head p.head-desc{font-size:13.5px!important}section.strat .step{padding:10px 12px!important}section.strat .step h3{font-size:15px!important;margin:2px 0 4px!important}section.strat .step p{font-size:13px!important;line-height:1.35!important}section.strat .rules{margin-top:12px!important;gap:6px!important}section.strat .rules li{font-size:13px!important;line-height:1.35!important}section.s.strat{padding-top:10px!important;padding-bottom:16px!important}}
+/* organisation : petite pyramide (adjoints et chef en haut, membres à la base) */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
+.pyr .pl{width:var(--w);box-sizing:border-box;background:var(--paper);border-top:4px solid var(--c);padding:12px 18px;text-align:center}
+.pyr .pl b{display:block;font-weight:600;font-size:16px;color:var(--ink);margin-bottom:2px}
+.pyr .pl span{display:block;font-size:15px;line-height:1.45;color:var(--text)}
+@media (max-width:760px){.pyr{gap:6px}.pyr .pl{padding:10px 12px}.pyr .pl:nth-child(1){width:78%}.pyr .pl:nth-child(2){width:89%}.pyr .pl:nth-child(3){width:100%}.pyr .pl b{font-size:14.5px}.pyr .pl span{font-size:13.5px;line-height:1.4}}
+/* téléphone : « Notre organisation » remplit l'écran, la pyramide prend la hauteur libre */
+@media (max-width:760px){
+ section.s#grades{min-height:calc(100vh - 60px)!important;min-height:calc(100svh - 60px)!important;box-sizing:border-box;display:flex!important;flex-direction:column;padding-top:16px!important;padding-bottom:16px!important}
+ section.s#grades>.wrap{flex:1;display:flex;flex-direction:column;width:100%;box-sizing:border-box}
+ section.s#grades .pyr{flex:1;gap:8px}
+ section.s#grades .pyr .pl{flex:1;display:flex;flex-direction:column;justify-content:center}
+}
+@media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl b{font-size:16px}section.s#grades .pyr .pl span{font-size:14.5px;line-height:1.45}}
 </style>
 </head>
 <body>
@@ -1056,10 +1070,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 <section class="s" id="grades">
  <div class="wrap">
   <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: c’est l’attention de chacun qui fait vivre le clan.</p></div>
-  <ul class="rules org-r">
-   <li><b>Aînés</b>&nbsp;: invitent les joueurs qui remplissent les conditions.</li>
-   <li><b>Adjoints et chef</b>&nbsp;: lancent les inscriptions en guerre et en GDC, excluent ceux qui ne suivent pas la stratégie, le plus souvent après un avertissement.</li>
-  </ul>
+  <div class="pyr" role="list">
+   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitent les joueurs, lancent les inscriptions en guerre et en GDC, et gèrent promotions, rétrogradations et exclusions.</span></div>
+   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitent les joueurs qui remplissent les conditions.</span></div>
+   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Participent régulièrement aux événements, donnent autant qu’ils reçoivent et profitent des récompenses collectives du clan, comme tous les gradés.</span></div>
+  </div>
   <p class="gr-more"><button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">Comment monter en grade&nbsp;?</button></p>
  </div>
 </section>
