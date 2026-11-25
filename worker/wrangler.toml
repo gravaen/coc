@@ -1,0 +1,7 @@
+# Worker de la candidature express (publié par .github/workflows/worker.yml)
+name = "gravaen-candidature"
+main = "candidature.js"
+compatibility_date = "2024-11-01"
+workers_dev = true
+# garde les variables créées dans le tableau de bord Cloudflare (les secrets ne sont jamais effacés)
+keep_vars = true

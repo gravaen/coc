@@ -1,0 +1,27 @@
+name: Candidature express (Worker Cloudflare)
+
+on:
+  push:
+    branches: [main]
+    paths: ["worker/**", ".github/workflows/worker.yml"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publier le Worker gravaen-candidature
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: d3c759c515555f488f11bd3b164b0d77
+        run: npx --yes wrangler@3.99.0 deploy
+      - name: Webhook du salon staff (copié depuis le secret GitHub DISCORD_STAFF_WEBHOOK)
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: d3c759c515555f488f11bd3b164b0d77
+          STAFF: ${{ secrets.DISCORD_STAFF_WEBHOOK }}
+        run: |
+          if [ -n "$STAFF" ]; then printf '%s' "$STAFF" | npx --yes wrangler@3.99.0 secret put DISCORD_STAFF_WEBHOOK; else echo "secret GitHub DISCORD_STAFF_WEBHOOK absent"; fi
