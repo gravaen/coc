@@ -19,6 +19,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 import urllib.request
 
 THS = (19, 18, 17, 16)
@@ -31,6 +32,7 @@ NOW = datetime.datetime.now(datetime.timezone.utc)
 UA = "Mozilla/5.0 (compatible; GravaenBot/1.0; +https://gravaen.pages.dev)"
 FIRST_MAX, RUN_MAX = 3, 6
 LINK = re.compile(r"(https://link\.clashofclans\.com/[^\s\"'<>]*?action=(OpenLayout|CopyArmy)[^\s\"'<>]*)", re.I)
+PROMO = re.compile(r"💎|every month|get new|subscribe|discount|sale|pack", re.I)
 HEAD = re.compile(r"<h[1-4][^>]*>(.*?)</h[1-4]>", re.I | re.S)
 
 
@@ -45,7 +47,13 @@ def text(s):
     s = html.unescape(s)
     s = re.sub(r"\s+", " ", s).strip()
     s = re.sub(r"^[#\d.)\-–:\s]+", "", s)
-    return s[:90]
+    # émojis et symboles en début ou en fin d'intitulé (️⃣, ▶️, 🔗, 💎…)
+    edge = lambda ch: unicodedata.category(ch)[0] in "SMC" or ch in "\ufe0f\u20e3 #*" or ch.isdigit()
+    while s and edge(s[0]):
+        s = s[1:]
+    while s and (unicodedata.category(s[-1])[0] in "SMC" or s[-1] in "\ufe0f\u20e3 "):
+        s = s[:-1]
+    return s.strip()[:90]
 
 
 def entries(th):
@@ -64,7 +72,8 @@ def entries(th):
         links, seen = [], set()
         # titres de section (ceux qui contiennent eux-mêmes un lien du jeu ne servent pas d'intitulé)
         heads = [(h.end(), text(h.group(1))) for h in HEAD.finditer(body)
-                 if "link.clashofclans.com" not in h.group(1) and len(text(h.group(1))) > 2]
+                 if "link.clashofclans.com" not in h.group(1) and len(text(h.group(1))) > 2
+                 and not PROMO.search(h.group(1))]
         for m2 in LINK.finditer(body):
             href, kind = html.unescape(m2.group(1)).rstrip(".,);"), m2.group(2)
             key = re.sub(r"[?&](?:utm_[^&]*)", "", href)
