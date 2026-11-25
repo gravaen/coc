@@ -5,20 +5,19 @@
 <script>document.documentElement.classList.add("js")</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Gravaen, clan Clash of Clans français : un clan compétition (HDV 16+) et un clan progression (HDV 7+). Guerres en continu, Ligue de clans. Postule sur notre Discord.">
-<link rel="canonical" href="https://gravaen.github.io/coc/">
+<link rel="canonical" href="https://gravaen.pages.dev/">
 <title>Gravaen · Clan Clash of Clans</title>
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Gravaen recrute">
-<meta property="og:description" content="À partir de l’HDV7">
-<meta property="og:url" content="https://gravaen.github.io/coc/">
-<meta property="og:image" content="https://gravaen.github.io/coc/og-image.jpg?v=2">
+<meta property="og:title" content="Site du clan Gravaen">
+<meta property="og:url" content="https://gravaen.pages.dev/">
+<meta property="og:image" content="https://gravaen.pages.dev/og-image.jpg?v=4">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Gravaen, clan Clash of Clans : loyauté et victoire.">
+<meta property="og:image:alt" content="Clash of Clans : Gravaen">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://gravaen.github.io/coc/og-image.jpg?v=2">
+<meta name="twitter:image" content="https://gravaen.pages.dev/og-image.jpg?v=4">
 <meta name="theme-color" content="#212320">
 <link rel="preload" href="clash-bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" type="image/png" href="icone.png">
@@ -933,7 +932,7 @@ section.strat .step p{font-size:15.5px;line-height:1.45}
 @media (max-width:760px){.rows-foot{margin-top:10px;font-size:15px}}
 
 /* point 2 : haut de page moins haut sur PC, les chiffres arrivent plus tôt */
-@media (min-width:761px){.hero .wrap.hero-top{min-height:clamp(340px,52vh,520px)!important;padding-top:40px;padding-bottom:64px}}
+@media (min-width:761px){.hero .wrap.hero-top{min-height:calc(100vh - 138px)!important;min-height:calc(100svh - 138px)!important;padding-top:40px;padding-bottom:64px;box-sizing:border-box}}
 /* point 6 : règles de la stratégie avec des tirets jaunes */
 .rules li::before{content:"";left:0;top:.68em;width:12px;height:3px;transform:none;background:var(--yellow)}
 /* point 4 : aucun texte sous 12 px sur téléphone */
@@ -945,6 +944,65 @@ section.strat .step p{font-size:15.5px;line-height:1.45}
 }
 @media (min-width:761px){.head p.head-desc{max-width:none!important}}
 @media (min-width:761px){section.s.strat{padding-top:16px}}
+/* polices : Clash en gras seulement pour les titres 1 et 2, petite police lisible pour tout le reste */
+@font-face{font-family:'Rubik';src:url(rubik-400.woff2) format('woff2');font-weight:100 500;font-style:normal;font-display:swap}
+@font-face{font-family:'Rubik';src:url(rubik-600.woff2) format('woff2');font-weight:600 900;font-style:normal;font-display:swap}
+:root{--display:'Rubik','Helvetica Neue',Arial,sans-serif;--body:'Rubik','Helvetica Neue',Arial,sans-serif;--title:'Clash','Arial Black',sans-serif}
+h1,h2{font-family:var(--title)!important;font-weight:900;font-stretch:125%;letter-spacing:-0.03em}
+h3,.brand,.hero .rank b,.rule .n,.step .lv,.cat .k,.cta,.menu,.nav ul a{letter-spacing:0;font-stretch:normal}
+h3{font-weight:600}
+.step .lv{font-weight:600;font-size:14px}
+.gest{margin-top:30px}
+.gest p.gest-intro{margin:0;font-size:17px;line-height:1.5;font-weight:500;color:var(--text);max-width:none}
+.gest .rules{margin-top:16px}
+@media (max-width:760px){.gest{margin-top:22px}.gest p.gest-intro{font-size:15px;line-height:1.45}}
+/* PC : le bandeau sombre prend tout l'écran d'arrivée, « En quelques chiffres » apparaît seulement en défilant */
+@media (min-width:761px){
+ .hero-sub{padding-top:56px}
+}
+/* texte d'accueil : on garde la police Clash comme avant */
+.hero p.slogan-sub,.hero p.slogan-sub b{font-family:var(--title)}
+.cta,.nav .cta{font-family:var(--title);font-weight:800}
+/* sommaire : police Clash comme avant */
+.nav ul a{font-family:var(--title);font-weight:700}
+/* hiérarchie : texte courant plus léger, mots-clés en gras bien distincts */
+body{font-weight:400}
+.rows b,.rules b,.step h3{font-weight:600}
+/* grades : avantages et exigences en avant, conditions dans la bulle */
+.gr-more{margin:18px 0 0;font-size:16px}
+.gr-more .glink{font-size:16px}
+@media (min-width:761px){.mj-pop{width:min(380px,calc(100vw - 32px))}}
+.mj-t{margin:0 0 10px;font-family:var(--title);font-weight:900;font-size:19px;color:var(--ink)}
+.mj-p+.mj-p{margin-top:8px}
+.mj-p b{font-weight:600}
+.mj-s{font-size:14.5px!important;color:var(--soft)!important;line-height:1.45}
+.mj-s a{color:var(--ink)}
+@media (max-width:760px){.gr-more{margin-top:14px}}
+/* sous-titres de section en gras */
+.head p.head-desc{font-weight:600!important;color:var(--ink)}
+/* organisation : 3 grades côte à côte, lien « monter en grade » centré */
+@media (min-width:761px){section.s#grades ul.rows{grid-template-columns:repeat(3,1fr)}}
+.gr-more{text-align:center;margin-top:26px}
+.gr-more .glink{font-size:18px;font-weight:700;text-align:center}
+@media (max-width:760px){
+ section.s#grades{min-height:0}
+ section.s#grades ul.rows{flex:none;grid-auto-rows:auto}
+ .gr-more{margin-top:20px}.gr-more .glink{font-size:17px}
+}
+@media (min-width:961px) and (max-width:1140px){.nav ul a{padding:9px 8px!important;font-size:15px!important}.nav .brand{margin-right:16px!important}.nav .cta{margin-left:10px!important}}
+@media (min-width:961px) and (max-width:1040px){.nav ul a{padding:8px 6px!important;font-size:14px!important}.nav .cta{padding-left:12px;padding-right:12px;font-size:15px}}
+@media (min-width:761px){section.s#grades ul.rows{grid-template-columns:1fr 1fr!important}}
+.org-r{margin-top:6px!important}
+.org-r b{font-weight:600}
+.gr-more{text-align:center!important;margin-top:20px!important}
+.gr-more .glink{font-size:16px!important}
+@media (max-width:760px){.gr-more .glink{font-size:14px!important}.gr-more{margin-top:12px!important}}
+/* téléphone : « Nos clans » occupe un écran, les deux cartes visibles d'un coup */
+@media (max-width:760px){
+ section.s#clans{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;padding-top:14px!important;padding-bottom:18px!important}
+}
+@media (max-width:760px){section.s#clans>.wrap{width:100%;box-sizing:border-box}}
+@media (max-width:760px) and (max-height:760px){section.s#clans .head{margin-bottom:12px!important}section.s#clans .head p.head-desc{font-size:13.5px}section.s#clans .clan .in{padding:12px 16px!important}section.s#clans .clan .in>.tagrow{min-height:34px}section.s#clans .cbadge{width:46px;height:46px;top:12px}section.s#clans .facts{gap:6px 14px!important;margin-top:8px!important;padding-top:8px!important}section.s#clans .clan p{margin:8px 0!important;font-size:14px}section.s#clans .clans{gap:10px!important}section.s#clans{padding-top:8px!important;padding-bottom:8px!important}section.s#clans .facts dt{font-size:11.5px}}
 </style>
 </head>
 <body>
@@ -955,7 +1013,7 @@ section.strat .step p{font-size:15.5px;line-height:1.45}
   <ul id="links">
    <li><a href="#vision">Qui nous sommes</a></li>
    <li><a href="#clans">Nos clans</a></li>
-   <li><a href="#grades">Nos grades</a></li>
+   <li><a href="#grades">Notre organisation</a></li>
    <li><a href="#strategie">Notre stratégie</a></li>
    
    <li class="drawer-cta"><a class="cta open" href="https://discord.gg/AZ6JDeCPG" target="_blank" rel="noopener" data-join>Postuler sur Discord</a></li>
@@ -993,31 +1051,29 @@ section.strat .step p{font-size:15.5px;line-height:1.45}
 
 <section class="s" id="grades">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb"><i>—</i>Nos grades</h2><p class="head-desc">Le grade récompense l’exemple&nbsp;: être sympa et investi compte avant tout, les conditions ci-dessous nous guident. Aînés et adjoints épaulent le chef. Envie d’encadrer&nbsp;? Parles-en au chef.</p></div>
-  <ul class="rows">
-   <li style="--c:#D9D3C2"><p><b>Membre</b>&nbsp;: tu réponds au profil demandé pour intégrer le clan.</p></li>
-   <li style="--c:#FBE794"><p><b>Aîné</b>&nbsp;: 1 000 dons et 3 guerres de clans jouées.</p></li>
-   <li style="--c:var(--yellow)"><p><b>Adjoint</b>&nbsp;: 3 mois dans le clan, élu <button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">meilleur joueur de la saison.</button></p></li>
-   <li style="--c:#C79A00"><p><b>Chef</b>&nbsp;: fixe la stratégie de guerre et tranche les décisions.</p></li>
+  <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: c’est l’attention de chacun qui fait vivre le clan.</p></div>
+  <ul class="rules org-r">
+   <li><b>Aînés</b>&nbsp;: invitent les joueurs qui remplissent les conditions.</li>
+   <li><b>Adjoints et chef</b>&nbsp;: lancent les inscriptions en guerre et en GDC, excluent ceux qui ne suivent pas la stratégie, le plus souvent après un avertissement.</li>
   </ul>
-
+  <p class="gr-more"><button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">Comment monter en grade&nbsp;?</button></p>
  </div>
 </section>
 
 <section class="s strat" id="strategie" aria-labelledby="strat-title">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb" id="strat-title"><i>—</i>Notre stratégie</h2><p class="head-desc">Les GdC sont très organisées afin de ne pas pénaliser nos joueurs les plus faibles, que tous puissent jouer à leur niveau et que l’on puisse gagner un maximum de guerres.</p></div>
+  <div class="head"><h2 class="eyeb" id="strat-title"><i>—</i>Notre stratégie</h2><p class="head-desc">Des GdC organisées&nbsp;: chacun joue à son niveau, sans pénaliser les plus faibles, pour gagner un maximum de guerres.</p></div>
   <div class="ladder">
-   <div class="step"><div class="top" style="background:var(--line)"></div><div class="lv">Préparation</div><h3>Renforts</h3><p>Les chefs remplissent les châteaux de clan de tout le monde avant le jour de bataille.</p></div>
-   <div class="step"><div class="top" style="background:#FBE794"></div><div class="lv">1<sup>re</sup> attaque</div><h3>Ton miroir</h3><p>Le village au même rang que toi chez l’adversaire, sans suivre la suggestion du jeu.</p></div>
-   <div class="step"><div class="top" style="background:var(--yellow)"></div><div class="lv">2<sup>e</sup> attaque</div><h3>Le rattrapage</h3><p>Une attaque ratée sur un village de ton niveau, selon les consignes des chefs et aînés.</p></div>
-   <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">12 dernières heures</div><h3>Les oubliés</h3><p>Priorité aux villages encore jamais attaqués, puis aux étoiles qui manquent.</p></div>
+   <div class="step"><div class="top" style="background:var(--line)"></div><div class="lv">Préparation</div><h3>Renforts</h3><p>Les chefs remplissent tous les châteaux avant la bataille.</p></div>
+   <div class="step"><div class="top" style="background:#FBE794"></div><div class="lv">1<sup>re</sup> attaque</div><h3>Ton miroir</h3><p>Le village de ton rang en face, pas la suggestion du jeu.</p></div>
+   <div class="step"><div class="top" style="background:var(--yellow)"></div><div class="lv">2<sup>e</sup> attaque</div><h3>Le rattrapage</h3><p>Une attaque ratée de ton niveau, selon les chefs et aînés.</p></div>
+   <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">12 dernières heures</div><h3>Les oubliés</h3><p>Les villages jamais attaqués, puis les étoiles manquantes.</p></div>
   </div>
   <ul class="rules">
-   <li><b>Deux attaques</b>, toujours. Un oubli vaut un avertissement.</li>
-   <li><b>Compo de guerre</b> : camps pleins, sorts et héros prêts, pas de test en guerre.</li>
-   <li><b>On ne vole jamais</b> la cible d’un autre. Les échanges se font d’un commun accord.</li>
-   <li><b>Pas d’attaque pour le butin</b>, sauf feu vert des chefs en toute fin de guerre.</li>
+   <li><b>Deux attaques</b>, toujours. Un oubli = un avertissement.</li>
+   <li><b>Compo prête</b>&nbsp;: camps, sorts et héros. Pas de test en guerre.</li>
+   <li><b>Pas de vol de cible</b>&nbsp;: on échange d’un commun accord.</li>
+   <li><b>Pas d’attaque butin</b>, sauf feu vert des chefs en fin de guerre.</li>
   </ul>
  </div>
 </section>
@@ -1030,10 +1086,14 @@ section.strat .step p{font-size:15.5px;line-height:1.45}
 </section>
 </main>
 <div class="mj-veil" id="mj-veil" hidden></div>
-<div class="mj-pop" id="mj-pop" role="dialog" aria-modal="false" aria-label="Le meilleur joueur de la saison" hidden>
+<div class="mj-pop" id="mj-pop" role="dialog" aria-modal="false" aria-label="Monter en grade" hidden>
  <span class="mj-grip" aria-hidden="true"></span>
  <button type="button" class="mj-x" id="mj-x" aria-label="Fermer">×</button>
- <p class="mj-p">Chaque saison, le clan élit son meilleur joueur et publie le top 10 sur <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a>. La Ligue de clans et la guerre comptent d’abord, puis la capitale, le classé, l’activité et les dons.</p>
+ <p class="mj-t">Monter en grade</p>
+ <p class="mj-p"><b>Aîné</b>&nbsp;: 1&nbsp;000 dons et 3 guerres de clans.</p>
+ <p class="mj-p"><b>Adjoint</b>&nbsp;: 3 mois dans le clan et élu <b>meilleur joueur de la saison</b>.</p>
+ <p class="mj-p">Le meilleur joueur est élu chaque saison, top 10 publié sur <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a>&nbsp;: Ligue de clans et guerre d’abord, puis capitale, classé, activité et dons.</p>
+ <p class="mj-p mj-s">Envie d’encadrer&nbsp;? Parles-en au chef.</p>
  <i class="mj-arrow" aria-hidden="true"></i>
 </div>
 
@@ -1111,6 +1171,7 @@ secs.forEach(x=>io.observe(x));
   var t2=ranks.bottom+y-window.innerHeight+12; /* au minimum : 4 distinctions entières */
   if(t2>t) t=t2;
   if(window.innerWidth<=760){var hs=document.querySelector('.hero-sub');if(hs)t=hs.getBoundingClientRect().top+y-nav}
+  var eb=document.querySelector('.sub-eyeb');if(eb){var e=box(eb);t=Math.min(t,e.top+y-nav-24)} /* le titre « En quelques chiffres » reste toujours visible sous la barre */
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.scrollTo({top:t,behavior:reduce?'auto':'smooth'});
  });

@@ -157,6 +157,16 @@ if badge:
     p = icon("blason-o-" + badge.rstrip("/").split("/")[-1].split(".")[0][:12], badge, raw=True)
     if p:
         data["icons"]["badge"] = p
+    # vignette des liens partagés (Discord…) : le blason en grand, centré, sur le fond sombre du site
+    try:
+        _bg = Image.new("RGB", (1200, 630), (33, 35, 32))
+        _b = Image.open(io.BytesIO(get_bytes(badge))).convert("RGBA")
+        _h = 470
+        _b = _b.resize((round(_b.width * _h / _b.height), _h), Image.LANCZOS)
+        _bg.paste(_b, ((1200 - _b.width) // 2, (630 - _h) // 2), _b)
+        _bg.save("og-image.jpg", "JPEG", quality=92)
+    except Exception as e:
+        print(f"  vignette non préparée : {e}", file=sys.stderr)
 
 # tuiles du haut : dons de la saison et HDV moyen des membres du clan principal
 _members = clan.get("memberList") or []
