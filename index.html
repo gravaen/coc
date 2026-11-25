@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<script>function safeRS(a,b,u){try{history.replaceState(a,b,u)}catch(e){}}</script>
 <script>document.documentElement.classList.add("js")</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Gravaen, clan Clash of Clans français : un clan compétition (HDV 16+) et un clan progression (HDV 7+). Guerres en continu, Ligue de clans. Postule sur notre Discord.">
@@ -24,7 +25,10 @@
 <link rel="preload" href="rubik-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="data/clan.json" as="fetch" crossorigin>
 <link rel="icon" type="image/png" href="icone.png">
-<link rel="apple-touch-icon" href="icone.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gravaen">
 <style>
 @font-face{font-family:'Clash';src:url(clash-regular.woff2) format('woff2');font-weight:100 800;font-style:normal;font-display:swap}
 @font-face{font-family:'Clash';src:url(clash-bold.woff2) format('woff2');font-weight:900;font-style:normal;font-display:swap}
@@ -1068,9 +1072,35 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html.js .rv2{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
 html.js .rv2.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){html.js .rv2{opacity:1;transform:none;transition:none}.nav,.nav-ind{transition:none!important}html{scroll-snap-type:none!important}}
+
+/* rejoindre : bouton sur place et texte rassurant */
+.jn-act{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:22px!important}
+.jn-note{font-size:14px;color:#BDB8A9}
+@media (max-width:760px){.jn-act{flex-direction:column;align-items:stretch;text-align:center}.jn-act .cta{display:block;text-align:center;padding:15px}}
+/* 6 : zones de toucher de 44 px minimum */
+#mj-btn,.gr-more .glink{display:inline-flex;align-items:center;min-height:44px}
+.copytag{min-height:44px;box-sizing:border-box}
+/* 9 : lien « Aller au contenu » (clavier, lecteur d'écran) */
+.skip{position:absolute;left:12px;top:-60px;z-index:50;background:var(--yellow);color:#212320;padding:10px 14px;font-weight:600;text-decoration:none;transition:top .15s}
+.skip:focus{top:12px}
+/* 10 : étiquettes grises un peu plus foncées */
+:root{--soft:#5C5D56}
+/* 8 : mode sombre automatique pour les sections claires */
+@media (prefers-color-scheme:dark){
+ :root{--cream:#171815;--paper:#23251F;--sand:#1F201C;--text:#D6D1C2;--soft:#A39F92;--line:#373933;--hl:#3A3420;color-scheme:dark}
+ section.s,.mj-pop,.regles,.pyr,.clans{--ink:#F2EDDE}
+ section.s .clan .top[style*="--ink"],section.s .clan .top[style*="var(--ink)"]{background:#F2EDDE!important}
+ .copytag{background:#2E302A!important;color:#E9E4D4!important}
+ .rg-k.ok,.rg-m.ok{color:#8DC75A}.rg-k.ko,.rg-m.ko{color:#F09595}
+ .skip{color:#212320}
+ .mj-pop{background:#2A2C26!important;color:#D6D1C2!important;border-color:#3A3C36!important}
+ .mj-pop .mj-p,.mj-pop b,.mj-pop .mj-t{color:#F2EDDE!important}.mj-pop .mj-s{color:#A39F92!important}
+ .mj-pop a{color:#F2EDDE!important}
+}
 </style>
 </head>
 <body>
+<a class="skip" href="#clans">Aller au contenu</a>
 <header class="nav">
  <div class="wrap">
   <a class="brand" href="#top" aria-label="Gravaen, retour en haut de page"><img class="brand-b" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="34" height="34" alt="" hidden><span class="brand-t">Gravaen</span></a>
@@ -1092,7 +1122,7 @@ html.js .rv2.in{opacity:1;transform:none}
  <div class="wrap hero-top">
   <div class="hero-txt">
   <h1 class="slogan"><span>Clash of Clans&nbsp;: Gravaen</span></h1>
-  <p class="slogan-sub hero-lede">Bienvenue dans notre clan familial à l’ambiance détendue. Gravaen est un clan à recrutement uniquement <b>adulte</b>, <b>actif</b> et <b>très organisé</b> pour un jeu en profondeur et de bonnes soirées&nbsp;!</p>
+  <p class="slogan-sub hero-lede">Un clan familial à l’ambiance détendue, <b>adulte</b>, <b>actif</b> et <b>très organisé</b>&nbsp;: du jeu en profondeur et de bonnes soirées&nbsp;!</p>
   </div>
   <a class="scroll-cue" href="#suite" aria-label="Voir la suite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
  </div>
@@ -1106,7 +1136,7 @@ html.js .rv2.in{opacity:1;transform:none}
 
 <section class="s" id="clans">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de votre niveau, en minimisant les déséquilibres en guerre et en Ligue de clans.</p></div>
+  <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de votre niveau, sans déséquilibre en guerre ni en Ligue de clans.</p></div>
   <div class="clans">
    <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="vh">Gravaen, clan principal</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Membres</dt><dd data-c="main-mem">44/50</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
    <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="vh">Gravaen, clan secondaire</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Membres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
@@ -1116,11 +1146,11 @@ html.js .rv2.in{opacity:1;transform:none}
 
 <section class="s" id="grades">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: c’est l’attention de chacun qui fait vivre le clan.</p></div>
+  <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
   <div class="pyr" role="list">
-   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitent les joueurs, lancent les inscriptions en guerre et en GDC, et gèrent promotions, rétrogradations et exclusions.</span></div>
-   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitent les joueurs qui remplissent les conditions pour rejoindre le clan.</span></div>
-   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Participent régulièrement aux événements, donnent autant qu’ils reçoivent et profitent des récompenses collectives du clan, comme tous les gradés.</span></div>
+   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitent, lancent les inscriptions en guerre et en GDC, gèrent promotions, rétrogradations et exclusions.</span></div>
+   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitent les joueurs qui remplissent les conditions d’entrée.</span></div>
+   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Présents aux événements, ils donnent autant qu’ils reçoivent et profitent des récompenses du clan, comme tous les gradés.</span></div>
   </div>
   <p class="gr-more"><button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">Comment monter en grade&nbsp;?</button></p>
  </div>
@@ -1144,7 +1174,7 @@ html.js .rv2.in{opacity:1;transform:none}
     </div>
     <div class="rg-col"><p class="rg-k ko">On ne fait pas</p>
      <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Voler une cible</b>&nbsp;: on échange d’un commun accord.</span></p>
-     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Tester en guerre</b>, ou attaquer pour le butin sans feu vert des chefs en fin de guerre.</span></p>
+     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Tester en guerre</b> ou attaquer pour le butin, sauf feu vert des chefs en fin de guerre.</span></p>
     </div>
    </div>
   </div>
@@ -1154,7 +1184,7 @@ html.js .rv2.in{opacity:1;transform:none}
 
 <section class="join" id="rejoindre">
  <div class="wrap">
-  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Clique sur « Postuler » en haut de la page et entre ton tag de joueur&nbsp;: ta candidature arrive sur notre Discord avec ton profil, et tu pourras ensuite nous rejoindre sur le serveur. Ce sera un plaisir de t’accueillir&nbsp;!</p></div>
+  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Entre ton tag de joueur&nbsp;: ta candidature arrive sur notre Discord avec ton profil. Ce sera un plaisir de t’accueillir&nbsp;!</p><p class="jn-act"><a class="cta open" href="https://discord.gg/AZ6JDeCPG" target="_blank" rel="noopener" data-join>Postuler sur Discord</a><span class="jn-note">Ton profil est analysé en direct et le clan adapté t’est proposé.</span></p></div>
  </div>
 </section>
 </main>
@@ -1165,7 +1195,7 @@ html.js .rv2.in{opacity:1;transform:none}
  <p class="mj-t">Monter en grade</p>
  <p class="mj-p"><b>Aîné</b>&nbsp;: 1&nbsp;000 dons et 3 guerres de clans.</p>
  <p class="mj-p"><b>Adjoint</b>&nbsp;: 3 mois dans le clan et élu <b>meilleur joueur de la saison</b>.</p>
- <p class="mj-p">Le meilleur joueur est élu chaque saison, top 10 publié sur <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a>&nbsp;: Ligue de clans et guerre d’abord, puis capitale, classé, activité et dons.</p>
+ <p class="mj-p">Élu chaque saison, top 10 publié sur <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a>&nbsp;: Ligue de clans et guerre d’abord, puis capitale, classé, activité et dons.</p>
  <p class="mj-p mj-s">Envie d’encadrer&nbsp;? Parles-en au chef.</p>
  <i class="mj-arrow" aria-hidden="true"></i>
 </div>
@@ -1188,7 +1218,7 @@ m.onclick=()=>setMenu(!l.classList.contains('is-open'));
 l.onclick=e=>{if(e.target.closest('a'))setMenu(false)};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
 const secs=[...document.querySelectorAll('main section[id]')],links=[...l.querySelectorAll('a[href^="#"]')];
-const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)links.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+en.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){links.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+en.target.id));var h=en.target.id==='vision'?'':'#'+en.target.id;if(location.hash!==h&&scrollY>40)safeRS(null,'',location.pathname+location.search+h);else if(scrollY<=40&&location.hash)safeRS(null,'',location.pathname+location.search)}}),{rootMargin:'-45% 0px -50% 0px'});
 secs.forEach(x=>io.observe(x));
 
 
@@ -1216,7 +1246,7 @@ secs.forEach(x=>io.observe(x));
  /* au rechargement : repartir du haut de la page (sauf lien direct vers une section) */
  if('scrollRestoration' in history) history.scrollRestoration='manual';
  if(!location.hash || location.hash==='#suite'){
-  if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+  if(location.hash) safeRS(null,'',location.pathname+location.search);
   window.scrollTo(0,0);
  }
  /* flèche : descendre pour voir le sous-titre ET les 4 distinctions, sans modifier l'adresse */
@@ -1482,6 +1512,12 @@ secs.forEach(x=>io.observe(x));
  var seen=false,ready=Promise.resolve(window.gravaenData).catch(function(){});
  var o=new IntersectionObserver(function(es){if(es[0].isIntersecting&&!seen){seen=true;o.disconnect();ready.then(function(){setTimeout(run,60)})}},{threshold:.3});
  o.observe(ranks);
+})();
+</script>
+<script>
+(function(){
+ /* 8 : installable comme une appli, lisible sans réseau */
+ try{if(location.protocol==='https:'&&'serviceWorker' in navigator)addEventListener('load',function(){try{navigator.serviceWorker.register('/sw.js').catch(function(){})}catch(e){}})}catch(e){}
 })();
 </script>
 </body>

@@ -1,0 +1,16 @@
+{
+  "name": "Gravaen · Clan Clash of Clans",
+  "short_name": "Gravaen",
+  "description": "Site du clan Gravaen",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#212320",
+  "theme_color": "#212320",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

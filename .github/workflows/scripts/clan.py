@@ -166,6 +166,13 @@ if badge:
         _b = _b.resize((round(_b.width * _h / _b.height), _h), Image.LANCZOS)
         _bg.paste(_b, ((1200 - _b.width) // 2, (630 - _h) // 2), _b)
         _bg.save("og-image.jpg", "JPEG", quality=92)
+        for _n in (192, 512):
+            _ic = Image.new("RGB", (_n, _n), (33, 35, 32))
+            _hh = int(_n * 0.72)
+            _bb = Image.open(io.BytesIO(get_bytes(badge))).convert("RGBA")
+            _bb = _bb.resize((round(_bb.width * _hh / _bb.height), _hh), Image.LANCZOS)
+            _ic.paste(_bb, ((_n - _bb.width) // 2, (_n - _hh) // 2), _bb)
+            _ic.save(f"icon-{_n}.png", "PNG")
     except Exception as e:
         print(f"  vignette non préparée : {e}", file=sys.stderr)
 
