@@ -261,31 +261,31 @@ def best_of_season():
 
 
 def activity_report(state, test=False):
-    """Rapport du lundi, ultra court : qui exclure, rétrograder, promouvoir, selon nos règles.
-    Aîné = très actif et 3 guerres de clans · Adjoint = 3 mois dans le clan et meilleur joueur de la saison.
-    Exclusion = Membre inactif 4 jours, Aîné inactif 7 jours (le non-respect de la stratégie reste à l'appréciation du chef)."""
+    """Rapport du lundi, un message par clan (Clan 1 = principal, Clan 2 = secondaire), ultra court :
+    qui exclure, rétrograder, promouvoir, selon nos règles.
+    Exclusion = Membre inactif 4 jours, Aîné inactif 7 jours (le non-respect de la stratégie reste à l'appréciation du chef).
+    Aîné = très actif et 3 guerres de clans · Adjoint = 3 mois dans le clan et meilleur joueur de la saison."""
     since = datetime.datetime.fromisoformat(state["tracking"])
     days = max(1, min(7, round((NOW - since).total_seconds() / 86400)))
     best = best_of_season()
-    short = {"Clan principal": "P", "Clan secondaire": "S"}
-    excl, demote, promo, adj, moy = [], [], [], [], []
-    for label, _ in CLANS:
+    num = {"Clan principal": "Clan 1", "Clan secondaire": "Clan 2"}
+    out = []
+    for label, tag_clan in CLANS:
         rs = []
         for tag, s in state["seen"].items():
-            if s.get("c") != label:
-                continue
-            sc, d, _h = activity(s, days)
-            rs.append((tag, s, sc, d))
+            if s.get("c") == label:
+                sc, d, _h = activity(s, days)
+                rs.append((tag, s, sc, d))
         if not rs:
             continue
-        moy.append(f"{short[label]} {round(sum(r[2] for r in rs) / len(rs))}/100")
+        excl, demote, promo, adj = [], [], [], []
         for tag, s, sc, d in rs:
-            n, r, don = s.get("n", "?"), s.get("r"), s.get("don", 0) or 0
-            who = f"**{n}** ({short[label]})"
-            months = (NOW - datetime.datetime.fromisoformat(s.get("since", state["tracking"]))).days / 30.4
+            n, r = s.get("n", "?"), s.get("r")
+            who = f"**{n}**"
             ref = s.get("last") or s.get("since") or state["tracking"]
             idle = (NOW - datetime.datetime.fromisoformat(ref)).days
             idle_txt = f"inactif depuis {idle} j" if s.get("last") else f"aucune activité depuis {idle} j (début du suivi)"
+            months = (NOW - datetime.datetime.fromisoformat(s.get("since", state["tracking"]))).days / 30.4
             if r == "member" and idle >= 4:
                 excl.append(f"{who} Membre · {idle_txt}")
             elif r == "admin" and idle >= 7:
@@ -297,31 +297,33 @@ def activity_report(state, test=False):
             elif r == "member" and sc >= 70:
                 promo.append(f"{who} Membre → Aîné · actif {d}/{days} j · *vérifier 3 GDC*")
             if r == "admin" and best.get(label) == tag:
-                anc = "3 mois ✓" if months >= 3 else ("ancienneté à vérifier" if months < 3 and (NOW - since).days < 92 else f"{months:.0f} mois ✗")
+                anc = "3 mois ✓" if months >= 3 else ("ancienneté à vérifier" if (NOW - since).days < 92 else f"{months:.0f} mois ✗")
                 adj.append(f"{who} Aîné → Adjoint · meilleur joueur de la saison · {anc}")
-    total = len(excl) + len(demote) + len(promo) + len(adj)
-    f = lambda xs: "\n".join("• " + x for x in xs[:12]) + (f"\n… et {len(xs) - 12} autre(s)" if len(xs) > 12 else "")
-    fields = []
-    if excl:
-        fields.append({"name": f"🔴 Exclure · {len(excl)}", "value": f(excl)})
-    if demote:
-        fields.append({"name": f"🟠 Rétrograder · {len(demote)}", "value": f(demote)})
-    if promo:
-        fields.append({"name": f"🟢 Promouvoir Aîné · {len(promo)}", "value": f(promo)})
-    if adj:
-        fields.append({"name": f"⭐ Promouvoir Adjoint · {len(adj)}", "value": f(adj)})
-    note = (f"🧪 Test · suivi depuis le <t:{int(since.timestamp())}:d>\n" if test else "")
-    return {
-        "username": "Gravaen · staff",
-        "embeds": [{
-            "author": {"name": ("🧪 TEST · " if test else "") + "Recommandations de la semaine"},
-            "title": (f"{total} décision(s) à prendre" if total else "✅ Rien à faire cette semaine"),
-            "color": 0xC8412F if excl else (0xE08A1E if demote else 0x2F8F55),
-            "description": note + "Activité moyenne : " + " · ".join(moy) + f" (sur {days} j)",
-            "fields": fields,
-            "footer": {"text": "Règles : exclusion à 4 j d'inactivité (Membre), 7 j (Aîné) · Aîné = actif + 3 GDC · Adjoint = 3 mois + meilleur joueur · P/S = principal/secondaire"},
-        }],
-    }
+        total = len(excl) + len(demote) + len(promo) + len(adj)
+        f = lambda xs: "\n".join("• " + x for x in xs[:15]) + (f"\n… et {len(xs) - 15} autre(s)" if len(xs) > 15 else "")
+        fields = []
+        if excl:
+            fields.append({"name": f"🔴 Exclure · {len(excl)}", "value": f(excl)})
+        if demote:
+            fields.append({"name": f"🟠 Rétrograder · {len(demote)}", "value": f(demote)})
+        if promo:
+            fields.append({"name": f"🟢 Promouvoir Aîné · {len(promo)}", "value": f(promo)})
+        if adj:
+            fields.append({"name": f"⭐ Promouvoir Adjoint · {len(adj)}", "value": f(adj)})
+        avg = round(sum(r[2] for r in rs) / len(rs))
+        note = (f"🧪 Test · suivi depuis le <t:{int(since.timestamp())}:d>\n" if test else "")
+        out.append({
+            "username": "Gravaen · staff",
+            "embeds": [{
+                "author": {"name": ("🧪 TEST · " if test else "") + f"{num[label]} · {tag_clan} · recommandations de la semaine"},
+                "title": (f"{total} décision(s) à prendre" if total else "✅ Rien à faire cette semaine"),
+                "color": 0xC8412F if excl else (0xE08A1E if demote else 0x2F8F55),
+                "description": note + f"{len(rs)} membres · activité moyenne {avg}/100 (sur {days} j)",
+                "fields": fields,
+                "footer": {"text": "Exclusion : 4 j d'inactivité (Membre), 7 j (Aîné) · Aîné = actif + 3 GDC · Adjoint = 3 mois + meilleur joueur"},
+            }],
+        })
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -433,7 +435,8 @@ def main():
     if HOOK and due:
         if NOW - datetime.datetime.fromisoformat(state["tracking"]) >= datetime.timedelta(days=6):
             try:
-                post(activity_report(state))
+                for _m in activity_report(state):
+                    post(_m)
                 state["weekly"] = NOW.isoformat(timespec="seconds")
                 print("rapport d'activité posté")
             except Exception as e:
@@ -444,7 +447,8 @@ def main():
     # rapport de test, lancé à la main depuis l'onglet Actions
     if HOOK and os.environ.get("STAFF_TEST") == "true":
         try:
-            post(activity_report(state, test=True))
+            for _m in activity_report(state, test=True):
+                post(_m)
             print("rapport de test posté")
         except Exception as e:
             print(f"  rapport de test non posté : {e}", file=sys.stderr)
