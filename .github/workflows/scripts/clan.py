@@ -159,6 +159,7 @@ if badge:
         data["icons"]["badge"] = p
     # vignette des liens partagés (Discord…) : le blason en grand, centré, sur le fond sombre du site
     try:
+        from PIL import Image
         _bg = Image.new("RGB", (1200, 630), (33, 35, 32))
         _b = Image.open(io.BytesIO(get_bytes(badge))).convert("RGBA")
         _h = 470
