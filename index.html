@@ -1097,6 +1097,61 @@ html.js .rv2.in{opacity:1;transform:none}
  .mj-pop .mj-p,.mj-pop b,.mj-pop .mj-t{color:#F2EDDE!important}.mj-pop .mj-s{color:#A39F92!important}
  .mj-pop a{color:#F2EDDE!important}
 }
+/* ===== échelle typographique unique ===== */
+:root{--t-lede:19px;--t-sub:18px;--t-h3:18px;--t-body:16px;--t-small:14px;--t-label:12.5px}
+@media (max-width:760px){:root{--t-lede:16px;--t-sub:15px;--t-h3:15px;--t-body:14px;--t-small:13px;--t-label:12px}}
+@media (max-width:760px) and (max-height:700px){:root{--t-lede:15px;--t-sub:13.5px;--t-h3:14px;--t-body:12.5px;--t-small:12px;--t-label:11px}}
+.join h2{font-size:44px!important}
+@media (max-width:760px){.join h2{font-size:30px!important}}
+.hero p.slogan-sub{font-size:var(--t-lede)!important}
+.head p.head-desc,.join .wrap>div>p:not(.jn-act){font-size:var(--t-sub)!important}
+section.s .clan .in>p,.pyr .pl span,section.strat .step p,.rg-i,.mj-p,.org-r li,.gr-more .glink,#mj-btn,.hero a.more{font-size:var(--t-body)!important}
+section.strat .step h3,.regles h3.rg-t,.pyr .pl b{font-size:var(--t-h3)!important}
+.pyr .pl b{font-size:calc(var(--t-body) + 1px)!important}
+.jn-note,.ranks-date,footer span,footer a,footer p,.mj-s{font-size:var(--t-small)!important}
+section.strat .step .lv,.rg-k,.facts dt,.cap,.pill{font-size:var(--t-label)!important}
+/* deux graisses seulement pour Rubik : 400 et 600 */
+b,strong,.facts dd,.hero .rank b,.glink,.hero a.more,.facts dt,.rg-k,.pill,section.strat .step h3,.regles h3.rg-t,.pyr .pl b,.head p.head-desc{font-weight:600!important}
+section.strat .step .lv{margin-bottom:6px!important}
+/* ===== principes Apple ===== */
+/* 1 : le jaune réservé à l'action (boutons, liens) */
+.head h2.eyeb i,.regles h3.rg-t:before,.sub-eyeb i,.eyeb i{background:#C9C2AE!important;color:#C9C2AE!important}
+.hero .sub-eyeb i,.hero .eyeb i{background:#55574F!important;color:#55574F!important}
+section.s .clan .top,section.strat .step .top{background:var(--line)!important;height:2px!important}
+.pyr .pl{border-top:1px solid var(--line)!important}
+.hero .rank{border-left-color:#3A3C36!important}
+.join h2{color:var(--light)!important}
+@media (prefers-color-scheme:dark){.head h2.eyeb i,.regles h3.rg-t:before{background:#55574F!important}}
+/* 6 : château de clan à l'accueil */
+.hero-cc{display:block;width:150px;height:auto;margin:0 0 20px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
+@media (max-width:760px){.hero-cc{width:104px;margin-bottom:14px}}
+@media (max-width:760px) and (max-height:700px){.hero-cc{width:84px}}
+/* 8 : pas de calage forcé au défilement */
+html{scroll-snap-type:none!important}
+/* 9 : rythme d'espacement unique (multiples de 8) */
+section.s{padding-top:96px!important;padding-bottom:96px!important}
+section.s .head{margin-bottom:32px!important}
+@media (min-width:761px){section.s.strat{padding-top:96px!important}}
+@media (max-width:760px){section.s{padding-top:48px!important;padding-bottom:48px!important}section.s .head{margin-bottom:16px!important}
+ section.s#clans,section.s#grades{padding-top:24px!important;padding-bottom:24px!important}}
+@media (max-width:760px) and (max-height:700px){section.s#clans,section.s#grades{padding-top:16px!important;padding-bottom:16px!important}section.s .head{margin-bottom:8px!important}}
+/* accueil : le blason du clan en grand, au centre */
+.hero-cc{display:none}
+.sr-h1{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;padding:0}
+.hero .hero-txt{text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.hero-badge{display:block;width:clamp(180px,22vw,280px);height:auto;margin:0 auto 28px;filter:drop-shadow(0 16px 36px rgba(0,0,0,.45))}
+.hero p.slogan-sub{max-width:640px;margin-left:auto;margin-right:auto}
+@media (max-width:760px){.hero-badge{width:190px;margin-bottom:22px}}
+@media (max-width:760px) and (max-height:700px){.hero-badge{width:150px}}
+/* bandeau : « Gravaen » écrit sur l'accueil, le blason dès qu'on arrive aux chiffres */
+.nav .brand .brand-t{font-family:var(--title);font-weight:900;font-size:24px;letter-spacing:-.01em;color:var(--light);line-height:1}
+html:not(.past-hero) .nav .brand .brand-b{display:none!important}
+html:not(.past-hero) .nav .brand .brand-t{display:inline-block!important;animation:brandin .3s ease}
+html.past-hero .nav .brand.has-b .brand-t{display:none!important}
+html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
+@keyframes brandin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (max-width:760px){.nav .brand .brand-t{font-size:22px}}
+@media (prefers-reduced-motion:reduce){.nav .brand .brand-t,.nav .brand .brand-b{animation:none!important}}
 </style>
 </head>
 <body>
@@ -1121,7 +1176,8 @@ html.js .rv2.in{opacity:1;transform:none}
 <section class="hero" id="vision">
  <div class="wrap hero-top">
   <div class="hero-txt">
-  <h1 class="slogan"><span>Clash of Clans&nbsp;: Gravaen</span></h1>
+  <img class="hero-badge" data-badge="hero" src="icon-512.png" alt="Blason du clan Gravaen" width="512" height="512" fetchpriority="high">
+  <h1 class="slogan sr-h1">Clash of Clans&nbsp;: Gravaen</h1>
   <p class="slogan-sub hero-lede">Un clan familial à l’ambiance détendue, <b>adulte</b>, <b>actif</b> et <b>très organisé</b>&nbsp;: du jeu en profondeur et de bonnes soirées&nbsp;!</p>
   </div>
   <a class="scroll-cue" href="#suite" aria-label="Voir la suite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
@@ -1148,9 +1204,9 @@ html.js .rv2.in{opacity:1;transform:none}
  <div class="wrap">
   <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
   <div class="pyr" role="list">
-   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitent, lancent les inscriptions en guerre et en GDC, gèrent promotions, rétrogradations et exclusions.</span></div>
-   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitent les joueurs qui remplissent les conditions d’entrée.</span></div>
-   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Présents aux événements, ils donnent autant qu’ils reçoivent et profitent des récompenses du clan, comme tous les gradés.</span></div>
+   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitations · Lancement sondage et GDC · Promotions · Rétrogradations · Exclusions</span></div>
+   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitations des joueurs qui remplissent les conditions</span></div>
+   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Participation aux événements · Dons · Partage des récompenses du clan</span></div>
   </div>
   <p class="gr-more"><button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">Comment monter en grade&nbsp;?</button></p>
  </div>
@@ -1158,23 +1214,23 @@ html.js .rv2.in{opacity:1;transform:none}
 
 <section class="s strat" id="strategie" aria-labelledby="strat-title">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb" id="strat-title"><i>—</i>Notre stratégie</h2><p class="head-desc">Des GdC organisées&nbsp;: chacun joue à son niveau, sans pénaliser les plus faibles, pour gagner un maximum de guerres.</p></div>
+  <div class="head"><h2 class="eyeb" id="strat-title"><i>—</i>Notre stratégie</h2><p class="head-desc">Chacun joue à son niveau, sans pénaliser les plus faibles, pour gagner un maximum de guerres.</p></div>
   <div class="ladder">
-   <div class="step"><div class="top" style="background:var(--line)"></div><div class="lv">Préparation</div><h3>Renforts</h3><p>Les chefs remplissent tous les châteaux avant la bataille.</p></div>
-   <div class="step"><div class="top" style="background:#FBE794"></div><div class="lv">1<sup>re</sup> attaque</div><h3>Ton miroir</h3><p>Le village de ton rang en face, pas la suggestion du jeu.</p></div>
-   <div class="step"><div class="top" style="background:var(--yellow)"></div><div class="lv">2<sup>e</sup> attaque</div><h3>Le rattrapage</h3><p>Une attaque ratée de ton niveau, selon les chefs et aînés.</p></div>
-   <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">12 dernières heures</div><h3>Les oubliés</h3><p>Les villages jamais attaqués, puis les étoiles manquantes.</p></div>
+   <div class="step"><div class="top" style="background:var(--line)"></div><div class="lv">Préparation</div><p>Châteaux remplis par les chefs</p></div>
+   <div class="step"><div class="top" style="background:#FBE794"></div><div class="lv">1<sup>re</sup> attaque</div><p>Le village de ton rang, pas la suggestion du jeu</p></div>
+   <div class="step"><div class="top" style="background:var(--yellow)"></div><div class="lv">2<sup>e</sup> attaque</div><p>Rattraper une attaque ratée, selon les chefs</p></div>
+   <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">12 dernières heures</div><p>Villages non attaqués, puis étoiles manquantes</p></div>
   </div>
   <div class="regles">
    <h3 class="rg-t">Nos règles</h3>
    <div class="rg-box">
     <div class="rg-col"><p class="rg-k ok">On fait</p>
-     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Deux attaques</b>, toujours. Un oubli = un avertissement.</span></p>
-     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Compo prête</b>&nbsp;: camps, sorts et héros.</span></p>
+     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Deux attaques</b> · un oubli = un avertissement</span></p>
+     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Compo prête</b> · camps, sorts, héros</span></p>
     </div>
     <div class="rg-col"><p class="rg-k ko">On ne fait pas</p>
-     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Voler une cible</b>&nbsp;: on échange d’un commun accord.</span></p>
-     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Tester en guerre</b> ou attaquer pour le butin, sauf feu vert des chefs en fin de guerre.</span></p>
+     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Vol de cible</b> · échanges d’un commun accord</span></p>
+     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Test ou attaque butin</b> · sauf feu vert des chefs en fin de guerre</span></p>
     </div>
    </div>
   </div>
@@ -1337,6 +1393,7 @@ secs.forEach(x=>io.observe(x));
   if(typeof d.warWins==='number'&&typeof d.warLosses==='number'&&d.warWins+d.warLosses>0)put('rate',Math.round(d.warWins/(d.warWins+d.warLosses)*100)+'\u00a0%');
   if(typeof d.warWins==='number'&&typeof d.warLosses==='number'&&d.warWins+d.warLosses>0)put('ratio','Ratio V/D : '+Math.round(d.warWins/(d.warWins+d.warLosses)*100)+'\u00a0%');
   card('main',(d.clans||{}).main);card('second',(d.clans||{}).second);
+  (function(){var hb=document.querySelector('.hero-badge'),src=((d.clans||{}).main||{}).badge||ic.badge||d.badgeUrl;if(hb&&src){var im=new Image();im.onload=function(){hb.src=src};im.src=src}})();
   ['main','second'].forEach(function(k){var im=document.querySelector('.cbadge[data-badge="'+k+'"]'),c=(d.clans||{})[k]||{},src=c.badge||(k==='main'?(ic.badge||d.badgeUrl):null);
    if(im&&src){im.onload=function(){im.hidden=false};im.src=src}});
   (function(){var hb=document.querySelector('.brand-b'),src=((d.clans||{}).main||{}).badge||ic.badge||d.badgeUrl;if(hb&&src){hb.onload=function(){hb.hidden=false;hb.parentNode.classList.add('has-b')};hb.src=src}})();
@@ -1519,6 +1576,11 @@ secs.forEach(x=>io.observe(x));
  /* 8 : installable comme une appli, lisible sans réseau */
  try{if(location.protocol==='https:'&&'serviceWorker' in navigator)addEventListener('load',function(){try{navigator.serviceWorker.register('/sw.js').catch(function(){})}catch(e){}})}catch(e){}
 })();
+</script>
+<script>
+(function(){var r=document.documentElement,hs=document.querySelector('.hero-sub'),t=false;if(!hs)return;
+ function u(){r.classList.toggle('past-hero',hs.getBoundingClientRect().top<innerHeight*.6)}
+ u();addEventListener('scroll',function(){if(t)return;t=true;requestAnimationFrame(function(){t=false;u()})},{passive:true});addEventListener('resize',u)})();
 </script>
 </body>
 </html>
