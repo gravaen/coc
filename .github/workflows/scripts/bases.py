@@ -18,6 +18,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.request
 
 THS = (19, 18, 17, 16)
@@ -50,6 +51,8 @@ def text(s):
 def entries(th):
     """Articles du flux Atom, du plus récent au plus ancien : titre, adresse, date, liens avec leur intitulé."""
     xml = get(FEED.format(th))
+    if "<entry" not in xml:
+        raise ValueError(f"réponse inattendue ({len(xml)} caractères) : {xml[:120]!r}")
     out = []
     for e in re.findall(r"<entry>(.*?)</entry>", xml, re.S):
         title = text(re.search(r"<title[^>]*>(.*?)</title>", e, re.S).group(1)) if "<title" in e else "Article"
@@ -141,6 +144,10 @@ def main():
         except Exception as e:
             print(f"  HDV {th} : flux illisible ({e})", file=sys.stderr)
             continue
+        print(f"  HDV {th} : {len(arts)} article(s), dernier « {arts[0]['title'] if arts else '-'} » "
+              f"({sum(1 for l in (arts[0]['links'] if arts else []) if l['kind'] == 'base')} base(s), "
+              f"{sum(1 for l in (arts[0]['links'] if arts else []) if l['kind'] == 'army')} armée(s))")
+        time.sleep(2)
         if first:
             arts = arts[:1]
         for kind in ("base", "army"):
