@@ -1151,6 +1151,37 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 @media (prefers-reduced-motion:reduce){.nav .brand .brand-t,.nav .brand .brand-b{animation:none!important}}
 /* tirets des titres : gris en mode clair, jaunes en mode sombre */
 @media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){.head h2.eyeb i,.regles h3.rg-t:before{background:#C9C2AE!important;color:#C9C2AE!important}}
+/* règles : simple liste à puces */
+.rg-list{margin:0;padding:0 0 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px 36px}
+.rg-list li{font-size:var(--t-body);line-height:1.45;color:var(--text);padding-left:2px}
+.rg-list li::marker{color:var(--soft)}
+.rg-list b{font-weight:600;color:var(--ink)}
+@media (max-width:760px){.rg-list{grid-template-columns:1fr;gap:6px}}
+/* accueil : ancienneté */
+.hero-since{margin:0 0 10px;font-size:var(--t-small);letter-spacing:.06em;text-transform:uppercase;color:#A9A598;font-weight:600}
+/* fenêtre de candidature : étapes et confirmation */
+.jd-steps{list-style:none;margin:0 0 16px;padding:0;display:flex;gap:6px;counter-reset:st}
+.jd-steps li{flex:1;counter-increment:st;font-size:12.5px;font-weight:600;color:var(--soft);padding-top:8px;border-top:3px solid var(--line)}
+.jd-steps li::before{content:counter(st) ". "}
+.jd-steps li.on{color:var(--ink);border-top-color:var(--yellow)}
+.jr-next{margin:10px 0 16px;padding-left:20px;font-size:var(--t-body);line-height:1.5;color:var(--text)}
+.jr-next li{margin-bottom:6px}.jr-next b{color:var(--ink);font-weight:600}
+.rg-grid .step p b{color:var(--ink);font-weight:600}
+/* ===== fiche profil et étiquettes : sobriété ===== */
+/* une seule règle pour les petites étiquettes : minuscules, 600, échelle du site */
+.sim-lbl,.pc-h,.pc-cats span,.facts dt,.hero-since,.pill b,.clan .kind{text-transform:none!important;letter-spacing:0!important;font-weight:600!important}
+.sim-lbl,.pc-h,.pc-cats span,.pc-heroes small,.pc-lg span{font-size:var(--t-label)!important}
+.pc-h{color:var(--soft);margin:20px 0 8px}
+/* couleur seulement sur les barres, chiffres en noir */
+.pc-num b,.pc-cats b{color:var(--ink)!important;font-family:var(--body)!important;font-weight:600!important}
+.pc-num small{font-weight:400!important}
+.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:var(--ink)!important;color:var(--light)!important;font-weight:600!important}
+.pc-rush b{font-weight:600!important;color:var(--ink)!important}
+.pc-rush.o b{color:#B5600F!important}.pc-rush.r b{color:#A4271C!important}
+.pc-heroes b{font-family:var(--body)!important;font-weight:600!important}
+.pc-heroes i{display:none}
+.pc-cats li,.pc-heroes li{background:var(--sand)}
+@media (prefers-color-scheme:dark){.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:#F2EDDE!important;color:#212320!important}}
 </style>
 </head>
 <body>
@@ -1158,14 +1189,14 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 <header class="nav">
  <div class="wrap">
   <a class="brand" href="#top" aria-label="Gravaen, retour en haut de page"><img class="brand-b" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="34" height="34" alt="" hidden><span class="brand-t">Gravaen</span></a>
-  <a class="cta open nav-cta" href="https://discord.gg/AZ6JDeCPG" target="_blank" rel="noopener" data-join aria-label="Postuler sur Discord">Postuler<span class="cta-long">&nbsp;sur Discord</span></a>
+  <a class="cta open nav-cta" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join aria-label="Postuler sur Discord">Postuler<span class="cta-long">&nbsp;sur Discord</span></a>
   <ul id="links"><li class="nav-ind" aria-hidden="true"></li>
    <li><a href="#vision">Qui nous sommes</a></li>
    <li><a href="#clans">Nos clans</a></li>
    <li><a href="#grades">Notre organisation</a></li>
    <li><a href="#strategie">Notre stratégie</a></li>
    
-   <li class="drawer-cta"><a class="cta open" href="https://discord.gg/AZ6JDeCPG" target="_blank" rel="noopener" data-join>Postuler sur Discord</a></li>
+   <li class="drawer-cta"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Postuler sur Discord</a></li>
   </ul>
   <button class="menu" id="menu" aria-expanded="false" aria-controls="links" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path id="mi" d="M4 7h16M4 12h16M4 17h16"/></svg></button>
  </div>
@@ -1176,6 +1207,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
  <div class="wrap hero-top">
   <div class="hero-txt">
   <img class="hero-badge" data-badge="hero" src="icon-512.png" alt="Blason du clan Gravaen" width="512" height="512" fetchpriority="high">
+  <p class="hero-since">Clan français depuis août 2025</p>
   <h1 class="slogan sr-h1">Clash of Clans&nbsp;: Gravaen</h1>
   <p class="slogan-sub hero-lede">Un clan familial à l’ambiance détendue, <b>adulte</b>, <b>actif</b> et <b>très organisé</b>&nbsp;: du jeu en profondeur et de bonnes soirées&nbsp;!</p>
   </div>
@@ -1191,9 +1223,9 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 
 <section class="s" id="clans">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de votre niveau, sans déséquilibre en guerre ni en Ligue de clans.</p></div>
+  <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de ton niveau, sans déséquilibre en guerre ni en Ligue de clans.</p></div>
   <div class="clans">
-   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="vh">Gravaen, clan principal</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Membres</dt><dd data-c="main-mem">44/50</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
+   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="vh">Gravaen, clan principal</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Places libres</dt><dd data-c="main-mem">6</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
    <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="vh">Gravaen, clan secondaire</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Membres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
   </div>
  </div>
@@ -1222,15 +1254,11 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
   </div>
   <div class="regles">
    <h3 class="rg-t">Nos règles</h3>
-   <div class="rg-box">
-    <div class="rg-col"><p class="rg-k ok">On fait</p>
-     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Deux attaques</b> · un oubli = un avertissement</span></p>
-     <p class="rg-i"><span class="rg-m ok" aria-hidden="true">✓</span><span><b>Compo prête</b> · camps, sorts, héros</span></p>
-    </div>
-    <div class="rg-col"><p class="rg-k ko">On ne fait pas</p>
-     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Vol de cible</b> · échanges d’un commun accord</span></p>
-     <p class="rg-i"><span class="rg-m ko" aria-hidden="true">✗</span><span><b>Test ou attaque butin</b> · sauf feu vert des chefs en fin de guerre</span></p>
-    </div>
+   <div class="ladder rg-grid">
+    <div class="step"><div class="top"></div><div class="lv">Attaques</div><p><b>Deux, toujours</b><br>Un oubli = un avertissement</p></div>
+    <div class="step"><div class="top"></div><div class="lv">Compo</div><p><b>Prête</b><br>Camps, sorts, héros</p></div>
+    <div class="step"><div class="top"></div><div class="lv">Cibles</div><p><b>Pas de vol</b><br>Échanges d’un commun accord</p></div>
+    <div class="step"><div class="top"></div><div class="lv">Butin</div><p><b>Pas de test ni d’attaque butin</b><br>Sauf feu vert des chefs en fin de guerre</p></div>
    </div>
   </div>
  </div>
@@ -1239,7 +1267,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 
 <section class="join" id="rejoindre">
  <div class="wrap">
-  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Entre ton tag de joueur&nbsp;: ta candidature arrive sur notre Discord avec ton profil. Ce sera un plaisir de t’accueillir&nbsp;!</p><p class="jn-act"><a class="cta open" href="https://discord.gg/AZ6JDeCPG" target="_blank" rel="noopener" data-join>Postuler sur Discord</a><span class="jn-note">Ton profil est analysé en direct et le clan adapté t’est proposé.</span></p></div>
+  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Un clan <b>adulte</b>, <b>actif</b> et <b>très organisé</b> t’attend. Entre ton tag&nbsp;: ta candidature arrive sur notre Discord avec ton profil.</p><p class="jn-act"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Postuler sur Discord</a><span class="jn-note">Ton profil est analysé en direct et le clan adapté t’est proposé.</span></p></div>
  </div>
 </section>
 </main>
@@ -1250,7 +1278,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
  <p class="mj-t">Monter en grade</p>
  <p class="mj-p"><b>Aîné</b>&nbsp;: 1&nbsp;000 dons et 3 guerres de clans.</p>
  <p class="mj-p"><b>Adjoint</b>&nbsp;: 3 mois dans le clan et élu <b>meilleur joueur de la saison</b>.</p>
- <p class="mj-p">Élu chaque saison, top 10 publié sur <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a>&nbsp;: Ligue de clans et guerre d’abord, puis capitale, classé, activité et dons.</p>
+ <p class="mj-p">Élu chaque saison, top 10 publié sur <a href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener">Discord</a>&nbsp;: Ligue de clans et guerre d’abord, puis capitale, classé, activité et dons.</p>
  <p class="mj-p mj-s">Envie d’encadrer&nbsp;? Parles-en au chef.</p>
  <i class="mj-arrow" aria-hidden="true"></i>
 </div>
@@ -1258,12 +1286,13 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 <dialog class="join-dlg" id="join-dlg" aria-labelledby="join-title">
  <div class="jd-head"><h2 id="join-title">Postuler sur Discord</h2><button class="jd-x" type="button" id="join-x" aria-label="Fermer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
  <div class="jd-body">
+  <ol class="jd-steps" id="jd-steps" aria-label="Étapes"><li class="on">Ton tag</li><li>Ton profil</li><li>Envoi</li></ol>
   <form id="join-form" autocomplete="off"><label class="sim-lbl" for="join-tag">Ton tag de joueur</label><div class="sim-in"><input id="join-tag" name="tag" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="#2PP8LQ9Y" maxlength="14" required><button type="submit">Voir mon profil</button></div><p class="jd-help">Ton tag est sous ton pseudo, dans ton profil Clash of Clans.</p></form>
   <div class="jd-res" id="join-res" aria-live="polite"></div>
  </div>
 </dialog>
 
-<footer><div class="wrap"><span>Gravaen · Clash of Clans</span><span>Clan principal #2C0CVRCPV · Clan secondaire #2J0UPJVQJ · <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a></span><p class="legal">Ce contenu n’est pas officiel et n’a pas reçu le soutien de Supercell. Pour plus d’informations, veuillez consulter le règlement de Supercell sur les contenus créés par les fans : <a href="https://supercell.com/en/fan-content-policy/fr/" target="_blank" rel="noopener">supercell.com/en/fan-content-policy/fr</a>. Icônes de ligue : <a href="https://github.com/ClashKingInc/ClashKingAssets" target="_blank" rel="noopener">ClashKing</a>.</p>
+<footer><div class="wrap"><span>Gravaen · Clash of Clans</span><span>Clan principal #2C0CVRCPV · Clan secondaire #2J0UPJVQJ · <a href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener">Discord</a></span><p class="legal">Ce contenu n’est pas officiel et n’a pas reçu le soutien de Supercell. Pour plus d’informations, veuillez consulter le règlement de Supercell sur les contenus créés par les fans : <a href="https://supercell.com/en/fan-content-policy/fr/" target="_blank" rel="noopener">supercell.com/en/fan-content-policy/fr</a>. Icônes de ligue : <a href="https://github.com/ClashKingInc/ClashKingAssets" target="_blank" rel="noopener">ClashKing</a>.</p>
 </div></footer>
 
 <script>
@@ -1372,7 +1401,7 @@ secs.forEach(x=>io.observe(x));
   var all=function(x,v){document.querySelectorAll('[data-c="'+k+'-'+x+'"]').forEach(function(n){n.textContent=v})};
   if(c.th>1)all('th',c.th+'+');
   if(typeof c.league==='string'){var lg=palier(c.league);if(lg){all('lg',lg);all('lgt',lg==='Aucune'?' sans ligue minimum':' et ligue '+lg)}}
-  if(typeof c.members==='number'&&e('mem')){e('mem').textContent=c.members+'/50';e('memrow').hidden=false}
+  if(typeof c.members==='number'&&e('mem')){var lib=Math.max(0,50-c.members);e('mem').textContent=lib?String(lib):'Complet';e('memrow').hidden=false}
   var WF={always:'Toujours',moreThanOncePerWeek:'Plus d’une fois par semaine',oncePerWeek:'Une fois par semaine',lessThanOncePerWeek:'Moins d’une fois par semaine',never:'Jamais'};
   if(WF[c.wf]&&e('wf'))e('wf').textContent=WF[c.wf];
  }
@@ -1448,7 +1477,7 @@ secs.forEach(x=>io.observe(x));
 <script>
 /* candidature express : tag -> profil et score (Cloudflare Worker) -> envoi sur Discord -> lien d'invitation */
 (function(){
- var API='https://gravaen-candidature.gravaen-coc.workers.dev/',INVITE='https://discord.gg/AZ6JDeCPG';
+ var API='https://gravaen-candidature.gravaen-coc.workers.dev/',INVITE='https://discord.gg/XAUWg3rnj';
  var dlg=document.getElementById('join-dlg');if(!dlg||!dlg.showModal)return;
  var form=document.getElementById('join-form'),inp=document.getElementById('join-tag'),res=document.getElementById('join-res'),last=null;
  document.querySelectorAll('[data-join]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var m=document.getElementById('links');if(m)m.classList.remove('is-open');dlg.showModal();setTimeout(function(){inp.focus()},50)})});
@@ -1475,14 +1504,14 @@ secs.forEach(x=>io.observe(x));
   var sc=Math.round(a.total);
   var heroes=a.heroes.map(function(h){var r=h.m?Math.min(1,h.l/h.m):0;return '<li class="'+(h.l?'':'off')+'"><img src="'+(HIMG[h.n]||'')+'" alt="'+esc(h.n)+'" width="44" height="44"><b>'+h.l+'</b><i style="--r:'+r.toFixed(3)+'"></i><small>'+esc(h.n)+'</small></li>'}).join('');
   var cats=a.dims.map(function(d){var v=Math.round(d.v/d.max*100);return '<li class="t-'+tone(v)+'"><span>'+esc(({hdv:'HDV',her:'Héros',cla:'Classé',gue:'Guerre',cap:'Capitale',don:'Dons'})[d.k]||d.label)+'</span><b>'+v+'</b><i style="--r:'+(v/100).toFixed(3)+'"></i></li>'}).join('');
-  var rush=a.tooRushed?['r','Compte trop rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:a.rushed?['o','Compte rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:['g','Pas de rush','héros au niveau de son HDV'];
+  var rush=a.tooRushed?['r','Compte trop rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:a.rushed?['o','Compte rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:['g','Pas de rush',''];
   return '<div class="pc">'
    +'<div class="pc-id"><img class="pc-th" src="'+th+'" alt="Hôtel de ville '+a.th+'" width="88" height="88">'
     +'<div class="pc-who"><b>'+esc(a.name)+'</b><span class="pc-tag">'+esc(a.tag)+'</span><span class="pc-meta">HDV '+a.th+' · niveau '+a.exp+(a.clan?' · '+esc(a.clan):'')+'</span></div>'
     +(a.leagueIcon?'<div class="pc-lg"><img src="'+a.leagueIcon+'" alt="" width="52" height="52"><span>'+esc(lname(a.league))+'</span></div>':'')+'</div>'
    +'<div class="pc-score t-'+tone(sc)+'"><div class="pc-num"><b>'+sc+'</b><small>/100</small></div>'
     +'<div class="pc-verdict"><span class="pc-reco '+(ok?'g':bad?'r':'o')+'">'+(bad?esc(a.reco):'Recommandé : '+esc(a.reco))+'</span>'
-    +'<span class="pc-rush '+rush[0]+'"><b>'+rush[1]+'</b> · '+rush[2]+(a.malus?' (−'+a.malus+' pts)':'')+'</span></div></div>'
+    +'<span class="pc-rush '+rush[0]+'"><b>'+rush[1]+'</b>'+(rush[2]?' · '+rush[2]:'')+(a.malus?' (−'+a.malus+' pts)':'')+'</span></div></div>'
    +'<h3 class="pc-h">Héros</h3><ul class="pc-heroes">'+heroes+'</ul>'
    +'<h3 class="pc-h">Scores</h3><ul class="pc-cats">'+cats+'</ul>'
    +'</div>';
@@ -1490,16 +1519,18 @@ secs.forEach(x=>io.observe(x));
  form.addEventListener('submit',function(e){
   e.preventDefault();var tag=inp.value.trim();if(!tag)return;
   res.innerHTML='<p class="jd-load">Recherche du joueur…</p>';
-  call(tag,false).then(function(a){last=a;
+  call(tag,false).then(function(a){last=a;step(2);
    if(a.discord){res.innerHTML=card(a)+'<a class="cta jr-send" href="'+API+'auth?tag='+encodeURIComponent(a.tag)+'">Envoyer avec Discord</a><p class="jr-note">Discord te demande de confirmer ton compte, puis tu arrives directement sur notre serveur. Ton profil et ce score sont envoyés au staff.</p>';return}
    res.innerHTML=card(a)+'<button class="cta jr-send" type="button" id="join-send">Envoyer ma candidature</button><p class="jr-note">Ton profil et ce score seront envoyés au staff sur notre Discord.</p>';
    document.getElementById('join-send').addEventListener('click',send);
   }).catch(function(err){res.innerHTML='<p class="jd-err">'+esc(err.message==='Failed to fetch'?'Connexion impossible, réessaie dans un instant.':err.message)+'</p>'});
  });
+ function step(n){var li=document.querySelectorAll('#jd-steps li');li.forEach(function(x,i){x.classList.toggle('on',i<n);x.classList.toggle('cur',i===n-1)})}
+ step(1);
  function send(){
   var b=document.getElementById('join-send');b.disabled=true;b.textContent='Envoi…';
   call(last.tag,true).then(function(a){
-   res.innerHTML='<p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée')+'</p><p class="jr-meta">Rejoins maintenant notre Discord : le staff a ton profil sous les yeux.</p><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a>';
+   step(3);res.innerHTML='<div class="jr-done"><p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée, merci '+esc(a.name||'')+'&nbsp;!')+'</p><ol class="jr-next"><li><b>Rejoins le Discord</b> avec le bouton ci-dessous.</li><li><b>Le staff regarde ton profil</b>, il l’a déjà sous les yeux.</li><li><b>On t’invite dans le clan</b> qui te correspond.</li></ol><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a></div>';
   }).catch(function(err){b.disabled=false;b.textContent='Envoyer ma candidature';res.insertAdjacentHTML('beforeend','<p class="jd-err">'+esc(err.message)+'</p>')});
  }
 })();
