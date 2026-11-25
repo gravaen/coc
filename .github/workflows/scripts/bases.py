@@ -4,7 +4,7 @@ Source : les articles de Blueprint CoC (flux Atom de leur blog, un par HDV).
 - Liens « copier la base » (action OpenLayout)  -> salon des bases  (secret DISCORD_BASES_WEBHOOK)
 - Liens « copier l'armée » (action CopyArmy)    -> salon des compos (secret DISCORD_COMPOS_WEBHOOK)
 
-Une fois par jour au plus. Chaque lien n'est partagé qu'une seule fois.
+Vérifié toutes les heures : chaque nouvelle base ou compo part dès qu'elle est publiée. Chaque lien n'est partagé qu'une seule fois.
 Au tout premier passage, seuls les liens de l'article le plus récent de chaque HDV sont envoyés
 (3 au maximum par HDV), pour ne pas inonder le salon avec l'historique.
 Sans webhook, le script affiche dans le journal ce qu'il aurait envoyé (essai à blanc).
@@ -121,8 +121,8 @@ def main():
     sent = set(state.get("sent") or [])
     first = not sent
     last = state.get("last")
-    if last and not FORCE and NOW - datetime.datetime.fromisoformat(last) < datetime.timedelta(hours=20):
-        print("bases : déjà passé il y a moins de 20 h")
+    if last and not FORCE and NOW - datetime.datetime.fromisoformat(last) < datetime.timedelta(minutes=55):
+        print("bases : déjà vérifié il y a moins d'1 h")
         save(state)
         return
     hooks = {"base": HOOK_BASES, "army": HOOK_COMPOS}

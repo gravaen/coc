@@ -16,7 +16,7 @@ on:
         type: boolean
         default: false
       bases_maintenant:
-        description: "Partager tout de suite les nouvelles bases et compos (sans attendre 24 h)"
+        description: "Partager tout de suite les nouvelles bases et compos (sans attendre la vérification de l’heure)"
         type: boolean
         default: false
 
