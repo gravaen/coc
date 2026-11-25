@@ -51,12 +51,6 @@ def text(s):
 def entries(th):
     """Articles du flux Atom, du plus récent au plus ancien : titre, adresse, date, liens avec leur intitulé."""
     xml = get(FEED.format(th))
-    if os.environ.get("BASES_DEBUG", "1") == "1":
-        e0 = (re.findall(r"<entry>(.*?)</entry>", xml, re.S) or [""])[0]
-        i = e0.find("CopyArmy")
-        print(f"  [diag HDV {th}] flux {len(xml)} car., CopyArmy {xml.count('CopyArmy')}, OpenLayout {xml.count('OpenLayout')} ; "
-              f"1er article {len(e0)} car., balises : {sorted(set(re.findall(r'<([a-z]+)[ >]', e0)))[:12]} ; "
-              f"extrait : {e0[max(0, i - 160):i + 40]!r}")
     if "<entry" not in xml:
         raise ValueError(f"réponse inattendue ({len(xml)} caractères) : {xml[:120]!r}")
     out = []
@@ -67,20 +61,18 @@ def entries(th):
         pub = (re.search(r"<published>(.*?)</published>", e) or re.search(r"<updated>(.*?)</updated>", e)).group(1)
         c = re.search(r"<content[^>]*>(.*?)</content>", e, re.S)
         body = html.unescape(html.unescape(c.group(1))) if c else ""   # contenu parfois échappé deux fois
-        links, seen, head = [], set(), ""
-        pos = 0
-        for m2 in re.finditer(HEAD.pattern + "|" + LINK.pattern, body, re.I | re.S):
-            if m2.group(1) is not None:          # un titre : il sert d'intitulé aux liens qui suivent
-                head = text(m2.group(1))
-                continue
-            href, kind = html.unescape(m2.group(2)), m2.group(3)
-            href = href.rstrip(".,);")
+        links, seen = [], set()
+        # titres de section (ceux qui contiennent eux-mêmes un lien du jeu ne servent pas d'intitulé)
+        heads = [(h.end(), text(h.group(1))) for h in HEAD.finditer(body)
+                 if "link.clashofclans.com" not in h.group(1) and len(text(h.group(1))) > 2]
+        for m2 in LINK.finditer(body):
+            href, kind = html.unescape(m2.group(1)).rstrip(".,);"), m2.group(2)
             key = re.sub(r"[?&](?:utm_[^&]*)", "", href)
             if key in seen or "army-link-here" in href:
                 continue
             seen.add(key)
-            links.append({"url": href, "kind": "base" if kind.lower() == "openlayout" else "army", "label": head or title})
-            pos += 1
+            prev = [t for e, t in heads if e <= m2.start()]
+            links.append({"url": href, "kind": "base" if kind.lower() == "openlayout" else "army", "label": prev[-1] if prev else title})
         yt = re.search(r"(?:youtube\.com/(?:embed/|watch\?v=)|youtu\.be/)([A-Za-z0-9_-]{11})", body)
         out.append({"title": title, "url": url, "pub": pub, "links": links,
                     "video": ("https://www.youtube.com/watch?v=" + yt.group(1)) if yt else None})
