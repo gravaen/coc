@@ -104,7 +104,7 @@ def post(hook, msg):
         r.read()
 
 
-def message(th, kind, items):
+def message(th, kind, items, seen_vids=()):
     """Un message par HDV : chaque lien avec son intitulé, et l'article d'origine cité."""
     is_base = kind == "base"
     lines, n = [], 0
@@ -121,7 +121,7 @@ def message(th, kind, items):
             srcs.append(s)
     vids = []
     for it in items:
-        if it.get("video") and it["video"] not in vids:
+        if it.get("video") and it["video"] not in vids and it["video"] not in seen_vids:
             vids.append(it["video"])
     # vignette de la vidéo (image YouTube) en grand dans le message, et lien « Regarder la vidéo » en tête
     vid_id = re.search(r"v=([A-Za-z0-9_-]{11})", vids[0]).group(1) if vids else None
@@ -141,6 +141,7 @@ def message(th, kind, items):
 def main():
     state = load()
     sent = set(state.get("sent") or [])
+    vsent = set(state.get("vids") or [])   # vidéos déjà montrées : jamais deux fois la même
     first = not sent
     last = state.get("last")
     if last and not FORCE and NOW - datetime.datetime.fromisoformat(last) < datetime.timedelta(minutes=55):
@@ -169,7 +170,7 @@ def main():
             new = new[:FIRST_MAX if first else RUN_MAX]
             if not new:
                 continue
-            msg = message(th, kind, new)
+            msg = message(th, kind, new, vsent)
             if hooks[kind]:
                 try:
                     post(hooks[kind], msg)
@@ -182,6 +183,7 @@ def main():
                 for x in new:
                     print("   ", x["label"], "→", x["url"][:90])
             sent.update(x["url"] for x in new)
+            vsent.update(x["video"] for x in new if x.get("video"))
         if first:   # au premier passage, tout l'historique visible est noté comme « déjà vu »
             try:
                 for a in entries(th):
@@ -190,6 +192,7 @@ def main():
                 pass
     if HOOK_BASES or HOOK_COMPOS:
         state["sent"] = sorted(sent)[-3000:]
+        state["vids"] = sorted(vsent)[-500:]
         state["last"] = NOW.isoformat(timespec="seconds")
     save(state)
 
