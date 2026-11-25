@@ -51,6 +51,12 @@ def text(s):
 def entries(th):
     """Articles du flux Atom, du plus récent au plus ancien : titre, adresse, date, liens avec leur intitulé."""
     xml = get(FEED.format(th))
+    if os.environ.get("BASES_DEBUG", "1") == "1":
+        e0 = (re.findall(r"<entry>(.*?)</entry>", xml, re.S) or [""])[0]
+        i = e0.find("CopyArmy")
+        print(f"  [diag HDV {th}] flux {len(xml)} car., CopyArmy {xml.count('CopyArmy')}, OpenLayout {xml.count('OpenLayout')} ; "
+              f"1er article {len(e0)} car., balises : {sorted(set(re.findall(r'<([a-z]+)[ >]', e0)))[:12]} ; "
+              f"extrait : {e0[max(0, i - 160):i + 40]!r}")
     if "<entry" not in xml:
         raise ValueError(f"réponse inattendue ({len(xml)} caractères) : {xml[:120]!r}")
     out = []
