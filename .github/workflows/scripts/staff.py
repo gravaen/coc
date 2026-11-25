@@ -21,8 +21,10 @@ import urllib.request
 
 CLANS = (("Clan principal", "#2C0CVRCPV"), ("Clan secondaire", "#2J0UPJVQJ"))
 API = os.environ.get("COC_API_BASE", "https://cocproxy.royaleapi.dev/v1")
-PAGES = os.environ.get("PAGES_URL", "https://gravaen.github.io/coc/")
+PAGES = os.environ.get("PAGES_URL", "https://gravaen.pages.dev/")
 HOOK = os.environ.get("DISCORD_STAFF_WEBHOOK", "").strip()
+# salon général : bilans de guerre et meilleurs joueurs (à défaut, salon staff)
+GEN = os.environ.get("DISCORD_GENERAL_WEBHOOK", "").strip() or HOOK
 NOW = datetime.datetime.now(datetime.timezone.utc)
 ROLE = {"member": "Membre", "admin": "Aîné", "coLeader": "Adjoint", "leader": "Chef"}
 
@@ -50,8 +52,8 @@ def ts(t):
     return datetime.datetime.strptime(t[:15], "%Y%m%dT%H%M%S").replace(tzinfo=datetime.timezone.utc)
 
 
-def post(msg):
-    req = urllib.request.Request(HOOK, data=json.dumps(msg).encode(), method="POST",
+def post(msg, hook=None):
+    req = urllib.request.Request(hook or HOOK, data=json.dumps(msg).encode(), method="POST",
                                  headers={"Content-Type": "application/json", "User-Agent": "DiscordBot (gravaen, 1)"})
     with urllib.request.urlopen(req, timeout=30) as r:
         r.read()
@@ -376,12 +378,12 @@ def main():
     state.setdefault("wars", [])
     state.pop("snaps", None)  # ancienne méthode (photo quotidienne), remplacée par le suivi continu
 
-    if not HOOK:
-        print("DISCORD_STAFF_WEBHOOK absent : rien n'est posté.")
+    if not GEN:
+        print("Aucun webhook Discord : rien n'est posté.")
     else:
         for wid, msg in wars_done(state):
             try:
-                post(msg)
+                post(msg, GEN)
                 state["wars"].append(wid)
                 print("bilan posté :", wid)
             except Exception as e:
@@ -424,9 +426,9 @@ def main():
     except Exception:
         new_pj = {}
     done = state.setdefault("seasons", [])
-    if HOOK and old_pj.get("season") and new_pj.get("season") and old_pj["season"] != new_pj["season"] and old_pj["season"] not in done:
+    if GEN and old_pj.get("season") and new_pj.get("season") and old_pj["season"] != new_pj["season"] and old_pj["season"] not in done:
         try:
-            post(season_report(old_pj))
+            post(season_report(old_pj), GEN)
             done.append(old_pj["season"])
             print("meilleurs joueurs de la saison postés :", old_pj["season"])
         except Exception as e:
@@ -439,9 +441,9 @@ def main():
             print("  ", x.get("c"), x.get("n"), x.get("score"), x.get("v"))
         for x in [x for x in P.values() if x.get("c") == "main"][:8]:
             print("  main", x.get("n"), x.get("score"), x.get("v"), x.get("p"))
-    if HOOK and os.environ.get("STAFF_TEST_SAISON") == "true" and new_pj.get("players"):
+    if GEN and os.environ.get("STAFF_TEST_SAISON") == "true" and new_pj.get("players"):
         try:
-            post(season_report(new_pj, test=True))
+            post(season_report(new_pj, test=True), GEN)
             print("classement de test posté")
         except Exception as e:
             print(f"  classement de test non posté : {e}", file=sys.stderr)
