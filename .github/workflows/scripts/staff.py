@@ -28,6 +28,7 @@ HOOK = os.environ.get("DISCORD_STAFF_WEBHOOK", "").strip()
 # salon général : bilans de guerre et meilleurs joueurs (à défaut, salon staff)
 GEN = os.environ.get("DISCORD_GENERAL_WEBHOOK", "").strip() or HOOK
 NOW = datetime.datetime.now(datetime.timezone.utc)
+NOM = {"#2C0CVRCPV": "Gravaen 1", "#2J0UPJVQJ": "Gravaen 2"}
 ROLE = {"member": "Membre", "admin": "Aîné", "coLeader": "Adjoint", "leader": "Chef"}
 
 
@@ -85,12 +86,32 @@ def load_state():
 # ---------------------------------------------------------------------------
 # 1. Bilan de guerre
 # ---------------------------------------------------------------------------
+def hero_sum(tag, cache):
+    """Somme des niveaux des héros du village principal (profil actuel du joueur)."""
+    if tag not in cache:
+        p = api_or_none(f"/players/{q(tag)}") or {}
+        cache[tag] = sum(h.get("level", 0) for h in p.get("heroes") or [] if h.get("village") == "home")
+    return cache[tag]
+
+
+def difficulty(atk_th, def_th, atk_h, def_h):
+    """Coefficient de difficulté : HDV adverse comparé au sien, puis héros adverses comparés aux siens."""
+    d = (def_th or 0) - (atk_th or 0)
+    f = 1.25 if d == 1 else 1.5 if d >= 2 else 1.0 if d == 0 else 0.75 if d == -1 else 0.5
+    if atk_h and def_h:
+        f *= max(0.7, min(1.3, def_h / atk_h))
+    return f
+
+
 def war_report(war, our_tag, clan_label, kind):
+    """Deux messages : version courte pour #général, version complète pour le salon staff."""
     us, them = war["clan"], war["opponent"]
     if us.get("tag") != our_tag:
         us, them = them, us
+    clan_label = NOM.get(our_tag, clan_label)
     per = war.get("attacksPerMember") or 1
-    foe_th = {m["tag"]: m.get("townhallLevel", 0) for m in them.get("members") or []}
+    foes = {m["tag"]: m for m in them.get("members") or []}
+    foe_th = {t: m.get("townhallLevel", 0) for t, m in foes.items()}
     s1, s2 = us.get("stars", 0), them.get("stars", 0)
     d1, d2 = us.get("destructionPercentage", 0), them.get("destructionPercentage", 0)
     if (s1, d1) > (s2, d2):
@@ -100,20 +121,45 @@ def war_report(war, our_tag, clan_label, kind):
     else:
         title, color = "🤝 Égalité", 0xE08A1E
 
+    # étoiles nouvelles : on rejoue nos attaques dans l'ordre, base par base
+    allatk = sorted([(a, m) for m in us.get("members") or [] for a in m.get("attacks") or []], key=lambda x: x[0].get("order", 0))
+    best, new = {}, {}
+    for a, m in allatk:
+        d = a.get("defenderTag")
+        new[id(a)] = max(0, a.get("stars", 0) - best.get(d, 0))
+        best[d] = max(best.get(d, 0), a.get("stars", 0))
+
+    heroes = {}
     rows = []
     for m in us.get("members") or []:
         atks = m.get("attacks") or []
-        stars = sum(a.get("stars", 0) for a in atks)
-        dest = sum(a.get("destructionPercentage", 0) for a in atks)
-        bad = [a for a in atks if a.get("stars", 0) <= 1 and foe_th.get(a.get("defenderTag"), 99) <= m.get("townhallLevel", 0)]
-        rows.append({"n": m.get("name"), "th": m.get("townhallLevel"), "stars": stars, "dest": dest,
-                     "used": len(atks), "missed": per - len(atks), "bad": len(bad),
-                     "triple": sum(1 for a in atks if a.get("stars") == 3)})
+        th = m.get("townhallLevel", 0)
+        pts, top_atk = 0.0, None
+        for a in atks:
+            f = foes.get(a.get("defenderTag"), {})
+            ah, dh = hero_sum(m["tag"], heroes), hero_sum(a.get("defenderTag"), heroes)
+            sc = new[id(a)] * difficulty(th, f.get("townhallLevel"), ah, dh)
+            pts += sc
+            det = {"pts": sc, "stars": a.get("stars", 0), "dest": a.get("destructionPercentage", 0),
+                   "foe": f.get("name", "?"), "fth": f.get("townhallLevel", "?"), "fh": dh, "h": ah}
+            if top_atk is None or (det["pts"], det["dest"]) > (top_atk["pts"], top_atk["dest"]):
+                top_atk = det
+        bad = [a for a in atks if a.get("stars", 0) <= 1 and foe_th.get(a.get("defenderTag"), 99) <= th]
+        rows.append({"n": m.get("name"), "th": th, "pts": pts, "used": len(atks), "missed": per - len(atks),
+                     "bad": len(bad), "avg": (sum(a.get("destructionPercentage", 0) for a in atks) / len(atks)) if atks else 0,
+                     "top": top_atk})
 
-    top = sorted([r for r in rows if r["used"]], key=lambda r: (-r["stars"], -r["dest"]))[:5]
+    ranked = sorted([r for r in rows if r["used"]], key=lambda r: (-r["pts"], -r["avg"]))
     missed = sorted([r for r in rows if r["missed"] > 0], key=lambda r: -r["missed"])
     bad = sorted([r for r in rows if r["bad"] > 0], key=lambda r: -r["bad"])
     used = sum(r["used"] for r in rows)
+    num = lambda x: f"{x:.1f}".replace(".", ",")
+
+    def line(r):
+        t = r["top"]
+        h = f" · héros {t['fh']}" if t["fh"] else ""
+        return (f"**{r['n']}** (HDV {r['th']}) → **{t['foe']}** (HDV {t['fth']}{h}) : "
+                f"{t['stars']} ⭐ {t['dest']} % · **{num(r['pts'])}** pts")
 
     tips = []
     for r in missed:
@@ -129,23 +175,36 @@ def war_report(war, our_tag, clan_label, kind):
 
     end = ts(war["endTime"])
     score_line = (f"**{us.get('name')}** {s1} ⭐ · {d1:.1f} %   —   {s2} ⭐ · {d2:.1f} % **{them.get('name')}**").replace(".", ",")
-    return {
-        "username": "Gravaen · staff",
+    desc = score_line + f"\n{war.get('teamSize')} contre {war.get('teamSize')} · {used}/{len(rows) * per} attaques jouées · fin <t:{int(end.timestamp())}:f>"
+    how = "Points : étoiles nouvelles × difficulté (HDV et héros de l'adversaire comparés aux siens)"
+    general = {
+        "username": "Gravaen",
         "embeds": [{
             "author": {"name": f"Bilan · {kind} · {clan_label}"},
             "title": f"{title} contre {them.get('name', '?')}",
             "color": color,
-            "description": (score_line + "\n"
-                            f"{war.get('teamSize')} contre {war.get('teamSize')} · {used}/{len(rows) * per} attaques jouées · fin <t:{int(end.timestamp())}:f>"),
+            "description": desc,
+            "fields": [{"name": "🏅 Meilleurs attaquants", "value": cut([line(r) for r in ranked[:3]])}],
+            "footer": {"text": how},
+        }],
+    }
+    staff = {
+        "username": "Gravaen · staff",
+        "embeds": [{
+            "author": {"name": f"Bilan staff · {kind} · {clan_label}"},
+            "title": f"{title} contre {them.get('name', '?')}",
+            "color": color,
+            "description": desc,
             "fields": [
-                {"name": "🏅 Meilleurs attaquants", "value": cut([f"{r['n']} — **{r['stars']}** ⭐ ({r['triple']}× 3 ⭐, HDV {r['th']})" for r in top])},
+                {"name": "🏅 Classement des attaquants", "value": cut([line(r) for r in ranked[:5]])},
                 {"name": "⏰ Attaques oubliées", "value": cut([f"{r['n']} — {r['missed']}" for r in missed]), "inline": True},
                 {"name": "🥶 Attaques ratées (0–1 ⭐ sur plus faible ou égal)", "value": cut([f"{r['n']} — {r['bad']}" for r in bad]), "inline": True},
                 {"name": "💡 Suggestion pour la prochaine guerre", "value": cut(tips)},
             ],
-            "footer": {"text": "Bilan automatique · Gravaen"},
+            "footer": {"text": how},
         }],
     }
+    return general, staff
 
 
 def wars_done(state):
@@ -178,7 +237,6 @@ def wars_done(state):
 # ---------------------------------------------------------------------------
 # 1 bis. Rappel de fin de guerre (#général) : à 6 h de la fin, qui n'a pas encore attaqué
 # ---------------------------------------------------------------------------
-NOM = {"#2C0CVRCPV": "Gravaen 1", "#2J0UPJVQJ": "Gravaen 2"}
 
 
 def late_list(war, our_tag):
@@ -587,9 +645,11 @@ def main():
     if not GEN:
         print("Aucun webhook Discord : rien n'est posté.")
     else:
-        for wid, msg in wars_done(state):
+        for wid, (msg_gen, msg_staff) in wars_done(state):
             try:
-                post(msg, GEN)
+                post(msg_gen, GEN)
+                if HOOK and HOOK != GEN:
+                    post(msg_staff, HOOK)
                 state["wars"].append(wid)
                 print("bilan posté :", wid)
             except Exception as e:
