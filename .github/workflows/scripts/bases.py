@@ -3,6 +3,7 @@
 Source : les articles de Blueprint CoC (flux Atom de leur blog, un par HDV).
 - Liens « copier la base » (action OpenLayout)  -> salon des bases  (secret DISCORD_BASES_WEBHOOK)
 - Liens « copier l'armée » (action CopyArmy)    -> salon des compos (secret DISCORD_COMPOS_WEBHOOK)
+- La vidéo YouTube de l'article, s'il y en a une, accompagne le message (lecteur affiché par Discord).
 
 Vérifié toutes les heures : chaque nouvelle base ou compo part dès qu'elle est publiée. Chaque lien n'est partagé qu'une seule fois.
 Au tout premier passage, seuls les liens de l'article le plus récent de chaque HDV sont envoyés
@@ -70,7 +71,9 @@ def entries(th):
             seen.add(key)
             links.append({"url": href, "kind": "base" if kind.lower() == "openlayout" else "army", "label": head or title})
             pos += 1
-        out.append({"title": title, "url": url, "pub": pub, "links": links})
+        yt = re.search(r"(?:youtube\.com/(?:embed/|watch\?v=)|youtu\.be/)([A-Za-z0-9_-]{11})", body)
+        out.append({"title": title, "url": url, "pub": pub, "links": links,
+                    "video": ("https://www.youtube.com/watch?v=" + yt.group(1)) if yt else None})
     out.sort(key=lambda x: x["pub"], reverse=True)
     return out
 
@@ -105,7 +108,13 @@ def message(th, kind, items):
         s = f"[{it['src']}]({it['srcurl']})"
         if s not in srcs:
             srcs.append(s)
+    vids = []
+    for it in items:
+        if it.get("video") and it["video"] not in vids:
+            vids.append(it["video"])
     return {
+        # la vidéo de l'article est mise hors du cadre : Discord affiche alors le lecteur YouTube sous le message
+        **({"content": "🎬 Vidéo : " + " ".join(vids[:2])} if vids else {}),
         "username": "Gravaen · bases" if is_base else "Gravaen · compos",
         "embeds": [{
             "author": {"name": ("Nouvelles bases" if is_base else "Compos méta") + f" · HDV {th}"},
@@ -139,7 +148,7 @@ def main():
             for a in arts:
                 for l in a["links"]:
                     if l["kind"] == kind and l["url"] not in sent and l["url"] not in {x["url"] for x in new}:
-                        new.append({**l, "src": a["title"], "srcurl": a["url"]})
+                        new.append({**l, "src": a["title"], "srcurl": a["url"], "video": a.get("video")})
             new = new[:FIRST_MAX if first else RUN_MAX]
             if not new:
                 continue
