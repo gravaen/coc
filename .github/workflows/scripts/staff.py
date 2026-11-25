@@ -7,6 +7,7 @@ DISCORD_STAFF_WEBHOOK n'existe pas.
    un message avec le résultat, les meilleurs attaquants, les attaques oubliées ou ratées
    et une suggestion pour la prochaine guerre.
    Rappel à 6 h de la fin de chaque guerre (#général) : qui n'a pas encore attaqué.
+   Nouvel arrivant (salon staff) : analyse façon candidature express + action conseillée ; rien si le joueur est déjà connu.
 2. Activité (façon ClashPerk) : à chaque passage, les compteurs de chaque membre sont relus ;
    dès que l'un bouge, le joueur était en ligne. Chaque lundi soir : « vu il y a… »,
    score d'activité sur 7 jours, inactifs et peu actifs en premier, suggestion selon le grade.
@@ -229,6 +230,106 @@ def end_reminders(state):
 
 
 # ---------------------------------------------------------------------------
+# 1 ter. Nouvel arrivant (#staff) : même analyse que la candidature express, avec l'action conseillée
+# ---------------------------------------------------------------------------
+HEROES = ("Barbarian King", "Archer Queen", "Minion Prince", "Grand Warden", "Royal Champion", "Dragon Duke")
+HERO_FR = ("Roi", "Reine", "Prince", "Gardien", "Championne", "Duc")
+CAPS = {7: (10, 0, 0, 0, 0, 0), 8: (20, 10, 0, 0, 0, 0), 9: (30, 30, 10, 0, 0, 0), 10: (40, 40, 20, 0, 0, 0),
+        11: (50, 50, 30, 20, 0, 0), 12: (65, 65, 40, 40, 0, 0), 13: (75, 75, 50, 50, 25, 0), 14: (85, 85, 60, 60, 30, 0),
+        15: (90, 90, 70, 65, 40, 10), 16: (95, 95, 80, 70, 45, 15), 17: (100, 100, 90, 75, 50, 20), 18: (110, 110, 95, 85, 55, 25)}
+TIERS = ("Skeleton", "Barbarian", "Archer", "Wizard", "Valkyrie", "Witch", "Golem", "P.E.K.K.A", "Titan", "Dragon", "Electro", "Legend")
+DIM = (("hdv", "Hôtel de ville", 15, "🏰"), ("her", "Héros", 25, "👑"), ("cla", "Classé", 15, "🏆"),
+       ("gue", "Guerre", 20, "⚔️"), ("cap", "Capitale", 10, "🏛️"), ("don", "Dons", 15, "🤝"))
+
+
+def analyse(p):
+    """Même calcul que le Worker de la candidature express : score /100, rush, recommandation."""
+    clamp = lambda x: max(0.0, min(1.0, x))
+    th = p.get("townHallLevel") or 1
+    caps = CAPS[min(18, max(7, th))]
+    prev = CAPS.get(min(18, th - 1))
+    lv = [next((h.get("level", 0) for h in p.get("heroes") or [] if h.get("name") == n and h.get("village") == "home"), 0) for n in HEROES]
+    prog = sum(min(l, c) for l, c in zip(lv, caps)) / sum(caps) if sum(caps) else 0
+    rush = 1 - sum(min(l, c) for l, c in zip(lv, prev)) / sum(prev) if prev and sum(prev) else 0
+    tier = ((p.get("leagueTier") or {}).get("name")) or ((p.get("league") or {}).get("name")) or ""
+    t0 = tier.replace(".", "")
+    ti = next((i for i, t in enumerate(TIERS) if t0.startswith(t.replace(".", ""))), -1)
+    cla = ti / (len(TIERS) - 1) if ti >= 0 else clamp((p.get("trophies") or 0) / 6000)
+    ach = {a["name"]: a.get("value", 0) for a in p.get("achievements") or []}
+    sc = {"hdv": clamp((th - 6) / 12), "her": prog, "cla": cla, "gue": clamp((p.get("warStars") or 0) / 2000),
+          "cap": clamp((p.get("clanCapitalContributions") or 0) / 3000000), "don": clamp(ach.get("Friend in Need", 0) / 50000)}
+    dims = [(k, lab, mx, ic, round(sc[k] * mx, 1)) for k, lab, mx, ic in DIM]
+    raw = round(sum(d[4] for d in dims), 1)
+    malus = round(min(rush, 0.5) * 60) if rush > 0.05 else 0
+    total = max(0, round(raw - malus, 1))
+    rushed, too = rush > 0.1, rush > 0.25
+    if th < 7:
+        reco = "HDV trop bas"
+    elif too:
+        reco = "Non recommandé : compte trop rushé"
+    elif th >= 16 and total >= 60 and not rushed:
+        reco = "Clan principal"
+    else:
+        reco = "Clan secondaire"
+    return {"th": th, "total": total, "raw": raw, "malus": malus, "rush": round(rush * 100), "rushed": rushed, "too": too,
+            "reco": reco, "tier": tier or "Non classé", "dims": dims, "lv": lv, "caps": caps}
+
+
+def action(a, tag):
+    """Action conseillée pour le staff selon le clan rejoint (même logique que la candidature express)."""
+    r = a["reco"]
+    if r == "HDV trop bas":
+        return "🚫 **Exclure** : HDV trop bas", 0xC8412F
+    if r.startswith("Non recommandé"):
+        return "🚫 **Exclure** : compte trop rushé", 0xC8412F
+    if tag == CLANS[0][1]:
+        return ("✅ **Garder** : profil au niveau du principal", 0x2F8F55) if r == "Clan principal" else \
+               ("↘️ **Déplacer vers Gravaen 2** : pas encore le niveau du principal", 0xE08A1E)
+    return ("↗️ **Proposer pour Gravaen 1** : profil au niveau du principal", 0x2F8F55) if r == "Clan principal" else \
+           ("✅ **Garder** : bien placé dans Gravaen 2", 0x2F8F55)
+
+
+def join_message(tag, clan_tag, p):
+    a = analyse(p)
+    act, color = action(a, clan_tag)
+    bar = lambda v: ("🟩" if v >= 70 else "🟨" if v >= 40 else "🟥") * round(v / 10) + "⬛" * (10 - round(v / 10))
+    heroes = " · ".join(f"{HERO_FR[i]} **{a['lv'][i]}**/{a['caps'][i]}" for i in range(6) if a["caps"][i] > 0) or "—"
+    rush = (f"🔴 Trop rushé : héros à **{a['rush']} %** sous le max de l'HDV {a['th'] - 1}" if a["too"]
+            else f"🟠 Rushé : héros à **{a['rush']} %** sous le max de l'HDV {a['th'] - 1}" if a["rushed"]
+            else f"🟢 Non rushé ({a['rush']} %)")
+    link = "https://link.clashofclans.com/fr?action=OpenPlayerProfile&tag=" + urllib.parse.quote(tag.replace("#", ""))
+    ico = (p.get("leagueTier") or {}).get("iconUrls") or {}
+    icon = ico.get("small") or ico.get("large")
+    return {
+        "username": "Gravaen · arrivées",
+        "embeds": [{
+            "author": {"name": f"Nouvel arrivant · {NOM.get(clan_tag, clan_tag)}",
+                       **({"icon_url": icon} if icon else {})},
+            "thumbnail": {"url": "https://raw.githubusercontent.com/ClashKingInc/ClashKingAssets/main/assets/buildings/home-village/town_hall/level_"
+                                 + str(min(18, max(1, a["th"]))) + ".webp"},
+            "title": f"{p.get('name', '?')} a rejoint {NOM.get(clan_tag, clan_tag)}",
+            "url": link,
+            "color": color,
+            "description": f"## {a['total']} / 100\n{act}" + (f"\n-# Score brut {a['raw']} · malus rush -{a['malus']}" if a["malus"] else ""),
+            "fields": [
+                {"name": "🏷️ Tag", "value": f"`{tag}`", "inline": True},
+                {"name": "🏰 HDV", "value": f"**{a['th']}**", "inline": True},
+                {"name": "⭐ Niveau", "value": f"**{p.get('expLevel', '?')}**", "inline": True},
+                {"name": "🏆 Ligue", "value": f"{a['tier']}\n{p.get('trophies', 0)} trophées", "inline": True},
+                {"name": "⚔️ Étoiles de guerre", "value": f"**{p.get('warStars', 0)}**", "inline": True},
+                {"name": "🛡️ Rôle", "value": ROLE.get(p.get("role"), "Membre"), "inline": True},
+                {"name": "👑 Héros", "value": heroes},
+                {"name": "📉 Rush", "value": rush},
+                {"name": "📊 Scores sur 100", "value": "\n".join(
+                    f"{ic} {bar(round(v / mx * 100))} **{round(v / mx * 100)}** {lab}" for k, lab, mx, ic, v in a["dims"])},
+            ],
+            "footer": {"text": "Arrivée détectée en jeu · premier passage dans nos clans"},
+            "timestamp": NOW.isoformat(timespec="seconds"),
+        }],
+    }
+
+
+# ---------------------------------------------------------------------------
 # 2. Activité, façon ClashPerk : à chaque passage (toutes les 15 min), on relit les compteurs
 #    de chaque membre ; dès qu'un compteur bouge, le joueur était en ligne.
 #    On en tire « vu il y a… » et un score d'activité sur les 7 derniers jours.
@@ -253,6 +354,8 @@ def fingerprint(p):
 def track(state):
     """Met à jour, pour chaque membre, son empreinte, sa dernière activité et ses heures d'activité."""
     seen = state.setdefault("seen", {})
+    before = set(seen)          # membres connus au passage précédent
+    newbies = []                # (tag, clan, profil) des membres absents au passage précédent
     hour = NOW.strftime("%Y-%m-%dT%H")
     limit = (NOW - datetime.timedelta(days=8)).strftime("%Y-%m-%dT%H")
     members = {}
@@ -263,6 +366,8 @@ def track(state):
             if not p:
                 continue
             fp = fingerprint(p)
+            if m["tag"] not in before:
+                newbies.append((m["tag"], tag, p))
             s = seen.setdefault(m["tag"], {"since": NOW.isoformat(timespec="seconds"), "h": []})
             season = NOW.strftime("%Y-%m-01") if NOW.day > 1 or NOW.hour >= 5 else (NOW - datetime.timedelta(days=1)).strftime("%Y-%m-01")
             if s.get("ms") != season:  # nouvelle saison : on repart de zéro
@@ -279,6 +384,15 @@ def track(state):
             members[m["tag"]] = s
     state["seen"] = members  # les partis sortent du suivi
     state.setdefault("tracking", NOW.isoformat(timespec="seconds"))
+
+    # Arrivées : seul un joueur jamais vu dans Gravaen 1 ni Gravaen 2 est signalé.
+    # Un joueur déjà passé chez nous (parti puis revenu, ou changé de clan) a un profil connu : aucun message.
+    # Au tout premier passage, on mémorise simplement tout le monde.
+    ready = "known" in state
+    known = set(state.get("known") or []) | before | set(members)
+    joins = [(t, c, p) for t, c, p in newbies if ready and t not in set(state.get("known") or [])]
+    state["known"] = sorted(known)[-3000:]
+    return joins
 
 
 def ago(iso):
@@ -494,7 +608,14 @@ def main():
                 print(f"  rappel {wid} non posté : {e}", file=sys.stderr)
     state["reminders"] = rem[-60:]
 
-    track(state)
+    joins = track(state)
+    if HOOK:
+        for t, c, p in joins:
+            try:
+                post(join_message(t, c, p))
+                print("arrivée signalée :", t)
+            except Exception as e:
+                print(f"  arrivée {t} non signalée : {e}", file=sys.stderr)
 
     # rapport du lundi soir (à partir de 18 h, heure de Paris), une fois par semaine, après 6 jours de suivi
     weekly = state.get("weekly")
