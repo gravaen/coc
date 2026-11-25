@@ -6,6 +6,7 @@ DISCORD_STAFF_WEBHOOK n'existe pas.
 1. Bilan de guerre : dès qu'une guerre (classique ou de Ligue de clans) est terminée,
    un message avec le résultat, les meilleurs attaquants, les attaques oubliées ou ratées
    et une suggestion pour la prochaine guerre.
+   Rappel à 6 h de la fin de chaque guerre (#général) : qui n'a pas encore attaqué.
 2. Activité (façon ClashPerk) : à chaque passage, les compteurs de chaque membre sont relus ;
    dès que l'un bouge, le joueur était en ligne. Chaque lundi soir : « vu il y a… »,
    score d'activité sur 7 jours, inactifs et peu actifs en premier, suggestion selon le grade.
@@ -170,6 +171,60 @@ def wars_done(state):
         if wid in seen or NOW - ts(w["endTime"]) > datetime.timedelta(hours=48):
             continue
         out.append((wid, war_report(w, tag, label, kind)))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 1 bis. Rappel de fin de guerre (#général) : à 6 h de la fin, qui n'a pas encore attaqué
+# ---------------------------------------------------------------------------
+NOM = {"#2C0CVRCPV": "Gravaen 1", "#2J0UPJVQJ": "Gravaen 2"}
+
+
+def late_list(war, our_tag):
+    side = war["clan"] if (war.get("clan") or {}).get("tag") == our_tag else war.get("opponent") or {}
+    per = war.get("attacksPerMember") or 1
+    out = []
+    for m in sorted(side.get("members") or [], key=lambda m: m.get("mapPosition", 99)):
+        done = len(m.get("attacks") or [])
+        if done < per:
+            out.append(m.get("name", "?") + (f" ({done}/{per})" if done else ""))
+    return out
+
+
+def end_reminders(state):
+    """Guerres en cours (classique ou ligue) qui finissent dans moins de 6 h, rappel pas encore envoyé."""
+    sent = set(state.get("reminders", []))
+    found = []
+    for label, tag in CLANS:
+        cw = api_or_none(f"/clans/{q(tag)}/currentwar")
+        if cw and cw.get("state") == "inWar":
+            found.append((tag + cw["startTime"], cw, tag))
+        lg = api_or_none(f"/clans/{q(tag)}/currentwar/leaguegroup")
+        if lg and lg.get("state") == "inWar":
+            for rnd in lg.get("rounds") or []:
+                for wt in rnd.get("warTags") or []:
+                    if wt == "#0":
+                        continue
+                    w = api_or_none(f"/clanwarleagues/wars/{q(wt)}")
+                    if w and w.get("state") == "inWar" and tag in ((w.get("clan") or {}).get("tag"), (w.get("opponent") or {}).get("tag")):
+                        found.append((wt, w, tag))
+    out = []
+    for wid, w, tag in found:
+        left = ts(w["endTime"]) - NOW
+        if wid in sent or not (datetime.timedelta(0) < left <= datetime.timedelta(hours=6)):
+            continue
+        late = late_list(w, tag)
+        if not late:
+            out.append((wid, None))   # tout le monde a attaqué : rien à poster
+            continue
+        h = max(1, round(left.total_seconds() / 3600))
+        out.append((wid, {
+            "username": "Gravaen",
+            "embeds": [{
+                "description": f"⏰ **{NOM.get(tag, tag)} · fin de guerre dans {h} h**\nPas encore attaqué : " + ", ".join(late),
+                "color": 0xF8C801,
+            }],
+        }))
     return out
 
 
@@ -426,6 +481,18 @@ def main():
             except Exception as e:
                 print(f"  bilan {wid} non posté : {e}", file=sys.stderr)
     state["wars"] = state["wars"][-60:]
+
+    rem = state.setdefault("reminders", [])
+    if GEN:
+        for wid, msg in end_reminders(state):
+            try:
+                if msg:
+                    post(msg, GEN)
+                    print("rappel de fin de guerre posté :", wid)
+                rem.append(wid)
+            except Exception as e:
+                print(f"  rappel {wid} non posté : {e}", file=sys.stderr)
+    state["reminders"] = rem[-60:]
 
     track(state)
 
