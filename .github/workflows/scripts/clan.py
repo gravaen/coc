@@ -394,7 +394,7 @@ def ck_warhits(tag, start, clans):
 def activity_days():
     """Jours actifs de chaque membre sur la saison, relevés toutes les 15 min par staff.py (façon ClashPerk)."""
     try:
-        with urllib.request.urlopen(PAGES + "data/staff.json?ts=" + str(int(datetime.datetime.now().timestamp())), timeout=20) as r:
+        with urllib.request.urlopen(urllib.request.Request(PAGES + "data/staff.json?ts=" + str(int(datetime.datetime.now().timestamp())), headers={"User-Agent": "Mozilla/5.0 (compatible; GravaenBot/1.0; +https://gravaen.pages.dev)"}), timeout=20) as r:
             st = json.loads(r.read().decode())
     except Exception:
         return {}, None
@@ -403,7 +403,7 @@ def activity_days():
 
 def previous_players():
     try:
-        with urllib.request.urlopen(PAGES + "data/players.json?ts=" + str(int(datetime.datetime.now().timestamp())), timeout=20) as r:
+        with urllib.request.urlopen(urllib.request.Request(PAGES + "data/players.json?ts=" + str(int(datetime.datetime.now().timestamp())), headers={"User-Agent": "Mozilla/5.0 (compatible; GravaenBot/1.0; +https://gravaen.pages.dev)"}), timeout=20) as r:
             return json.loads(r.read().decode())
     except Exception as e:
         print(f"  players.json précédent introuvable : {e}", file=sys.stderr)

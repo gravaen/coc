@@ -74,9 +74,18 @@ def cut(lines, empty="Aucun"):
     return "\n".join(out) or empty
 
 
+UA = "Mozilla/5.0 (compatible; GravaenBot/1.0; +https://gravaen.pages.dev)"
+
+
+def fetch_pages(name):
+    """Relit un fichier publié avec le site. Sans identification, Cloudflare répond 403 (la mémoire était perdue à chaque passage)."""
+    req = urllib.request.Request(PAGES + "data/" + name + "?ts=" + str(int(NOW.timestamp())), headers={"User-Agent": UA})
+    return urllib.request.urlopen(req, timeout=20)
+
+
 def load_state():
     try:
-        with urllib.request.urlopen(PAGES + "data/staff.json?ts=" + str(int(NOW.timestamp())), timeout=20) as r:
+        with fetch_pages("staff.json") as r:
             return json.loads(r.read().decode())
     except Exception as e:
         print(f"  staff.json précédent introuvable : {e}", file=sys.stderr)
@@ -177,13 +186,24 @@ def war_report(war, our_tag, clan_label, kind):
     score_line = (f"**{us.get('name')}** {s1} ⭐ · {d1:.1f} %   —   {s2} ⭐ · {d2:.1f} % **{them.get('name')}**").replace(".", ",")
     desc = score_line + f"\n{war.get('teamSize')} contre {war.get('teamSize')} · {used}/{len(rows) * per} attaques jouées · fin <t:{int(end.timestamp())}:f>"
     how = "Points : étoiles nouvelles × difficulté (HDV et héros de l'adversaire comparés aux siens)"
+    # #général : on célèbre la victoire (trophée, série de victoires), on encourage après une défaite
+    streak = ((api_or_none(f"/clans/{q(our_tag)}") or {}).get("warWinStreak") or 0) if (s1, d1) > (s2, d2) and kind == "Guerre" else 0
+    if (s1, d1) > (s2, d2):
+        g_title = f"🏆 Victoire contre {them.get('name', '?')} !"
+        cheer = f"🎉 **Bravo {clan_label}, belle guerre !**" + (f"\n🔥 **{streak}e victoire d'affilée**" if streak >= 2 else "")
+    elif (s1, d1) < (s2, d2):
+        g_title = f"❌ Défaite contre {them.get('name', '?')}"
+        cheer = "💪 **On se reprend à la prochaine !**"
+    else:
+        g_title = f"🤝 Égalité contre {them.get('name', '?')}"
+        cheer = "⚖️ **Égalité parfaite, il s'en est fallu de peu !**"
     general = {
         "username": "Gravaen",
         "embeds": [{
             "author": {"name": f"Bilan · {kind} · {clan_label}"},
-            "title": f"{title} contre {them.get('name', '?')}",
+            "title": g_title,
             "color": color,
-            "description": desc,
+            "description": cheer + "\n\n" + desc,
             "fields": [{"name": "🏅 Meilleurs attaquants", "value": cut([line(r) for r in ranked[:3]])}],
             "footer": {"text": how},
         }],
@@ -703,7 +723,7 @@ def main():
 
     # meilleurs joueurs : la saison vient de changer (clan.py a déjà écrit la nouvelle) → on publie l'ancienne
     try:
-        with urllib.request.urlopen(PAGES + "data/players.json?ts=" + str(int(NOW.timestamp())), timeout=20) as r:
+        with fetch_pages("players.json") as r:
             old_pj = json.loads(r.read().decode())
     except Exception:
         old_pj = {}
