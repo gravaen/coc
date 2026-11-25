@@ -342,7 +342,7 @@ print(json.dumps(data, ensure_ascii=False))
 # Les compteurs « depuis le début de la saison » ont besoin d'un point de départ :
 # il est repris du fichier déjà en ligne, et remis à zéro à chaque nouvelle saison.
 # ---------------------------------------------------------------------------
-PAGES = os.environ.get("PAGES_URL", "https://gravaen.github.io/coc/")
+PAGES = os.environ.get("PAGES_URL", "https://gravaen.pages.dev/")
 GRID = {"cwl": (5, 15), "gdc": (4, 10), "cap": (3, 10), "rk": (2, 10), "act": (1.5, 10), "don": (1, 10)}
 # Liste noire : points retirés par faute, avec un plafond par faute (total au plus -100)
 BLACK = {"rad": 30, "man": 25, "des": 25, "piq": 10, "tou": 10}
