@@ -1021,6 +1021,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  section.s#grades .pyr .pl{flex:1;display:flex;flex-direction:column;justify-content:center}
 }
 @media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl b{font-size:16px}section.s#grades .pyr .pl span{font-size:14.5px;line-height:1.45}}
+.pyr .pl span span{display:inline!important;font-size:inherit!important}.pyr .nb{white-space:nowrap;font-weight:600;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1072,7 +1073,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: c’est l’attention de chacun qui fait vivre le clan.</p></div>
   <div class="pyr" role="list">
    <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitent les joueurs, lancent les inscriptions en guerre et en GDC, et gèrent promotions, rétrogradations et exclusions.</span></div>
-   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitent les joueurs qui remplissent les conditions.</span></div>
+   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitent les joueurs qui remplissent les conditions&nbsp;: HDV <span class="nb" data-c="main-th">16+</span> et ligue <span class="nb" data-c="main-lg">P.E.K.K.A 22+</span> pour le clan principal, HDV <span class="nb" data-c="second-th">7+</span><span data-c="second-lgt"> sans ligue minimum</span> pour le secondaire.</span></div>
    <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Participent régulièrement aux événements, donnent autant qu’ils reçoivent et profitent des récompenses collectives du clan, comme tous les gradés.</span></div>
   </div>
   <p class="gr-more"><button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">Comment monter en grade&nbsp;?</button></p>
@@ -1230,8 +1231,9 @@ secs.forEach(x=>io.observe(x));
  function palier(n){if(/^unranked$/i.test(n))return 'Aucune';var m=/^(.+?) League(?: (\d+|I{1,3}))?$/.exec(n);if(!m)return null;var f=TIER[m[1]]||TIER[m[1].replace(/\./g,'')];return f?f+(m[2]?' '+m[2]:'')+'+':null}
  function card(k,c){
   if(!c)return;var e=function(x){return document.querySelector('[data-c="'+k+'-'+x+'"]')};
-  if(c.th>1&&e('th'))e('th').textContent=c.th+'+';
-  if(typeof c.league==='string'){var lg=palier(c.league);if(lg&&e('lg'))e('lg').textContent=lg}
+  var all=function(x,v){document.querySelectorAll('[data-c="'+k+'-'+x+'"]').forEach(function(n){n.textContent=v})};
+  if(c.th>1)all('th',c.th+'+');
+  if(typeof c.league==='string'){var lg=palier(c.league);if(lg){all('lg',lg);all('lgt',lg==='Aucune'?' sans ligue minimum':' et ligue '+lg)}}
   if(typeof c.members==='number'&&e('mem')){e('mem').textContent=c.members+'/50';e('memrow').hidden=false}
   var WF={always:'Toujours',moreThanOncePerWeek:'Plus d’une fois par semaine',oncePerWeek:'Une fois par semaine',lessThanOncePerWeek:'Moins d’une fois par semaine',never:'Jamais'};
   if(WF[c.wf]&&e('wf'))e('wf').textContent=WF[c.wf];
