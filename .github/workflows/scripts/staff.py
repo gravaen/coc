@@ -220,7 +220,7 @@ def track(state):
                     s["md"].append(NOW.strftime("%Y-%m-%d"))
             s["fp"] = fp
             s["h"] = [h for h in s["h"] if h >= limit]
-            s.update(n=m.get("name"), r=m.get("role"), c=label, th=m.get("townHallLevel"))
+            s.update(n=m.get("name"), r=m.get("role"), c=label, th=m.get("townHallLevel"), don=p.get("donations", 0))
             members[m["tag"]] = s
     state["seen"] = members  # les partis sortent du suivi
     state.setdefault("tracking", NOW.isoformat(timespec="seconds"))
@@ -245,46 +245,81 @@ def activity(s, days):
     return round(70 * min(1, d / days) + 30 * min(1, len(hrs) / (3 * days))), d, len(hrs)
 
 
+def best_of_season():
+    """Meilleur joueur de la saison en cours, par clan (data/players.json, même classement que le site)."""
+    try:
+        with open("data/players.json", encoding="utf-8") as f:
+            pl = (json.load(f).get("players") or {})
+    except Exception:
+        return {}
+    best = {}
+    for tag, x in pl.items():
+        c = x.get("c")
+        if c and (c not in best or (x.get("score") or 0) > (best[c][1] or 0)):
+            best[c] = (tag, x.get("score") or 0)
+    return {("Clan principal" if c == "main" else "Clan secondaire"): t for c, (t, _) in best.items()}
+
+
 def activity_report(state, test=False):
+    """Rapport du lundi, ultra court : qui exclure, rétrograder, promouvoir, selon nos règles.
+    Aîné = 1 000 dons et 3 guerres de clans · Adjoint = 3 mois dans le clan et meilleur joueur de la saison.
+    Exclusion = Membre inactif 4 jours, Aîné inactif 7 jours (le non-respect de la stratégie reste à l'appréciation du chef)."""
     since = datetime.datetime.fromisoformat(state["tracking"])
     days = max(1, min(7, round((NOW - since).total_seconds() / 86400)))
-    tip = {"member": "exclure ?", "admin": "rétrograder en Membre ?", "coLeader": "à contacter", "leader": "—"}
-    order = ["leader", "coLeader", "admin", "member"]
-    fields, total_zero = [], 0
+    best = best_of_season()
+    short = {"Clan principal": "P", "Clan secondaire": "S"}
+    excl, demote, promo, adj, moy = [], [], [], [], []
     for label, _ in CLANS:
         rs = []
-        for s in state["seen"].values():
+        for tag, s in state["seen"].items():
             if s.get("c") != label:
                 continue
-            sc, d, h = activity(s, days)
-            rs.append({**s, "s": sc, "d": d, "hh": h})
+            sc, d, _h = activity(s, days)
+            rs.append((tag, s, sc, d))
         if not rs:
             continue
-        avg = round(sum(r["s"] for r in rs) / len(rs))
-        zero = sorted([r for r in rs if r["s"] == 0], key=lambda r: order.index(r["r"]) if r["r"] in order else 9)
-        low = sorted([r for r in rs if 0 < r["s"] < 40], key=lambda r: r["s"])
-        top = sorted([r for r in rs if r["s"] >= 40], key=lambda r: (-r["s"], -r["hh"]))[:5]
-        total_zero += len(zero)
-        fields.append({"name": f"━━ {label} · activité moyenne {avg}/100 ━━",
-                       "value": f"{len(rs)} membres · {len(zero)} inactif(s) · {len(low)} peu actif(s)"})
-        fields.append({"name": f"😴 Inactifs (aucune activité en {days} j)",
-                       "value": cut([f"• **{r['n']}** ({ROLE.get(r['r'], '?')}, HDV {r['th']}) · {ago(r.get('last'))} → {tip.get(r['r'], '?')}" for r in zero], "Personne 👏")})
-        fields.append({"name": "🟠 Peu actifs (moins de 40/100)",
-                       "value": cut([f"• **{r['n']}** — **{r['s']}**/100 · actif {r['d']}/{days} j · {ago(r.get('last'))}" for r in low], "Personne")})
-        fields.append({"name": "🔥 Les plus actifs",
-                       "value": cut([f"{i + 1}. **{r['n']}** — **{r['s']}**/100 · actif {r['d']}/{days} j · {r['hh']} h" for i, r in enumerate(top)], "Personne")})
-    note = (f"⚠️ Test : suivi commencé le <t:{int(since.timestamp())}:f>, les scores se précisent avec le temps.\n" if test else "")
+        moy.append(f"{short[label]} {round(sum(r[2] for r in rs) / len(rs))}/100")
+        for tag, s, sc, d in rs:
+            n, r, don = s.get("n", "?"), s.get("r"), s.get("don", 0) or 0
+            who = f"**{n}** ({short[label]})"
+            months = (NOW - datetime.datetime.fromisoformat(s.get("since", state["tracking"]))).days / 30.4
+            ref = s.get("last") or s.get("since") or state["tracking"]
+            idle = (NOW - datetime.datetime.fromisoformat(ref)).days
+            idle_txt = f"inactif depuis {idle} j" if s.get("last") else f"aucune activité depuis {idle} j (début du suivi)"
+            if r == "member" and idle >= 4:
+                excl.append(f"{who} Membre · {idle_txt}")
+            elif r == "admin" and idle >= 7:
+                excl.append(f"{who} Aîné · {idle_txt}")
+            elif r == "coLeader" and idle >= 7:
+                demote.append(f"{who} Adjoint → Aîné · {idle_txt}")
+            elif r == "admin" and sc < 40 and don < 300 and NOW.day >= 10:
+                demote.append(f"{who} Aîné → Membre · actif {d}/{days} j · {don} dons")
+            elif r == "member" and don >= 1000 and sc >= 50:
+                promo.append(f"{who} Membre → Aîné · {don} dons · actif {d}/{days} j · *vérifier 3 GDC*")
+            if r == "admin" and best.get(label) == tag:
+                anc = "3 mois ✓" if months >= 3 else ("ancienneté à vérifier" if months < 3 and (NOW - since).days < 92 else f"{months:.0f} mois ✗")
+                adj.append(f"{who} Aîné → Adjoint · meilleur joueur de la saison · {anc}")
+    total = len(excl) + len(demote) + len(promo) + len(adj)
+    f = lambda xs: "\n".join("• " + x for x in xs[:12]) + (f"\n… et {len(xs) - 12} autre(s)" if len(xs) > 12 else "")
+    fields = []
+    if excl:
+        fields.append({"name": f"🔴 Exclure · {len(excl)}", "value": f(excl)})
+    if demote:
+        fields.append({"name": f"🟠 Rétrograder · {len(demote)}", "value": f(demote)})
+    if promo:
+        fields.append({"name": f"🟢 Promouvoir Aîné · {len(promo)}", "value": f(promo)})
+    if adj:
+        fields.append({"name": f"⭐ Promouvoir Adjoint · {len(adj)}", "value": f(adj)})
+    note = (f"🧪 Test · suivi depuis le <t:{int(since.timestamp())}:d>\n" if test else "")
     return {
         "username": "Gravaen · staff",
         "embeds": [{
-            "author": {"name": ("🧪 TEST · " if test else "") + "Rapport d'activité de la semaine"},
-            "title": f"😴 {total_zero} membre(s) sans aucune activité depuis {days} jour(s)",
-            "color": 0xC8412F if total_zero else 0x2F8F55,
-            "description": (note + f"**Score d'activité sur 100**, sur les {days} derniers jours : relevé toutes les 15 min, "
-                            "le joueur est compté actif dès qu'un de ses compteurs bouge (dons, pillage, attaques, capitale, améliorations…).\n"
-                            "70 pts = nombre de jours joués · 30 pts = nombre d'heures actives."),
-            "fields": fields[:25],
-            "footer": {"text": "Rapport automatique du lundi · Gravaen"},
+            "author": {"name": ("🧪 TEST · " if test else "") + "Recommandations de la semaine"},
+            "title": (f"{total} décision(s) à prendre" if total else "✅ Rien à faire cette semaine"),
+            "color": 0xC8412F if excl else (0xE08A1E if demote else 0x2F8F55),
+            "description": note + "Activité moyenne : " + " · ".join(moy) + f" (sur {days} j)",
+            "fields": fields,
+            "footer": {"text": "Règles : exclusion à 4 j d'inactivité (Membre), 7 j (Aîné) · Aîné = 1 000 dons + 3 GDC · Adjoint = 3 mois + meilleur joueur · P/S = principal/secondaire"},
         }],
     }
 
