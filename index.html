@@ -669,7 +669,7 @@ h2.eyeb{margin:0;font-family:var(--body);font-weight:800;font-size:16px;line-hei
 .facts{display:grid!important;grid-template-columns:repeat(2,max-content);gap:12px 40px!important;justify-content:start}
 @media (max-width:560px){.s{padding:44px 0}.facts{gap:10px 28px!important}}
 @media (min-width:761px){.clan{display:flex;flex-direction:column}.clan .in{flex:1;display:flex;flex-direction:column}.clan .in>p{margin-bottom:18px}.clan .facts{margin-top:auto!important}}
-@media (max-width:760px){.clans{grid-template-columns:minmax(0,1fr)!important}.clan{min-width:0}.facts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 16px!important}.facts dd,.facts dt{overflow-wrap:anywhere}}
+@media (max-width:760px){.clans{grid-template-columns:minmax(0,1fr)!important}.clan{min-width:0}.facts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 16px!important}.facts dd,.facts dt{overflow-wrap:break-word}}
 /* PC et tablette : Gravaen + épée à gauche, bouton à droite. Téléphone : bouton à la place du nom */
 @media (min-width:761px){.nav .wrap>.brand{display:inline-block!important;margin-right:auto!important}.nav .wrap>.nav-cta{order:5;margin:0 0 0 16px!important}.nav .wrap>.menu{order:6}}
 @media (min-width:961px){.nav .wrap>.brand{margin-right:40px!important}.nav .wrap>.nav-cta{margin-left:auto!important}}
@@ -1012,7 +1012,7 @@ body{font-weight:400}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* téléphones peu hauts (Galaxy A14…) : les deux cartes de clan tiennent dans l'écran */
 @media (max-width:760px) and (max-height:700px){section.s#clans .head h2{font-size:30px!important}section.s#clans .head{margin-bottom:8px!important}section.s#clans .clan p{font-size:13.5px!important;line-height:1.35}section.s#clans .facts dd{font-size:15px!important}section.s#clans .clan .in>.tagrow{min-height:30px}}
-@media (max-width:400px){section.s#clans .facts dt{letter-spacing:0!important;font-size:11px!important;white-space:nowrap}section.s#clans .facts{gap:6px 12px!important}}
+@media (max-width:400px){section.s#clans .facts dt{letter-spacing:0!important;font-size:11px!important}section.s#clans .facts{gap:6px 12px!important}}
 @media (max-width:760px) and (max-height:700px){section.strat .head{margin-bottom:10px!important}section.strat .head h2{font-size:30px!important}section.strat .head p.head-desc{font-size:13.5px!important}section.strat .step{padding:10px 12px!important}section.strat .step h3{font-size:15px!important;margin:2px 0 4px!important}section.strat .step p{font-size:13px!important;line-height:1.35!important}section.strat .rules{margin-top:12px!important;gap:6px!important}section.strat .rules li{font-size:13px!important;line-height:1.35!important}section.s.strat{padding-top:10px!important;padding-bottom:16px!important}}
 /* organisation : petite pyramide (adjoints et chef en haut, membres à la base) */
 .pyr{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
@@ -1115,13 +1115,10 @@ b,strong,.facts dd,.hero .rank b,.glink,.hero a.more,.facts dt,.rg-k,.pill,secti
 section.strat .step .lv{margin-bottom:6px!important}
 /* ===== principes Apple ===== */
 /* 1 : le jaune réservé à l'action (boutons, liens) */
-.head h2.eyeb i,.regles h3.rg-t:before,.sub-eyeb i,.eyeb i{background:#C9C2AE!important;color:#C9C2AE!important}
-.hero .sub-eyeb i,.hero .eyeb i{background:#55574F!important;color:#55574F!important}
 section.s .clan .top,section.strat .step .top{background:var(--line)!important;height:2px!important}
 .pyr .pl{border-top:1px solid var(--line)!important}
 .hero .rank{border-left-color:#3A3C36!important}
 .join h2{color:var(--light)!important}
-@media (prefers-color-scheme:dark){.head h2.eyeb i,.regles h3.rg-t:before{background:#55574F!important}}
 /* 6 : château de clan à l'accueil */
 .hero-cc{display:block;width:150px;height:auto;margin:0 0 20px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
 @media (max-width:760px){.hero-cc{width:104px;margin-bottom:14px}}
@@ -1152,6 +1149,8 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 @keyframes brandin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (max-width:760px){.nav .brand .brand-t{font-size:22px}}
 @media (prefers-reduced-motion:reduce){.nav .brand .brand-t,.nav .brand .brand-b{animation:none!important}}
+/* tirets des titres : gris en mode clair, jaunes en mode sombre */
+@media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){.head h2.eyeb i,.regles h3.rg-t:before{background:#C9C2AE!important;color:#C9C2AE!important}}
 </style>
 </head>
 <body>
@@ -1194,8 +1193,8 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
  <div class="wrap">
   <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de votre niveau, sans déséquilibre en guerre ni en Ligue de clans.</p></div>
   <div class="clans">
-   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="vh">Gravaen, clan principal</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Membres</dt><dd data-c="main-mem">44/50</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
-   <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="vh">Gravaen, clan secondaire</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Fréquence de guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Membres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
+   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="vh">Gravaen, clan principal</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs confirmés au meilleur niveau.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Membres</dt><dd data-c="main-mem">44/50</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
+   <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="vh">Gravaen, clan secondaire</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Membres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
   </div>
  </div>
 </section>
