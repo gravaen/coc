@@ -228,14 +228,40 @@ def war_report(war, our_tag, clan_label, kind):
     return general, staff
 
 
+def from_site(w, our_tag):
+    """Guerre au format de l'API reconstruite depuis data/clan.json (rattrapage) : positions, HDV, étoiles, destruction."""
+    def side(ms, pfx):
+        out = []
+        for m in ms or []:
+            atks = [{"defenderTag": ("t" if pfx == "m" else "m") + str(x[0]), "stars": x[1], "destructionPercentage": x[2],
+                     "order": m["p"] * 10 + i} for i, x in enumerate(m.get("x") or [])]
+            out.append({"tag": pfx + str(m["p"]), "name": m["n"], "townhallLevel": m["th"], "mapPosition": m["p"], "attacks": atks})
+        return out
+    return {"state": "warEnded", "teamSize": w.get("size"), "attacksPerMember": w.get("apm") or 2,
+            "startTime": w.get("start", "").replace("-", "").replace(":", "").replace("Z", ".000Z"),
+            "endTime": w["end"].replace("-", "").replace(":", "").replace("Z", ".000Z"),
+            "clan": {"tag": our_tag, "name": "Gravaen", "stars": w.get("us", 0), "destructionPercentage": w.get("usPct", 0), "members": side(w.get("mine"), "m")},
+            "opponent": {"tag": "#ADVERSAIRE", "name": w.get("opponent", "?"), "stars": w.get("them", 0), "destructionPercentage": w.get("themPct", 0), "members": side(w.get("theirs"), "t")}}
+
+
 def wars_done(state):
     """Guerres terminées depuis moins de 48 h, pas encore annoncées."""
     seen = set(state.get("wars", []))
     found = []
+    last = state.setdefault("lastwar", {})   # dernière photo de chaque guerre en cours (filet de sécurité)
     for label, tag in CLANS:
         cw = api_or_none(f"/clans/{q(tag)}/currentwar")
         if cw and cw.get("state") == "warEnded" and cw.get("endTime"):
             found.append((tag + cw["startTime"], cw, tag, label, "Guerre"))
+            last.pop(tag, None)
+        elif cw and cw.get("state") == "inWar" and cw.get("endTime"):
+            last[tag] = cw
+        else:
+            # la guerre a disparu avant d'être vue terminée (nouvelle recherche lancée aussitôt) : bilan depuis la dernière photo
+            old = last.get(tag)
+            if old and old.get("endTime") and ts(old["endTime"]) <= NOW:
+                found.append((tag + old["startTime"], old, tag, label, "Guerre"))
+                last.pop(tag, None)
         lg = api_or_none(f"/clans/{q(tag)}/currentwar/leaguegroup")
         if lg and lg.get("state") in ("inWar", "ended"):
             for i, rnd in enumerate(lg.get("rounds") or []):
@@ -669,6 +695,28 @@ def main():
     state = load_state()
     state.setdefault("wars", [])
     state.pop("snaps", None)  # ancienne méthode (photo quotidienne), remplacée par le suivi continu
+
+    # rattrapage d'un bilan raté : BILAN_RATTRAPAGE = adresse d'une publication du site (sa copie de data/clan.json)
+    src = os.environ.get("BILAN_RATTRAPAGE", "").strip().rstrip("/")
+    if src and GEN:
+        try:
+            req = urllib.request.Request(src + "/data/clan.json", headers={"User-Agent": UA})
+            site = json.load(urllib.request.urlopen(req, timeout=20))
+            for key, (label, tag) in zip(("main", "second"), CLANS):
+                w = ((site.get("clans") or {}).get(key) or {}).get("war") or {}
+                if w.get("state") == "inWar" and w.get("mine") and w.get("end") and w.get("start"):
+                    war = from_site(w, tag)
+                    wid = tag + war["startTime"]
+                    if wid in state["wars"]:
+                        continue
+                    g, st = war_report(war, tag, label, "Guerre")
+                    post(g, GEN)
+                    if HOOK and HOOK != GEN:
+                        post(st, HOOK)
+                    state["wars"].append(wid)
+                    print("bilan rattrapé :", wid)
+        except Exception as e:
+            print(f"  rattrapage impossible : {e}", file=sys.stderr)
 
     if not GEN:
         print("Aucun webhook Discord : rien n'est posté.")

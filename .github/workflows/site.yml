@@ -19,6 +19,10 @@ on:
         description: "Partager tout de suite les nouvelles bases et compos (sans attendre la vérification de l’heure)"
         type: boolean
         default: false
+      bilan_rattrapage:
+        description: "Rattraper un bilan de guerre raté : adresse d'une publication du site prise pendant la guerre (ex. https://cf90b39b.gravaen.pages.dev)"
+        type: string
+        default: ""
       fiche_joueur:
         description: "Envoyer au staff la fiche d'arrivée d'un joueur (son tag, ex. #LR8VQYUGR)"
         type: string
@@ -60,6 +64,7 @@ jobs:
           STAFF_TEST: ${{ inputs.test_rapport }}
           STAFF_TEST_SAISON: ${{ inputs.test_saison }}
           FICHE_JOUEUR: ${{ inputs.fiche_joueur }}
+          BILAN_RATTRAPAGE: ${{ inputs.bilan_rattrapage }}
         run: python3 .github/workflows/scripts/staff.py
 
       - name: Nouvelles bases et compos méta HDV 16 à 19 (Discord)
