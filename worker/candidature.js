@@ -131,6 +131,14 @@ const TIPS = {
   hdv: "Monter ton hôtel de ville", her: "Monter tes héros au max de ton HDV", cla: "Grimper en classé (ligue)",
   gue: "Gagner des étoiles en guerre", cap: "Participer à la capitale (raids et contributions)", don: "Donner plus de troupes au clan",
 };
+// objectif presque atteint : « Il te manque 8 points pour Gravaen 1 » (même règle que le site)
+function goalTxt(a) {
+  if (a.reco !== "Clan secondaire" || a.tooRushed) return "";
+  if (a.rushed) return "\n🎯 Rattrape tes héros pour viser **Gravaen 1**";
+  if (a.th < 16) return "\n🎯 Monte ton HDV pour viser **Gravaen 1**";
+  const m = Math.ceil(60 - a.total);
+  return m > 0 ? "\n🎯 Il te manque **" + m + " point" + (m > 1 ? "s" : "") + "** pour Gravaen 1" : "";
+}
 function fiche(a, user) {
   const pct = (d) => Math.round(d.v / d.max * 100);
   const low = a.dims.slice().sort((x, y) => pct(x) - pct(y)).slice(0, 2);
@@ -140,7 +148,7 @@ function fiche(a, user) {
     title: "Fiche diagnostic de " + a.name,
     color: 0xf8c801,
     thumbnail: { url: TH_IMG(a.th) },
-    description: "## " + a.total + " / 100",
+    description: "## " + a.total + " / 100" + goalTxt(a),
     fields: [
       { name: "🏰 HDV", value: "**" + a.th + "**", inline: true },
       { name: "🏆 Ligue", value: a.league, inline: true },
