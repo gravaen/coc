@@ -1300,6 +1300,54 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 @media (max-width:760px) and (max-height:700px){.join{padding:16px 0!important}.join h2{margin-bottom:4px!important}.jn-auto{margin-top:10px!important}.jn-auto h3{margin-bottom:2px!important}.join .jn-auto p{margin-bottom:6px!important}}
 /* ordinateur : la flèche « voir la suite » toujours visible dès l'accueil (blason adapté à la hauteur d'écran) */
 @media (min-width:761px){.hero-badge{width:min(clamp(180px,22vw,280px),26vh)!important;margin-bottom:20px!important}.scroll-cue{bottom:28px!important}.hero .wrap.hero-top{padding-top:24px!important;padding-bottom:70px!important}}
+/* nom du clan en titre de carte */
+.clan-name{font-family:var(--title);font-size:26px;font-weight:400;line-height:1.1;color:var(--ink);margin:0 0 12px;padding-right:84px}
+@media (max-width:760px){.clan-name{font-size:20px;margin-bottom:8px}}
+@media (max-width:760px) and (max-height:700px){.clan-name{font-size:18px;margin-bottom:4px}}
+@media (max-width:760px) and (max-height:700px){section.s#clans .clan .in{padding-top:12px!important;padding-bottom:10px!important}section.s#clans .clan dl{row-gap:4px!important;margin-top:8px!important;padding-top:8px!important}section.s#clans .clan .tagrow{margin-bottom:4px!important}section.s#clans .head{margin-bottom:10px!important}section.s#clans .clans{gap:10px!important}}
+@media (max-width:760px) and (max-height:700px){section.s#clans{padding-top:8px!important;padding-bottom:8px!important}section.s#clans .head-desc{font-size:13px!important;line-height:1.35!important}section.s#clans .clan .pill{margin-top:4px!important}}
+/* cartes de clan : blason à gauche, nom du clan à côté (taille adaptée), tag et ligue en dessous */
+.cbadge{left:20px!important;right:auto!important;top:20px!important;width:76px!important;height:76px!important}
+.clan .in>h3.clan-name,.clan .in>.tagrow{padding-left:94px!important;padding-right:0!important}
+.clan .in>h3.clan-name{font-size:clamp(24px,2.3vw,32px);margin:6px 0 8px;line-height:1.05}
+.clan .in>.tagrow{min-height:40px;margin-bottom:12px}
+@media (max-width:760px){.cbadge{left:14px!important;top:14px!important;width:58px!important;height:58px!important}.clan .in>h3.clan-name,.clan .in>.tagrow{padding-left:72px!important}.clan .in>h3.clan-name{font-size:22px;margin:2px 0 6px}.clan .in>.tagrow{min-height:0;margin-bottom:10px}}
+@media (max-width:760px) and (max-height:700px){.cbadge{width:50px!important;height:50px!important;top:12px!important;left:12px!important}.clan .in>h3.clan-name,.clan .in>.tagrow{padding-left:62px!important}.clan .in>h3.clan-name{font-size:19px;margin:0 0 4px}}
+/* « Nos meilleurs joueurs » : deux colonnes de 5, sobres */
+.pod-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.pod-col{background:var(--paper);padding:18px 20px 8px}
+.pod-h{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:var(--t-h3);font-weight:600;color:var(--ink)}
+.pod-h img{width:22px;height:22px;object-fit:contain}.pod-h b{font-weight:600}
+.pod-h span{margin-left:auto;font-size:var(--t-small);font-weight:500;color:var(--soft)}
+.pod-list{list-style:none;margin:0;padding:0}
+.pod-list li{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.pod-list li:first-child{border-top:0}
+.pod-r{flex:none;width:28px;height:28px;display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--soft);background:#F3EEE0}
+.pod-r.top{background:var(--yellow);color:#212320}
+.pod-n{flex:1;min-width:0;display:grid;align-items:center}.pod-n b{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pod-n small{font-size:var(--t-small);color:var(--soft)}
+.pod-v{flex:none;text-align:right;font-weight:700;font-size:17px;color:var(--ink);display:grid}.pod-v small{font-size:12px;font-weight:500;color:var(--soft)}
+.pod-empty{color:var(--soft);font-size:var(--t-body)}
+@media (max-width:760px){.pod-grid{grid-template-columns:1fr;gap:12px}.pod-col{padding:12px 14px 2px}.pod-list li{padding:6px 0;gap:10px}.pod-r{width:24px;height:24px;font-size:13px}.pod-v{font-size:15px}
+ section.s#meilleurs{min-height:calc(100vh - 60px)!important;min-height:calc(100svh - 60px)!important;box-sizing:border-box;padding-top:16px!important;padding-bottom:16px!important;display:flex;flex-direction:column;justify-content:center}}
+@media (max-width:760px) and (max-height:700px){.pod-list li{padding:3px 0}.pod-h{margin-bottom:2px;font-size:15px}.pod-n small,.pod-v small{font-size:11px}.pod-n b{font-size:14px}section.s#meilleurs .head{margin-bottom:8px!important}}
+@media (min-width:761px){section.s#meilleurs{padding-top:48px!important;padding-bottom:48px!important}}
+section.s#meilleurs{scroll-snap-align:start}
+@media (max-width:760px){.pod-n{display:flex;align-items:baseline;gap:6px}.pod-n small{white-space:nowrap}.pod-v small{display:none}.pod-list li{padding:7px 0}}
+@media (max-width:760px) and (max-height:700px){.pod-list li{padding:4px 0}section.s#meilleurs .head-desc{font-size:13px!important}}
+/* podium façon fiche : icône ronde en en-tête, seul le n° 1 en couleur, blason de ligue pour les trophées */
+.pod-h{gap:12px!important}
+.pod-ic{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#F3EEE0;color:var(--ink)}
+.pod-ic svg{width:19px;height:19px}
+.pod-t{margin-left:auto;font-size:var(--t-small)!important;font-weight:500!important;color:var(--soft)!important}
+.pod-r{border-radius:50%!important;background:transparent!important;color:var(--soft)!important;width:30px!important;height:30px!important}
+.pod-r.top{background:var(--yellow)!important;color:#212320!important}
+.pod-b{flex:none;width:34px;height:34px;object-fit:contain}
+@media (max-width:760px){.pod-ic{width:28px;height:28px}.pod-ic svg{width:16px;height:16px}.pod-r{width:24px!important;height:24px!important}.pod-b{width:26px;height:26px}}
+@media (max-width:760px){.pod-n{overflow:hidden;min-width:0}.pod-n b{flex:none;max-width:100%}.pod-n small{overflow:hidden;text-overflow:ellipsis;min-width:0}.pod-col{overflow:hidden}}
+.pod-h .pod-ic{margin-left:0!important}
+/* puces carrées, icône d'en-tête alignée sur le rang 1 */
+.pod-ic,.pod-r{border-radius:0!important;width:32px!important;height:32px!important}
+@media (max-width:760px){.pod-ic,.pod-r{width:26px!important;height:26px!important}}
 </style>
 </head>
 <body>
@@ -1332,7 +1380,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
  <div class="hero-sub" id="suite"><div class="sub-band">
   <h2 class="eyeb sub-eyeb"><i>—</i>Gravaen en quelques chiffres</h2>
   
-  <div class="ranks rv"><div class="rank" role="group" aria-label="HDV moyen des membres"><img loading="lazy" decoding="async" src="hdv-16.webp" alt="Hôtel de ville" width="181" height="211" data-ki="hdv" data-th="16"><div><b data-k="hdv">—</b><span>HDV moyen</span></div></div><div class="rank" role="group" aria-label="Dons de la saison"><img loading="lazy" decoding="async" src="ic-dons.webp" alt="Château de clan" width="127" height="107"><div><b data-k="don">—</b><span>Dons de la saison</span></div></div><div class="rank" role="group" aria-label="Notre ligue de clans"><img loading="lazy" decoding="async" src="ic-ligue.webp" alt="Trophée de la ligue Maître III" width="220" height="210" data-ki="war"><div><b data-k="war">Maître III</b><span>Ligue de clans</span></div></div><div class="rank" role="group" aria-label="Nos victoires en guerre"><img loading="lazy" decoding="async" src="ic-victoires.webp" alt="Épées croisées sur un bouclier" width="106" height="95"><div><b data-k="wins">—</b><span>Victoires GDC</span></div></div><div class="rank" role="group" aria-label="Notre ligue de capitale"><img loading="lazy" decoding="async" src="ic-capitale.webp" alt="Badge de la ligue Champion I de la capitale de clan" width="121" height="111" data-ki="capital"><div><b data-k="cap">Champion I</b><span>Capitale</span></div></div><div class="rank" role="group" aria-label="Notre meilleure série de victoires en guerre"><img loading="lazy" decoding="async" src="ic-trophees.webp" alt="Trophée" width="74" height="78"><div><b>24 victoires</b><span>d’affilée en guerre</span></div></div></div> <p class="ranks-date" data-k="date">Chiffres mis à jour en novembre 2026</p>
+  <div class="ranks rv"><div class="rank" role="group" aria-label="HDV moyen des membres"><img loading="lazy" decoding="async" src="hdv-16.webp" alt="Hôtel de ville" width="181" height="211" data-ki="hdv" data-th="16"><div><b data-k="hdv">—</b><span>HDV moyen</span></div></div><div class="rank" role="group" aria-label="Dons de la saison"><img loading="lazy" decoding="async" src="ic-dons.webp" alt="Château de clan" width="127" height="107"><div><b data-k="don">—</b><span>Dons de la saison</span></div></div><div class="rank" role="group" aria-label="Notre ligue de clans"><img loading="lazy" decoding="async" src="ic-ligue.webp" alt="Trophée de la ligue Maître III" width="220" height="210" data-ki="war"><div><b data-k="war">Maître III</b><span>Ligue de clans</span></div></div><div class="rank" role="group" aria-label="Notre record de victoires d’affilée en guerre"><img loading="lazy" decoding="async" src="ic-serie.webp" alt="Étoile" width="80" height="80"><div><b>24 victoires</b><span>Record d’affilée en GDC</span></div></div><div class="rank" role="group" aria-label="Notre ligue de capitale"><img loading="lazy" decoding="async" src="ic-capitale.webp" alt="Badge de la ligue Champion I de la capitale de clan" width="121" height="111" data-ki="capital"><div><b data-k="cap">Champion I</b><span>Capitale</span></div></div><div class="rank" role="group" aria-label="Nos trophées"><img loading="lazy" decoding="async" src="ic-trophees.webp" alt="Trophée" width="74" height="78"><div><b data-k="tro">—</b><span>Trophées</span></div></div></div> <p class="ranks-date" data-k="date">Chiffres mis à jour en novembre 2026</p>
   <div class="actions rv"><a class="more" href="#clans">Découvrir nos clans</a></div>
  </div></div>
 </section>
@@ -1341,8 +1389,8 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
  <div class="wrap">
   <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de ton niveau, sans déséquilibre majeur en guerre ni en Ligue de clans.</p></div>
   <div class="clans">
-   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="vh">Gravaen, clan principal</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="main-cwl" hidden></span></div><p>Pour les joueurs confirmés au meilleur niveau.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt>Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Places libres</dt><dd data-c="main-mem">6</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
-   <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="vh">Gravaen, clan secondaire</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="second-cwl" hidden></span></div><p>Pour les joueurs qui n’ont pas encore le niveau du principal. Il est encadré par des joueurs confirmés de Gravaen 1, là pour te conseiller si besoin.</p><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt>Guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Places libres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
+   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="clan-name">Gravaen 1</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="main-cwl" hidden></span></div><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt data-c="main-wfl">Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Places libres</dt><dd data-c="main-mem">6</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
+   <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="clan-name">Gravaen 2</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="second-cwl" hidden></span></div><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt data-c="second-wfl">Guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Places libres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
   </div>
  </div>
 </section>
@@ -1377,6 +1425,17 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
     <div class="step"><div class="top"></div><div class="lv">Cibles&nbsp;: pas de vol</div><p>Échanges d’un commun accord</p></div>
     <div class="step"><div class="top"></div><div class="lv">Butin&nbsp;: interdit</div><p>Pas de test ni d’attaque butin, sauf feu vert des chefs en fin de guerre</p></div>
    </div>
+  </div>
+ </div>
+</section>
+
+
+<section class="s podium" id="meilleurs" aria-labelledby="pod-title">
+ <div class="wrap">
+  <div class="head"><h2 class="eyeb" id="pod-title"><i>—</i>Notre classement</h2><p class="head-desc">Les cinq meilleurs de Gravaen en ce moment.</p></div>
+  <div class="pod-grid">
+   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1.5A3.5 3.5 0 0 0 8.5 11M16 6h3v1.5A3.5 3.5 0 0 1 15.5 11M12 13v4M9 20h6M10 17h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Trophées<span class="pod-t">En direct</span></h3><ol class="pod-list" data-pod="tro"><li class="pod-empty">Chargement…</li></ol></div>
+   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span><b data-pod-t>Ligue de clans</b><span class="pod-t" data-pod-s>Cette saison</span></h3><ol class="pod-list" data-pod="war"><li class="pod-empty">Chargement…</li></ol></div>
   </div>
  </div>
 </section>
@@ -1533,6 +1592,8 @@ secs.forEach(x=>io.observe(x));
   if(typeof c.members==='number'&&e('mem')){var lib=Math.max(0,50-c.members);e('mem').textContent=lib?String(lib):'Complet';e('memrow').hidden=false}
   var WF={always:'Toujours',moreThanOncePerWeek:'Plus d’une fois par semaine',oncePerWeek:'Une fois par semaine',lessThanOncePerWeek:'Moins d’une fois par semaine',never:'Jamais'};
   if(WF[c.wf]&&e('wf'))e('wf').textContent=WF[c.wf];
+  /* bilan de guerre du clan à la place de « Guerre : Toujours » : 39 V · 9 D · 10 É */
+  if(typeof c.ww==='number'&&typeof c.wl==='number'&&e('wf')){e('wf').textContent=c.ww+'\u00a0V · '+c.wl+'\u00a0D';if(e('wfl'))e('wfl').textContent='Bilan GDC'}
   if(typeof c.cwl==='string'&&c.cwl!=='Unranked'&&e('cwl')){var cl=ligue(c.cwl);if(cl){e('cwl').textContent='Ligue '+cl.replace(/^Ligue /,'');e('cwl').hidden=false}}
  }
  /* remplace une icône seulement une fois la nouvelle image chargée (jamais d'image cassée) */
@@ -1775,6 +1836,29 @@ secs.forEach(x=>io.observe(x));
 <script>
 /* « les conditions » (questions) : remonte à l'organisation et ouvre « Comment monter en grade ? » */
 document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListener('click',function(e){var g=document.getElementById('grades'),b=document.getElementById('mj-btn');if(!g||!b)return;e.preventDefault();g.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){b.click()},650)})});
+</script>
+<script>
+/* « Nos meilleurs joueurs » : top 5 trophées (en direct) et top 5 ligue de clans de la saison, depuis data/players.json */
+(function(){
+ var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+ var nb=function(n){return Number(n).toLocaleString('fr-FR')};
+ var FRL={Legend:'Légende',Electro:'Électro',Master:'Maître',Crystal:'Cristal',Gold:'Or',Silver:'Argent',Witch:'Sorcière',Wizard:'Sorcier',Barbarian:'Barbare',Skeleton:'Squelette'};
+ function lig(n){if(!n||n==='Unranked')return '';return String(n).replace(/\s*League/,'').replace(/^(\w+)/,function(w){return FRL[w]||w})}
+ function row(i,p,val,unit,badge){
+  return '<li><span class="pod-r'+(i===0?' top':'')+'">'+(i+1)+'</span>'+(badge?(p.lgi?'<img class="pod-b" src="'+esc(p.lgi)+'" alt="" width="34" height="34" loading="lazy">':'<span class="pod-b"></span>'):'')+'<span class="pod-n"><b>'+esc(p.n)+'</b></span><span class="pod-v">'+val+(unit?'<small>'+unit+'</small>':'')+'</span></li>'}
+ fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  var ps=Object.values(d.players||{}).filter(function(p){return p&&p.v});
+  var tro=ps.filter(function(p){return p.v.rk>0}).sort(function(a,b){return b.v.rk-a.v.rk}).slice(0,5);
+  var el=document.querySelector('[data-pod="tro"]');
+  if(el)el.innerHTML=tro.length?tro.map(function(p,i){return row(i,p,nb(p.v.rk),'trophées',true)}).join(''):'<li class="pod-empty">Pas encore de données.</li>';
+  var cwl=ps.some(function(p){return p.v.cwl>0});
+  var k=cwl?'cwl':'gdc';
+  var war=ps.filter(function(p){return p.v[k]>0}).sort(function(a,b){return b.v[k]-a.v[k]||(b.cwlPct||0)-(a.cwlPct||0)}).slice(0,5);
+  if(!cwl){var t=document.querySelector('[data-pod-t]');if(t)t.textContent='Guerres de clans'}
+  var ew=document.querySelector('[data-pod="war"]');
+  if(ew)ew.innerHTML=war.length?war.map(function(p,i){return row(i,p,nb(p.v[k]),'étoiles')}).join(''):'<li class="pod-empty">La saison vient de commencer : le classement arrive avec les premières guerres.</li>';
+ }).catch(function(){document.querySelectorAll('.pod-list').forEach(function(e){e.innerHTML='<li class="pod-empty">Classement indisponible pour le moment.</li>'})});
+})();
 </script>
 </body>
 </html>

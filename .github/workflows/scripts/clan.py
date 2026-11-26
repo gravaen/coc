@@ -187,7 +187,8 @@ if _members:
 def conditions(c):
     """Infos pratiques des cartes : HDV requis, ligue classée requise, membres."""
     out = {"th": c.get("requiredTownhallLevel"), "members": c.get("members"), "wf": c.get("warFrequency"),
-           "cwl": (c.get("warLeague") or {}).get("name")}   # ligue de clans du clan, discrète sur sa carte
+           "cwl": (c.get("warLeague") or {}).get("name"),   # ligue de clans du clan, discrète sur sa carte
+           "ww": c.get("warWins"), "wl": c.get("warLosses"), "wt": c.get("warTies")}   # bilan de guerre du clan
     if "requiredLeagueTier" in c:  # absent sur les anciennes réponses : la page garde alors son texte
         out["league"] = (c.get("requiredLeagueTier") or {}).get("name") or "Unranked"
     return out
@@ -546,7 +547,9 @@ def season_scores():
             for k in GRID:
                 vals[k][t] = v[k]
             tie[t] = cd
+            lt = p.get("leagueTier") or p.get("league") or {}
             out["players"][t] = {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "v": v, "cwlPct": cd,
+                                 "lg": lt.get("name"), "lgi": (lt.get("iconUrls") or {}).get("small"),
                                  "dee": max(0, heist - b["dee"]), "hp": hero_progress(p)}
 
             # Liste noire
