@@ -69,7 +69,7 @@ def category(kind, title):
 def message(kind, url):
     page = get(url)
     title = meta(page, "og:title") or meta(page, "twitter:title") or url.rstrip("/").rsplit("/", 1)[-1].replace("-", " ")
-    title = re.sub(r"\s*[|–-]\s*Supercell\s*$", "", title)
+    title = re.sub(r"(\s*[|–×-]\s*(Supercell|Clash of Clans)\s*)+$", "", title)
     img = meta(page, "og:image") or meta(page, "twitter:image")
     emb = {
         "author": {"name": "Nouveauté Clash of Clans · " + category(kind, title)},
