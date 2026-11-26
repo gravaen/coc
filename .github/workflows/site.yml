@@ -70,6 +70,12 @@ jobs:
           BASES_FORCE: ${{ inputs.bases_maintenant }}
         run: python3 .github/workflows/scripts/bases.py
 
+      - name: Nouveautés officielles de Clash of Clans (Discord, salon actus)
+        continue-on-error: true
+        env:
+          DISCORD_ACTUS_WEBHOOK: ${{ secrets.DISCORD_ACTUS_WEBHOOK }}
+        run: python3 .github/workflows/scripts/news.py
+
       - name: Publier le site sur Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
