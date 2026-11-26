@@ -1382,7 +1382,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
   <div class="head"><h2 class="eyeb" id="faq-title"><i>—</i>Tes questions</h2><p class="head-desc">Les 3 doutes qu’on entend le plus.</p></div>
   <div class="qa-list">
    <div class="qa"><h3 class="bq">Faut-il être très actif&nbsp;?</h3><p class="ba">Non. Un peu, mais régulièrement&nbsp;: tes deux attaques en guerre, et une connexion tous les 3&nbsp;jours a minima si possible.</p></div>
-   <div class="qa"><h3 class="bq">Je dois me présenter sur Discord&nbsp;?</h3><p class="ba">Non, un simple bonjour suffit. On te répond en moins de 24&nbsp;h.</p></div>
+   <div class="qa"><h3 class="bq">Je dois me présenter sur Discord&nbsp;?</h3><p class="ba">Non, un simple bonjour suffit. Je te réponds en moins de 24&nbsp;h.</p></div>
    <div class="qa"><h3 class="bq">Comment évoluer en grade&nbsp;?</h3><p class="ba">Chaque poste est facilement accessible, et <a href="#grades" class="qa-link" data-open-mj>les conditions</a> sont visibles par tous. Nous privilégions la confiance et le mérite.</p></div>
   </div>
  </div>
@@ -1391,7 +1391,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 
 <section class="join" id="rejoindre">
  <div class="wrap">
-  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Un clan <b>adulte</b>, <b>actif</b> et <b>très organisé</b> t’attend.</p><p class="jn-proof" data-proof hidden></p><div class="jn-auto"><h3>Un Discord orienté action</h3><p>On a automatisé le reste pour qu’on passe plus de temps à jouer ensemble. Tu progresses, tu gagnes du temps.</p><ul><li><b>Ton score tout de suite, ta fiche diagnostic complète</b>&nbsp;: les points précis où tu dois progresser</li><li><b>Les dernières compos et bases méta arrivent toutes seules</b>, chaque semaine, avec vidéo et lien direct vers le jeu</li><li><b>Plus jamais d’attaque oubliée</b>&nbsp;: un rappel avant la fin de chaque guerre</li><li><b>Tes exploits à l’honneur</b> dans le bilan de chaque guerre</li></ul></div><p class="jn-act"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Voir mon score</a><span class="jn-note">Entre ton tag&nbsp;: ton profil est analysé en direct. On te répond en moins de 24&nbsp;h.</span></p></div>
+  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Un clan <b>adulte</b>, <b>actif</b> et <b>très organisé</b> t’attend.</p><p class="jn-proof" data-proof hidden></p><div class="jn-auto"><h3>Un Discord orienté action</h3><p>On a automatisé le reste pour qu’on passe plus de temps à jouer ensemble. Tu progresses, tu gagnes du temps.</p><ul><li><b>Ton score tout de suite, ta fiche diagnostic complète</b>&nbsp;: les points précis où tu dois progresser</li><li><b>Les dernières compos et bases méta arrivent toutes seules</b>, chaque semaine, avec vidéo et lien direct vers le jeu</li><li><b>Plus jamais d’attaque oubliée</b>&nbsp;: un rappel avant la fin de chaque guerre</li><li><b>Tes exploits à l’honneur</b> dans le bilan de chaque guerre</li></ul></div><p class="jn-act"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Voir mon score</a><span class="jn-note">Entre ton tag&nbsp;: ton profil est analysé en direct. Je te réponds en moins de 24&nbsp;h.</span></p></div>
  </div>
 </section>
 </main>
@@ -1684,7 +1684,7 @@ secs.forEach(x=>io.observe(x));
  function send(){
   var b=document.getElementById('join-send');b.disabled=true;b.textContent='Envoi…';
   call(last.tag,true).then(function(a){
-   step(3);res.innerHTML='<div class="jr-done"><p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée, merci '+esc(a.name||'')+'&nbsp;!')+'</p><p class="jr-war" data-war>Bienvenue chez Gravaen, on t’attend&nbsp;!</p><ol class="jr-next"><li><b>Rejoins le Discord</b>&nbsp;: pas besoin de te présenter, un simple bonjour suffit.</li><li><b>On regarde ton profil</b> et on te répond en moins de 24&nbsp;h.</li><li><b>On t’invite dans le clan</b> qui te correspond.</li></ol><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a></div>';
+   step(3);res.innerHTML='<div class="jr-done"><p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée, merci '+esc(a.name||'')+'&nbsp;!')+'</p><p class="jr-war" data-war>Bienvenue chez Gravaen, on t’attend&nbsp;!</p><ol class="jr-next"><li><b>Rejoins le Discord</b>&nbsp;: pas besoin de te présenter, un simple bonjour suffit.</li><li><b>Je regarde ton profil</b> et je te réponds en moins de 24&nbsp;h.</li><li><b>On t’invite dans le clan</b> qui te correspond.</li></ol><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a></div>';
    (window.gravaenData||Promise.resolve(null)).then(function(d){var el=res.querySelector('[data-war]');if(el)el.innerHTML=warLine(d,last.reco)});
   }).catch(function(err){b.disabled=false;b.textContent='Envoyer';res.insertAdjacentHTML('beforeend','<p class="jd-err">'+esc(err.message)+'</p>')});
  }
