@@ -1086,7 +1086,7 @@ html.js .rv2.in{opacity:1;transform:none}
 /* 10 : étiquettes grises un peu plus foncées */
 :root{--soft:#5C5D56}
 /* 8 : mode sombre automatique pour les sections claires */
-@media (prefers-color-scheme:dark){
+@media not all /* mode sombre désactivé : fond crème toujours */{
  :root{--cream:#171815;--paper:#23251F;--sand:#1F201C;--text:#D6D1C2;--soft:#A39F92;--line:#373933;--hl:#3A3420;color-scheme:dark}
  section.s,.mj-pop,.regles,.pyr,.clans{--ink:#F2EDDE}
  section.s .clan .top[style*="--ink"],section.s .clan .top[style*="var(--ink)"]{background:#F2EDDE!important}
@@ -1150,7 +1150,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 @media (max-width:760px){.nav .brand .brand-t{font-size:22px}}
 @media (prefers-reduced-motion:reduce){.nav .brand .brand-t,.nav .brand .brand-b{animation:none!important}}
 /* tirets des titres : gris en mode clair, jaunes en mode sombre */
-@media (prefers-color-scheme:light),(prefers-color-scheme:no-preference){.head h2.eyeb i,.regles h3.rg-t:before{background:#C9C2AE!important;color:#C9C2AE!important}}
+@media all{.head h2.eyeb i,.regles h3.rg-t:before{background:#C9C2AE!important;color:#C9C2AE!important}}
 /* règles : simple liste à puces */
 .rg-list{margin:0;padding:0 0 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px 36px}
 .rg-list li{font-size:var(--t-body);line-height:1.45;color:var(--text);padding-left:2px}
@@ -1181,7 +1181,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 .pc-heroes b{font-family:var(--body)!important;font-weight:600!important}
 .pc-heroes i{display:none}
 .pc-cats li,.pc-heroes li{background:var(--sand)}
-@media (prefers-color-scheme:dark){.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:#F2EDDE!important;color:#212320!important}}
+@media not all /* mode sombre désactivé : fond crème toujours */{.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:#F2EDDE!important;color:#212320!important}}
 /* ordinateur : moins de vide entre « Comment monter en grade ? » et « Notre stratégie » */
 @media (min-width:761px){section.s#grades{padding-bottom:32px!important}}
 /* « Un Discord orienté action » : bénéfices automatiques avant le bouton */
@@ -1195,12 +1195,12 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 @media (max-width:760px){.jn-auto{margin-top:18px;padding:16px}.jn-auto ul{gap:7px}.jn-auto li{line-height:1.4}}
 @media (max-width:760px) and (max-height:700px){.join{padding:24px 0!important}.join h2{font-size:26px!important}.join .wrap>div>p:not(.jn-act){font-size:14.5px!important}.jn-auto{margin-top:12px;padding:12px 14px}.jn-auto h3{font-size:16px}.join .jn-auto p,.jn-auto li{font-size:13.5px!important}.jn-auto ul{gap:5px}.jn-act{margin-top:14px!important}.join .cta{padding:12px!important}.jn-note{display:none}}
 /* mode sombre : textes de la candidature lisibles (score, étapes, rush, confirmation) */
-@media (prefers-color-scheme:dark){.join-dlg .pc-num b,.join-dlg .pc-rush b,.join-dlg .jd-steps li.on,.join-dlg .jr-next b,.join-dlg .jr-ok,.join-dlg .jr-top b{color:#F2EDDE!important}.join-dlg .pc-id{background:#141512!important}}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .pc-num b,.join-dlg .pc-rush b,.join-dlg .jd-steps li.on,.join-dlg .jr-next b,.join-dlg .jr-ok,.join-dlg .jr-top b{color:#F2EDDE!important}.join-dlg .pc-id{background:#141512!important}}
 /* candidature : la fiche complète annoncée juste avant « Envoyer » (texte, sans encadré) */
 .jr-fiche{margin:18px 0 0;display:grid;gap:2px;text-align:center}
 .jr-fiche b{font-size:var(--t-h3,19px);font-weight:600;color:var(--ink)}
 .jr-fiche span{font-size:var(--t-body);color:var(--soft)}
-@media (prefers-color-scheme:dark){.join-dlg .jr-fiche b{color:#F2EDDE!important}}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .jr-fiche b{color:#F2EDDE!important}}
 /* comparaison, preuve sociale, fin mémorable, mot du cofondateur */
 .pc-cmp{margin:10px 0 0;font-size:var(--t-body);color:var(--text)}
 .pc-cmp b{color:var(--ink)}
@@ -1211,7 +1211,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 .founder blockquote{margin:0;font-size:var(--t-body);line-height:1.55;font-style:italic;color:var(--text)}
 .founder figcaption{margin-top:8px;font-size:var(--t-small);color:var(--soft)}
 .founder figcaption b{color:var(--ink);font-style:normal}
-@media (prefers-color-scheme:dark){.join-dlg .pc-cmp b,.join-dlg .jr-war{color:#F2EDDE!important}.founder figcaption b{color:#F2EDDE}}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .pc-cmp b,.join-dlg .jr-war{color:#F2EDDE!important}.founder figcaption b{color:#F2EDDE}}
 @media (max-width:760px){.founder{margin:16px auto 0}.founder blockquote{font-size:14.5px;line-height:1.45}}
 .sub-band .founder blockquote{color:#D8D3C4}.sub-band .founder figcaption{color:#BDB8A9}.sub-band .founder figcaption b{color:#F2EDDE}
 .hero-sign{margin:10px auto 0;font-size:var(--t-small);color:#A39F92}.hero .hero-sign b{color:#F2EDDE}
@@ -1220,11 +1220,11 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 .faq-grid{grid-template-columns:repeat(3,1fr)!important}
 @media (max-width:760px){.faq-grid{grid-template-columns:1fr!important}.faq-grid .step{border-left:0!important}.faq-grid .step+.step{border-top:1px solid var(--line)!important}}
 .pc-goal{margin:6px 0 0;font-size:var(--t-body);color:var(--text)}.pc-goal b{color:var(--ink)}
-@media (prefers-color-scheme:dark){.join-dlg .pc-goal b{color:#F2EDDE!important}}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .pc-goal b{color:#F2EDDE!important}}
 /* questions : la question est le titre (grande, en gras), la réponse en texte simple */
 .faq-grid .lv{font-size:var(--t-h3)!important;font-weight:600!important;color:var(--ink)!important;text-transform:none!important;letter-spacing:0!important;margin:0 0 8px!important;line-height:1.3}
 .faq-grid .step p{color:var(--text)}
-@media (prefers-color-scheme:dark){.faq-grid .lv{color:#F2EDDE!important}}
+@media not all /* mode sombre désactivé : fond crème toujours */{.faq-grid .lv{color:#F2EDDE!important}}
 /* ligue de clans, discrète à côté du tag */
 .tagrow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
 .cwl-chip{font-size:var(--t-small);font-weight:600;color:var(--soft);letter-spacing:.01em}
@@ -1260,6 +1260,26 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
  section.s#questions .faq-grid .step{flex:1;display:flex;flex-direction:column;justify-content:center}
 }
 @media (max-width:760px) and (min-height:701px){section.s#questions{padding-top:24px!important;padding-bottom:24px!important}}
+/* « Tes questions » en bulles de BD : la question (queue en bas à gauche), la réponse du clan (queue en bas à droite) */
+.qa-list{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.qa{display:flex;flex-direction:column;gap:18px}
+.bq,.ba{position:relative;margin:0;padding:14px 18px;border-radius:18px;line-height:1.45}
+.bq{align-self:flex-start;max-width:88%;background:var(--paper);color:var(--ink);font-size:var(--t-h3)!important;font-weight:600;border-bottom-left-radius:4px}
+.bq::after{content:"";position:absolute;left:0;bottom:-12px;border-style:solid;border-width:12px 14px 0 0;border-color:var(--paper) transparent transparent transparent}
+.ba{align-self:flex-end;max-width:92%;background:#2B2D28;color:#EDE8D8;font-size:var(--t-body);border-bottom-right-radius:4px}
+.ba::after{content:"";position:absolute;right:0;bottom:-12px;border-style:solid;border-width:12px 0 0 14px;border-color:#2B2D28 transparent transparent transparent}
+@media not all /* mode sombre désactivé : fond crème toujours */{.bq{background:#2B2D28;color:#F2EDDE}.bq::after{border-top-color:#2B2D28}.ba{background:#F2EDDE;color:#212320}.ba::after{border-top-color:#F2EDDE}}
+@media (max-width:760px){.qa-list{grid-template-columns:1fr;gap:18px}.qa{gap:14px}.bq,.ba{padding:10px 14px;border-radius:16px}.bq{font-size:15px!important}.ba{font-size:14px}}
+@media (max-width:760px){section.s#questions .qa-list{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}}
+@media (max-width:760px) and (max-height:700px){.qa-list{gap:10px}.qa{gap:10px}.bq,.ba{padding:8px 12px}.bq{font-size:14px!important}.ba{font-size:13px;line-height:1.38}}
+/* queues de bulle façon BD, légèrement rentrées */
+.bq,.ba{border-radius:0!important}
+.bq::after{left:22px!important;bottom:-11px!important;border-width:12px 12px 0 0!important}
+.ba::after{right:22px!important;left:auto!important;bottom:-11px!important;border-width:12px 0 0 12px!important}
+/* 4 questions : 2 × 2 sur ordinateur ; lien « les conditions » surligné en jaune */
+@media (min-width:761px){.qa-list{grid-template-columns:repeat(2,1fr)!important;column-gap:48px;row-gap:28px}}
+.ba .qa-link{color:inherit;font-weight:600;text-decoration:none;background:linear-gradient(transparent 60%,rgba(248,200,1,.55) 60%);padding:0 1px}
+.ba .qa-link:hover,.ba .qa-link:focus-visible{background:rgba(248,200,1,.55)}
 </style>
 </head>
 <body>
@@ -1330,7 +1350,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
    <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">6 dernières heures&nbsp;: nettoyage</div><p>Villages non attaqués, puis étoiles manquantes</p></div>
   </div>
   <div class="regles">
-   <h3 class="rg-t">Nos règles</h3>
+   <h3 class="rg-t">Nos 4 règles d’or</h3>
    <div class="ladder rg-grid">
     <div class="step"><div class="top"></div><div class="lv">Attaques&nbsp;: deux, toujours</div><p>Un oubli = un avertissement</p></div>
     <div class="step"><div class="top"></div><div class="lv">Compo&nbsp;: prête</div><p>Camps, sorts, héros</p></div>
@@ -1344,11 +1364,12 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 
 <section class="s faq" id="questions" aria-labelledby="faq-title">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb" id="faq-title"><i>—</i>Tes questions</h2><p class="head-desc">Les trois doutes qu’on entend le plus.</p></div>
-  <div class="ladder rg-grid faq-grid">
-   <div class="step"><div class="top"></div><h3 class="lv">Je ne suis pas assez fort&nbsp;?</h3><p>Gravaen 2 est fait pour toi&nbsp;: tu progresses à ton rythme, et tu peux passer dans Gravaen 1 dès que tu as le niveau.</p></div>
-   <div class="step"><div class="top"></div><h3 class="lv">Faut-il être très actif&nbsp;?</h3><p>Non. Un peu, mais régulièrement&nbsp;: tes deux attaques en guerre, et une connexion tous les 3&nbsp;jours a minima si possible.</p></div>
-   <div class="step"><div class="top"></div><h3 class="lv">Je dois me présenter sur Discord&nbsp;?</h3><p>Non, un simple bonjour suffit&nbsp;: ta fiche parle pour toi. On te répond en moins de 24&nbsp;h.</p></div>
+  <div class="head"><h2 class="eyeb" id="faq-title"><i>—</i>Tes questions</h2><p class="head-desc">Les 4 doutes qu’on entend le plus.</p></div>
+  <div class="qa-list">
+   <div class="qa"><h3 class="bq">Faut-il être très actif&nbsp;?</h3><p class="ba">Non. Un peu, mais régulièrement&nbsp;: tes deux attaques en guerre, et une connexion tous les 3&nbsp;jours a minima si possible.</p></div>
+   <div class="qa"><h3 class="bq">Discord est-il obligatoire&nbsp;?</h3><p class="ba">Non, c’est avant tout un outil qui nous permet de partager autour du jeu.</p></div>
+   <div class="qa"><h3 class="bq">Je dois me présenter sur Discord&nbsp;?</h3><p class="ba">Non, un simple bonjour suffit. On te répond en moins de 24&nbsp;h.</p></div>
+   <div class="qa"><h3 class="bq">Comment évoluer en grade&nbsp;?</h3><p class="ba">Chaque poste est facilement accessible, et <a href="#grades" class="qa-link" data-open-mj>les conditions</a> sont visibles par tous. Nous privilégions la confiance et le mérite.</p></div>
   </div>
  </div>
 </section>
@@ -1731,6 +1752,10 @@ secs.forEach(x=>io.observe(x));
 (function(){var r=document.documentElement,hs=document.querySelector('.hero-sub'),t=false;if(!hs)return;
  function u(){r.classList.toggle('past-hero',hs.getBoundingClientRect().top<innerHeight*.6)}
  u();addEventListener('scroll',function(){if(t)return;t=true;requestAnimationFrame(function(){t=false;u()})},{passive:true});addEventListener('resize',u)})();
+</script>
+<script>
+/* « les conditions » (questions) : remonte à l'organisation et ouvre « Comment monter en grade ? » */
+document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListener('click',function(e){var g=document.getElementById('grades'),b=document.getElementById('mj-btn');if(!g||!b)return;e.preventDefault();g.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){b.click()},650)})});
 </script>
 </body>
 </html>
