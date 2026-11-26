@@ -6,6 +6,7 @@
 // GET /callback    : retour de Discord ; poste la candidature avec la mention du joueur, puis l'envoie sur le serveur.
 // Secrets à créer dans Cloudflare : COC_TOKEN (clé API Clash of Clans, IP 45.79.218.79), DISCORD_WEBHOOK (salon candidatures),
 //   DISCORD_STAFF_WEBHOOK (salon staff, facultatif : la même fiche y est aussi postée),
+//   DISCORD_FICHES_WEBHOOK (salon #fiches, facultatif : fiche diagnostic publique du joueur, sans la recommandation du staff),
 //   DISCORD_CLIENT_ID et DISCORD_CLIENT_SECRET (application Discord), et DISCORD_INVITE (lien d'invitation du serveur).
 
 const API = "https://cocproxy.royaleapi.dev/v1";
@@ -125,6 +126,54 @@ function embed(a) {
   return { username: "Gravaen · candidatures", embeds: [e] };
 }
 
+// Fiche diagnostic publique (salon #fiches) : score, jauges et priorités, sans la recommandation du staff
+const TIPS = {
+  hdv: "Monter ton hôtel de ville", her: "Monter tes héros au max de ton HDV", cla: "Grimper en classé (ligue)",
+  gue: "Gagner des étoiles en guerre", cap: "Participer à la capitale (raids et contributions)", don: "Donner plus de troupes au clan",
+};
+function fiche(a, user) {
+  const pct = (d) => Math.round(d.v / d.max * 100);
+  const low = a.dims.slice().sort((x, y) => pct(x) - pct(y)).slice(0, 2);
+  const prio = (a.rushed ? ["Rattraper tes héros avant de monter d'HDV"] : []).concat(low.map((d) => TIPS[d.k] + " (" + pct(d) + "/100)"));
+  const e = {
+    author: { name: "Fiche diagnostic · Gravaen", ...(a.leagueIcon ? { icon_url: a.leagueIcon } : {}) },
+    title: "Fiche diagnostic de " + a.name,
+    color: 0xf8c801,
+    thumbnail: { url: TH_IMG(a.th) },
+    description: "## " + a.total + " / 100",
+    fields: [
+      { name: "🏰 HDV", value: "**" + a.th + "**", inline: true },
+      { name: "🏆 Ligue", value: a.league, inline: true },
+      { name: "⚔️ Étoiles de guerre", value: "**" + a.warStars + "**", inline: true },
+      { name: "👑 Héros", value: a.heroes.map((h) => h.n + " **" + h.l + "**/" + h.m).join(" · ") || "—" },
+      { name: "📊 Tes jauges", value: a.dims.map((d) => ICO[d.k] + " " + bar(pct(d)) + " **" + pct(d) + "** " + d.label).join("\n") },
+      { name: "🎯 À travailler en priorité", value: prio.map((t, i) => (i + 1) + ". " + t).join("\n") },
+    ],
+    timestamp: new Date().toISOString(),
+  };
+  const msg = { username: "Gravaen · fiches", embeds: [e] };
+  if (user) {
+    msg.content = "<@" + user.id + ">, voici ta fiche diagnostic 👇";
+    msg.allowed_mentions = { users: [user.id] };
+  }
+  return msg;
+}
+
+// « ⚔️ Prochaine guerre de Gravaen 1 dans 6 h : on t'attend ! » (clan conseillé, rien si le profil n'est pas recommandé)
+async function warLine(a, env) {
+  if (a.reco !== "Clan principal" && a.reco !== "Clan secondaire") return "";
+  const main = a.reco === "Clan principal", name = main ? "Gravaen 1" : "Gravaen 2";
+  try {
+    const r = await fetch(API + "/clans/" + encodeURIComponent(main ? "#2C0CVRCPV" : "#2J0UPJVQJ") + "/currentwar", { headers: { Authorization: "Bearer " + env.COC_TOKEN } });
+    if (!r.ok) return "";
+    const w = await r.json();
+    const t = (s) => new Date(s.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2}).*$/, "$1-$2-$3T$4:$5:$6Z"));
+    if (w.state === "preparation") return "⚔️ Prochaine guerre de " + name + " dans " + Math.max(1, Math.round((t(w.startTime) - Date.now()) / 36e5)) + " h : on t'attend !";
+    if (w.state === "inWar") return "⚔️ Une guerre est en cours dans " + name + " : tu joueras la prochaine avec nous !";
+  } catch (e) {}
+  return "";
+}
+
 const cleanTag = (t) => "#" + String(t || "").toUpperCase().replace(/[^0-9A-Z]/g, "").replace(/O/g, "0");
 const okTag = (t) => t.length >= 4 && t.length <= 13;
 const redirect = (url) => Response.redirect(url, 302);
@@ -155,6 +204,15 @@ async function post(a, env, user) {
   if (env.DISCORD_STAFF_WEBHOOK) {
     try {
       await fetch(env.DISCORD_STAFF_WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(msg) });
+    } catch (e) {}
+  }
+  // fiche diagnostic publique dans #fiches, si le webhook est configuré
+  if (env.DISCORD_FICHES_WEBHOOK) {
+    try {
+      const f = fiche(a, user);
+      const w = await warLine(a, env);   // fin mémorable : la prochaine guerre du clan conseillé
+      if (w) f.content = (f.content ? f.content + "\n" : "") + w;
+      await fetch(env.DISCORD_FICHES_WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(f) });
     } catch (e) {}
   }
   await cache.put(key, new Response("1", { headers: { "Cache-Control": "max-age=86400" } }));

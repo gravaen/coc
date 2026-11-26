@@ -25,3 +25,11 @@ jobs:
           STAFF: ${{ secrets.DISCORD_STAFF_WEBHOOK }}
         run: |
           if [ -n "$STAFF" ]; then printf '%s' "$STAFF" | npx --yes wrangler@3.99.0 secret put DISCORD_STAFF_WEBHOOK; else echo "secret GitHub DISCORD_STAFF_WEBHOOK absent"; fi
+      - name: Webhook du salon #fiches (copié depuis le secret GitHub DISCORD_FICHES_WEBHOOK)
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: d3c759c515555f488f11bd3b164b0d77
+          FICHES: ${{ secrets.DISCORD_FICHES_WEBHOOK }}
+        run: |
+          if [ -n "$FICHES" ]; then printf '%s' "$FICHES" | npx --yes wrangler@3.99.0 secret put DISCORD_FICHES_WEBHOOK; else echo "secret GitHub DISCORD_FICHES_WEBHOOK absent"; fi

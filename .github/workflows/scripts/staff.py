@@ -29,6 +29,7 @@ HOOK = os.environ.get("DISCORD_STAFF_WEBHOOK", "").strip()
 GEN = os.environ.get("DISCORD_GENERAL_WEBHOOK", "").strip() or HOOK
 NOW = datetime.datetime.now(datetime.timezone.utc)
 NOM = {"#2C0CVRCPV": "Gravaen 1", "#2J0UPJVQJ": "Gravaen 2"}
+DIAG = {}   # scores diagnostic des membres, par tag de clan (rempli par track)
 ROLE = {"member": "Membre", "admin": "Aîné", "coLeader": "Adjoint", "leader": "Chef"}
 
 
@@ -444,6 +445,10 @@ def track(state):
             if not p:
                 continue
             fp = fingerprint(p)
+            try:
+                DIAG.setdefault(tag, []).append(analyse(p)["total"])
+            except Exception:
+                pass
             if m["tag"] not in before:
                 newbies.append((m["tag"], tag, p))
             s = seen.setdefault(m["tag"], {"since": NOW.isoformat(timespec="seconds"), "h": []})
@@ -470,6 +475,9 @@ def track(state):
     known = set(state.get("known") or []) | before | set(members)
     joins = [(t, c, p) for t, c, p in newbies if ready and t not in set(state.get("known") or [])]
     state["known"] = sorted(known)[-3000:]
+    log = [j for j in state.get("joins") or [] if NOW - datetime.datetime.fromisoformat(j["d"]) < datetime.timedelta(days=90)]
+    log += [{"t": t, "d": NOW.isoformat(timespec="seconds")} for t, c, p in joins]
+    state["joins"] = log
     return joins
 
 
@@ -689,6 +697,16 @@ def main():
     state["reminders"] = rem[-60:]
 
     joins = track(state)
+    # pour le site : scores des membres (comparaison « top X % ») et arrivées des 30 derniers jours
+    try:
+        recent = sum(1 for j in state.get("joins") or [] if NOW - datetime.datetime.fromisoformat(j["d"]) < datetime.timedelta(days=30))
+        os.makedirs("data", exist_ok=True)
+        with open("data/diag.json", "w", encoding="utf-8") as f:
+            json.dump({"updated": NOW.isoformat(timespec="seconds"), "joined30": recent,
+                       "main": sorted(DIAG.get(CLANS[0][1], []), reverse=True),
+                       "second": sorted(DIAG.get(CLANS[1][1], []), reverse=True)}, f)
+    except Exception as e:
+        print(f"  diag.json non écrit : {e}", file=sys.stderr)
     if HOOK:
         for t, c, p in joins:
             try:

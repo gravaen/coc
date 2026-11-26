@@ -1182,6 +1182,40 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 .pc-heroes i{display:none}
 .pc-cats li,.pc-heroes li{background:var(--sand)}
 @media (prefers-color-scheme:dark){.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:#F2EDDE!important;color:#212320!important}}
+/* ordinateur : moins de vide entre « Comment monter en grade ? » et « Notre stratégie » */
+@media (min-width:761px){section.s#grades{padding-bottom:32px!important}}
+/* « Un Discord orienté action » : bénéfices automatiques avant le bouton */
+.jn-auto{margin-top:26px;padding:22px 24px;border:1px solid rgba(255,253,245,.14);background:rgba(255,253,245,.04)}
+.jn-auto h3{font-family:var(--title);color:var(--light);font-size:var(--t-h3,22px);margin:0 0 6px;letter-spacing:.01em}
+.join .jn-auto p{font-size:var(--t-body)!important;color:#D8D3C4;margin:0 0 12px}
+.jn-auto ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.jn-auto li{position:relative;padding-left:26px;color:#D8D3C4;font-size:var(--t-body);line-height:1.45}
+.jn-auto li::before{content:"";position:absolute;left:2px;top:.42em;width:12px;height:7px;border-left:2.5px solid var(--yellow);border-bottom:2.5px solid var(--yellow);transform:rotate(-45deg)}
+.jn-auto li b{color:var(--light)}
+@media (max-width:760px){.jn-auto{margin-top:18px;padding:16px}.jn-auto ul{gap:7px}.jn-auto li{line-height:1.4}}
+@media (max-width:760px) and (max-height:700px){.join{padding:24px 0!important}.join h2{font-size:26px!important}.join .wrap>div>p:not(.jn-act){font-size:14.5px!important}.jn-auto{margin-top:12px;padding:12px 14px}.jn-auto h3{font-size:16px}.join .jn-auto p,.jn-auto li{font-size:13.5px!important}.jn-auto ul{gap:5px}.jn-act{margin-top:14px!important}.join .cta{padding:12px!important}.jn-note{display:none}}
+/* mode sombre : textes de la candidature lisibles (score, étapes, rush, confirmation) */
+@media (prefers-color-scheme:dark){.join-dlg .pc-num b,.join-dlg .pc-rush b,.join-dlg .jd-steps li.on,.join-dlg .jr-next b,.join-dlg .jr-ok,.join-dlg .jr-top b{color:#F2EDDE!important}.join-dlg .pc-id{background:#141512!important}}
+/* candidature : la fiche complète annoncée juste avant « Envoyer » (texte, sans encadré) */
+.jr-fiche{margin:18px 0 0;display:grid;gap:2px;text-align:center}
+.jr-fiche b{font-size:var(--t-h3,19px);font-weight:600;color:var(--ink)}
+.jr-fiche span{font-size:var(--t-body);color:var(--soft)}
+@media (prefers-color-scheme:dark){.join-dlg .jr-fiche b{color:#F2EDDE!important}}
+/* comparaison, preuve sociale, fin mémorable, mot du cofondateur */
+.pc-cmp{margin:10px 0 0;font-size:var(--t-body);color:var(--text)}
+.pc-cmp b{color:var(--ink)}
+.jn-proof{margin:10px 0 0!important;font-size:var(--t-body)!important;color:#D8D3C4}
+.jn-proof b{color:var(--yellow)}
+.jr-war{margin:2px 0 12px;font-weight:600;color:var(--ink)}
+.founder{margin:26px auto 4px;max-width:46rem;text-align:center}
+.founder blockquote{margin:0;font-size:var(--t-body);line-height:1.55;font-style:italic;color:var(--text)}
+.founder figcaption{margin-top:8px;font-size:var(--t-small);color:var(--soft)}
+.founder figcaption b{color:var(--ink);font-style:normal}
+@media (prefers-color-scheme:dark){.join-dlg .pc-cmp b,.join-dlg .jr-war{color:#F2EDDE!important}.founder figcaption b{color:#F2EDDE}}
+@media (max-width:760px){.founder{margin:16px auto 0}.founder blockquote{font-size:14.5px;line-height:1.45}}
+.sub-band .founder blockquote{color:#D8D3C4}.sub-band .founder figcaption{color:#BDB8A9}.sub-band .founder figcaption b{color:#F2EDDE}
+.hero-sign{margin:10px auto 0;font-size:var(--t-small);color:#A39F92}.hero .hero-sign b{color:#F2EDDE}
+.hero .hero-lede{max-width:44rem!important;margin-left:auto!important;margin-right:auto!important}
 </style>
 </head>
 <body>
@@ -1209,7 +1243,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
   <img class="hero-badge" data-badge="hero" src="icon-512.png" alt="Blason du clan Gravaen" width="512" height="512" fetchpriority="high">
   <p class="hero-since">Clan français depuis août 2025</p>
   <h1 class="slogan sr-h1">Clash of Clans&nbsp;: Gravaen</h1>
-  <p class="slogan-sub hero-lede">Un clan familial à l’ambiance détendue, <b>adulte</b>, <b>actif</b> et <b>très organisé</b>&nbsp;: du jeu en profondeur et de bonnes soirées&nbsp;!</p>
+  <p class="slogan-sub hero-lede">J’ai créé ce clan en 2025 avec un ami. Nous avons à cœur de progresser tous ensemble. Dans cette optique, peu importe ton niveau, tu as ta place parmi nous si tu es sympa et respectueux. Nous sommes avant tout un clan à l’ambiance détendue, <b>adulte</b>, <b>actif</b> et <b>organisé</b>, pour un jeu en profondeur et de bonnes soirées.</p><p class="hero-sign"><b>Clasheur</b>, chef adjoint</p>
   </div>
   <a class="scroll-cue" href="#suite" aria-label="Voir la suite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
  </div>
@@ -1267,7 +1301,7 @@ html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
 
 <section class="join" id="rejoindre">
  <div class="wrap">
-  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Un clan <b>adulte</b>, <b>actif</b> et <b>très organisé</b> t’attend. Entre ton tag&nbsp;: ta candidature arrive sur notre Discord avec ton profil.</p><p class="jn-act"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Postuler sur Discord</a><span class="jn-note">Ton profil est analysé en direct et le clan adapté t’est proposé.</span></p></div>
+  <div><h2>Prêt à rejoindre Gravaen ?</h2><p>Un clan <b>adulte</b>, <b>actif</b> et <b>très organisé</b> t’attend.</p><p class="jn-proof" data-proof hidden></p><div class="jn-auto"><h3>Un Discord orienté action</h3><p>On a automatisé le reste pour qu’on passe plus de temps à jouer ensemble. Tu progresses, tu gagnes du temps.</p><ul><li><b>Ton score tout de suite, ta fiche diagnostic complète</b>&nbsp;: les points précis où tu dois progresser</li><li><b>Les dernières compos et bases méta arrivent toutes seules</b>, chaque semaine, avec vidéo et lien direct vers le jeu</li><li><b>Plus jamais d’attaque oubliée</b>&nbsp;: un rappel avant la fin de chaque guerre</li><li><b>Tes exploits à l’honneur</b> dans le bilan de chaque guerre</li></ul></div><p class="jn-act"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Voir mon score</a><span class="jn-note">Entre ton tag&nbsp;: ton profil est analysé en direct et le clan adapté t’est proposé.</span></p></div>
  </div>
 </section>
 </main>
@@ -1498,6 +1532,29 @@ secs.forEach(x=>io.observe(x));
  var LT={Skeleton:'Squelette',Barbarian:'Barbare',Archer:'Archère',Wizard:'Sorcier',Valkyrie:'Valkyrie',Witch:'Sorcière',Golem:'Golem','P.E.K.K.A':'P.E.K.K.A',PEKKA:'P.E.K.K.A',Titan:'Titan',Dragon:'Dragon',Electro:'Électro',Legend:'Légende'};
  function lname(n){var m=/^(.+?) League(?: (\d+|I{1,3}))?$/.exec(n||'');return m&&LT[m[1]]?LT[m[1]]+(m[2]?' '+m[2]:''):(n||'Non classé')}
  function tone(v){return v>=70?'g':v>=40?'o':'r'}
+ /* scores des membres (data/diag.json, généré par le bot) : comparaison « top X % » et arrivées récentes */
+ var DIAGD=null;
+ fetch('data/diag.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(d){
+  if(!d&&DEMO)d={joined30:4,main:[88,84,80,77,75,72,70,66,63,60,58,55,51,48,45],second:[52,47,44,40,36,33,30,28,25,21]};
+  DIAGD=d;var pr=document.querySelector('[data-proof]');
+  if(pr&&d&&d.joined30>=3){pr.innerHTML='<b>'+d.joined30+' joueurs</b> nous ont rejoints ces 30 derniers jours.';pr.hidden=false}
+ });
+ function cmp(a){
+  if(!DIAGD||/^(Non|HDV)/.test(a.reco))return '';
+  var main=a.reco==='Clan principal',list=(main?DIAGD.main:DIAGD.second)||[],n=list.length,name=main?'Gravaen 1':'Gravaen 2';
+  if(n<5)return '';
+  var better=list.filter(function(x){return x>a.total}).length,lower=list.filter(function(x){return x<a.total}).length;
+  var top=Math.max(1,Math.ceil((better+1)/n*100));
+  if(top<=50)return 'Ton score te placerait dans le <b>top '+top+'&nbsp;%</b> de '+name+'.';
+  var y=Math.round(lower/n*100);return y>=10?'Ton score dépasse déjà <b>'+y+'&nbsp;%</b> des joueurs de '+name+'.':'';
+ }
+ function warLine(d,reco){
+  var key=reco==='Clan principal'?'main':'second',name=key==='main'?'Gravaen 1':'Gravaen 2';
+  var w=d&&d.clans&&d.clans[key]&&d.clans[key].war;
+  if(w&&w.state==='preparation'&&w.start){var h=Math.max(1,Math.round((new Date(w.start)-Date.now())/36e5));return 'La prochaine guerre de '+name+' commence dans '+h+'&nbsp;h&nbsp;: on t’attend&nbsp;!'}
+  if(w&&w.state==='inWar')return 'Une guerre est en cours dans '+name+'&nbsp;: tu joueras la prochaine avec nous&nbsp;!';
+  return 'Bienvenue chez Gravaen, on t’attend&nbsp;!';
+ }
  function card(a){
   var th=THIMG[String(Math.max(7,Math.min(18,a.th)))];
   var bad=/^(Non|HDV)/.test(a.reco),ok=a.reco==='Clan principal';
@@ -1512,16 +1569,15 @@ secs.forEach(x=>io.observe(x));
    +'<div class="pc-score t-'+tone(sc)+'"><div class="pc-num"><b>'+sc+'</b><small>/100</small></div>'
     +'<div class="pc-verdict"><span class="pc-reco '+(ok?'g':bad?'r':'o')+'">'+(bad?esc(a.reco):'Recommandé : '+esc(a.reco))+'</span>'
     +'<span class="pc-rush '+rush[0]+'"><b>'+rush[1]+'</b>'+(rush[2]?' · '+rush[2]:'')+(a.malus?' (−'+a.malus+' pts)':'')+'</span></div></div>'
-   +'<h3 class="pc-h">Héros</h3><ul class="pc-heroes">'+heroes+'</ul>'
-   +'<h3 class="pc-h">Scores</h3><ul class="pc-cats">'+cats+'</ul>'
+   +(cmp(a)?'<p class="pc-cmp">'+cmp(a)+'</p>':'')
    +'</div>';
  }
  form.addEventListener('submit',function(e){
   e.preventDefault();var tag=inp.value.trim();if(!tag)return;
   res.innerHTML='<p class="jd-load">Recherche du joueur…</p>';
   call(tag,false).then(function(a){last=a;step(2);
-   if(a.discord){res.innerHTML=card(a)+'<a class="cta jr-send" href="'+API+'auth?tag='+encodeURIComponent(a.tag)+'">Envoyer avec Discord</a><p class="jr-note">Discord te demande de confirmer ton compte, puis tu arrives directement sur notre serveur. Ton profil et ce score sont envoyés au staff.</p>';return}
-   res.innerHTML=card(a)+'<button class="cta jr-send" type="button" id="join-send">Envoyer ma candidature</button><p class="jr-note">Ton profil et ce score seront envoyés au staff sur notre Discord.</p>';
+   if(a.discord){res.innerHTML=card(a)+'<p class="jr-fiche"><b>Ta fiche diagnostic complète t’attend sur Discord</b><span>Tes héros, tes 6 jauges et les points précis où tu dois progresser.</span></p><a class="cta jr-send" href="'+API+'auth?tag='+encodeURIComponent(a.tag)+'">Envoyer</a><p class="jr-note">Tu confirmes ton compte, puis tu rejoins le serveur.</p>';return}
+   res.innerHTML=card(a)+'<p class="jr-fiche"><b>Ta fiche diagnostic complète t’attend sur Discord</b><span>Tes héros, tes 6 jauges et les points précis où tu dois progresser.</span></p><button class="cta jr-send" type="button" id="join-send">Envoyer</button><p class="jr-note">Ta candidature part au staff.</p>';
    document.getElementById('join-send').addEventListener('click',send);
   }).catch(function(err){res.innerHTML='<p class="jd-err">'+esc(err.message==='Failed to fetch'?'Connexion impossible, réessaie dans un instant.':err.message)+'</p>'});
  });
@@ -1530,8 +1586,9 @@ secs.forEach(x=>io.observe(x));
  function send(){
   var b=document.getElementById('join-send');b.disabled=true;b.textContent='Envoi…';
   call(last.tag,true).then(function(a){
-   step(3);res.innerHTML='<div class="jr-done"><p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée, merci '+esc(a.name||'')+'&nbsp;!')+'</p><ol class="jr-next"><li><b>Rejoins le Discord</b> avec le bouton ci-dessous.</li><li><b>Le staff regarde ton profil</b>, il l’a déjà sous les yeux.</li><li><b>On t’invite dans le clan</b> qui te correspond.</li></ol><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a></div>';
-  }).catch(function(err){b.disabled=false;b.textContent='Envoyer ma candidature';res.insertAdjacentHTML('beforeend','<p class="jd-err">'+esc(err.message)+'</p>')});
+   step(3);res.innerHTML='<div class="jr-done"><p class="jr-ok">'+(a.already?'Candidature déjà envoyée':'Candidature envoyée, merci '+esc(a.name||'')+'&nbsp;!')+'</p><p class="jr-war" data-war>Bienvenue chez Gravaen, on t’attend&nbsp;!</p><ol class="jr-next"><li><b>Rejoins le Discord</b> avec le bouton ci-dessous.</li><li><b>Le staff regarde ton profil</b>, il l’a déjà sous les yeux.</li><li><b>On t’invite dans le clan</b> qui te correspond.</li></ol><a class="cta jr-send" href="'+INVITE+'" target="_blank" rel="noopener">Rejoindre le Discord</a></div>';
+   (window.gravaenData||Promise.resolve(null)).then(function(d){var el=res.querySelector('[data-war]');if(el)el.innerHTML=warLine(d,last.reco)});
+  }).catch(function(err){b.disabled=false;b.textContent='Envoyer';res.insertAdjacentHTML('beforeend','<p class="jd-err">'+esc(err.message)+'</p>')});
  }
 })();
 </script>
