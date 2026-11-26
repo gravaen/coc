@@ -1280,6 +1280,21 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 @media (min-width:761px){.qa-list{grid-template-columns:repeat(3,1fr)!important;column-gap:28px}}
 .ba .qa-link{color:inherit;font-weight:600;text-decoration:none;background:linear-gradient(transparent 60%,rgba(248,200,1,.55) 60%);padding:0 1px}
 .ba .qa-link:hover,.ba .qa-link:focus-visible{background:rgba(248,200,1,.55)}
+/* mot de Clasheur sous le blason : police Clash of Clans, plus jovial */
+.hero .hero-lede,.hero .hero-sign{font-family:var(--title)!important;font-weight:400!important;letter-spacing:.01em}
+.hero .hero-lede{line-height:1.5!important}
+.hero .hero-lede b,.hero .hero-sign b{font-family:var(--title)!important;font-weight:900!important}
+/* sous-parties de « Notre organisation » : Nos grades, Notre stratégie, Nos 4 règles d'or (même niveau) */
+.sub-t{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:17px;font-weight:600;color:var(--ink)}
+.sub-t:before{content:"";width:16px;height:4px;background:#C9C2AE;flex:none}
+.sub-head{margin-bottom:14px}.sub-head .sub-t{margin-bottom:4px}
+.sub-desc{margin:0;font-size:var(--t-body);color:var(--text)}
+#grades .sub-t{margin-top:18px}
+@media (max-width:760px){.sub-t{font-size:15px;margin-bottom:8px}#grades .sub-t{margin-top:8px}.sub-desc{font-size:13.5px;line-height:1.4}}
+@media (min-width:761px){section.s.strat#strategie{padding-top:40px!important}}
+/* mot sous le blason : plus petit */
+.hero p.slogan-sub.hero-lede{font-size:18px!important}
+@media (max-width:760px){.hero p.slogan-sub.hero-lede{font-size:13.5px!important;line-height:1.45!important}.hero .hero-sign{font-size:12px!important}}
 </style>
 </head>
 <body>
@@ -1292,7 +1307,6 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
    <li><a href="#vision">Qui nous sommes</a></li>
    <li><a href="#clans">Nos clans</a></li>
    <li><a href="#grades">Notre organisation</a></li>
-   <li><a href="#strategie">Notre stratégie</a></li>
    
    <li class="drawer-cta"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Postuler sur Discord</a></li>
   </ul>
@@ -1311,7 +1325,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
   <a class="scroll-cue" href="#suite" aria-label="Voir la suite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
  </div>
  <div class="hero-sub" id="suite"><div class="sub-band">
-  <h2 class="eyeb sub-eyeb"><i>—</i>En quelques chiffres</h2>
+  <h2 class="eyeb sub-eyeb"><i>—</i>Gravaen en quelques chiffres</h2>
   
   <div class="ranks rv"><div class="rank" role="group" aria-label="HDV moyen des membres"><img loading="lazy" decoding="async" src="hdv-16.webp" alt="Hôtel de ville" width="181" height="211" data-ki="hdv" data-th="16"><div><b data-k="hdv">—</b><span>HDV moyen</span></div></div><div class="rank" role="group" aria-label="Dons de la saison"><img loading="lazy" decoding="async" src="ic-dons.webp" alt="Château de clan" width="127" height="107"><div><b data-k="don">—</b><span>Dons de la saison</span></div></div><div class="rank" role="group" aria-label="Notre ligue de clans"><img loading="lazy" decoding="async" src="ic-ligue.webp" alt="Trophée de la ligue Maître III" width="220" height="210" data-ki="war"><div><b data-k="war">Maître III</b><span>Ligue de clans</span></div></div><div class="rank" role="group" aria-label="Nos victoires en guerre"><img loading="lazy" decoding="async" src="ic-victoires.webp" alt="Épées croisées sur un bouclier" width="106" height="95"><div><b data-k="wins">—</b><span>Victoires GDC</span></div></div><div class="rank" role="group" aria-label="Notre ligue de capitale"><img loading="lazy" decoding="async" src="ic-capitale.webp" alt="Badge de la ligue Champion I de la capitale de clan" width="121" height="111" data-ki="capital"><div><b data-k="cap">Champion I</b><span>Capitale</span></div></div><div class="rank" role="group" aria-label="Notre meilleure série de victoires en guerre"><img loading="lazy" decoding="async" src="ic-trophees.webp" alt="Trophée" width="74" height="78"><div><b>24 victoires</b><span>d’affilée en guerre</span></div></div></div> <p class="ranks-date" data-k="date">Chiffres mis à jour en novembre 2026</p>
   <div class="actions rv"><a class="more" href="#clans">Découvrir nos clans</a></div>
@@ -1330,7 +1344,8 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 
 <section class="s" id="grades">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2><p class="head-desc">Chaque grade a ses avantages et ses exigences&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
+  <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2></div>
+  <div class="sub-head"><h3 class="sub-t">Les grades</h3><p class="sub-desc">Chaque grade a ses avantages et ses exigences&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
   <div class="pyr" role="list">
    <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitations · Lancement sondage et GDC · Promotions · Rétrogradations · Exclusions</span></div>
    <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitations des joueurs qui répondent aux profils recherchés par le clan</span></div>
@@ -1342,7 +1357,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 
 <section class="s strat" id="strategie" aria-labelledby="strat-title">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb" id="strat-title"><i>—</i>Notre stratégie</h2><p class="head-desc">Chacun joue à son niveau, sans pénaliser les plus faibles, pour gagner un maximum de guerres.</p></div>
+  <div class="sub-head"><h3 class="sub-t" id="strat-title">La stratégie</h3><p class="sub-desc">Chacun joue à son niveau, sans pénaliser les plus faibles, pour gagner un maximum de guerres.</p></div>
   <div class="ladder">
    <div class="step"><div class="top" style="background:var(--line)"></div><div class="lv">Préparation&nbsp;: renforts</div><p>Châteaux remplis par les chefs</p></div>
    <div class="step"><div class="top" style="background:#FBE794"></div><div class="lv">1<sup>re</sup> attaque&nbsp;: miroir</div><p>Le village de ton rang, pas la suggestion du jeu</p></div>
@@ -1350,7 +1365,7 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
    <div class="step"><div class="top" style="background:#C79A00"></div><div class="lv">6 dernières heures&nbsp;: nettoyage</div><p>Villages non attaqués, puis étoiles manquantes</p></div>
   </div>
   <div class="regles">
-   <h3 class="rg-t">Nos 4 règles d’or</h3>
+   <h3 class="rg-t">Les 4 règles d’or</h3>
    <div class="ladder rg-grid">
     <div class="step"><div class="top"></div><div class="lv">Attaques&nbsp;: deux, toujours</div><p>Un oubli = un avertissement</p></div>
     <div class="step"><div class="top"></div><div class="lv">Compo&nbsp;: prête</div><p>Camps, sorts, héros</p></div>
@@ -1411,7 +1426,7 @@ m.onclick=()=>setMenu(!l.classList.contains('is-open'));
 l.onclick=e=>{if(e.target.closest('a'))setMenu(false)};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
 const secs=[...document.querySelectorAll('main section[id]')],links=[...l.querySelectorAll('a[href^="#"]')];
-const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){links.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+en.target.id));var h=en.target.id==='vision'?'':'#'+en.target.id;if(location.hash!==h&&scrollY>40)safeRS(null,'',location.pathname+location.search+h);else if(scrollY<=40&&location.hash)safeRS(null,'',location.pathname+location.search)}}),{rootMargin:'-45% 0px -50% 0px'});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){var cur=en.target.id==='strategie'?'grades':en.target.id;links.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+cur));var h=en.target.id==='vision'?'':'#'+en.target.id;if(location.hash!==h&&scrollY>40)safeRS(null,'',location.pathname+location.search+h);else if(scrollY<=40&&location.hash)safeRS(null,'',location.pathname+location.search)}}),{rootMargin:'-45% 0px -50% 0px'});
 secs.forEach(x=>io.observe(x));
 
 
