@@ -4,7 +4,7 @@ var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){re
 var nb=function(n){return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:1})};
 var FR={Legend:'Légende',Electro:'Électro',Dragon:'Dragon',Titan:'Titan',Golem:'Golem',Witch:'Sorcière',Valkyrie:'Valkyrie',Wizard:'Sorcier',Archer:'Archère',Barbarian:'Barbare',Skeleton:'Squelette'};
 var lig=function(n){n=String(n||'');var m=n.match(/^(.+?)\s*League\s*(.*)$/);return m?((FR[m[1]]||m[1])+(m[2]?' '+m[2]:'')):(n&&!/Unranked/.test(n)?n:'Non classé')};
-var G={cwl:['Ligue de clans',5,15],gdc:['Guerre',4,10],cap:['Capitale',3,10],rk:['Classé',2,10],act:['Activité',1.5,10],don:['Dons',1,10]};
+var G={cwl:['Ligue de clans',5,15],gdc:['Guerre',4,10],cap:['Capitale',3,10],rk:['Classé',2,10],don:['Dons',1,10]};
 var COL={cwl:'#212320',gdc:'#5C5D56',cap:'#8C8A80',rk:'#B3AFA3',act:'#D2CDBF',don:'#E8E2D2'};
 var I={cwl:['Leader technique','tire le clan vers le haut en Ligue de clans'],gdc:['Attaquant sur qui on compte','assure les étoiles en guerre'],cap:['Moteur de la capitale','fait grandir la capitale à chaque raid'],rk:['Vitrine du clan','montre jusqu’où un joueur de Gravaen peut aller'],act:['Repère du clan','garde le rythme du clan au quotidien'],don:['Soutien de l’équipe','permet à chacun d’attaquer à pleine puissance']};
 var B={champ:['Champion de la saison','M3.5 8.5l4.2 3.3L12 5.5l4.3 6.3 4.2-3.3-1.8 10H5.3z'],cwl:['Maître de la Ligue','M12 3l7 3v5.5c0 4.3-2.9 7.6-7 9.5-4.1-1.9-7-5.2-7-9.5V6z M9 12l2 2 4-4'],gdc:['Chef de guerre','M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M14.5 6.5L18 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3M3 19l2 2'],cap:['Bâtisseur de capitale','M4 21V9h3V5h2v4h2V5h2v4h2V5h2v4h3v12z M10 21v-4a2 2 0 014 0v4'],rk:['Compétiteur','M8 4h8v4a4 4 0 01-8 0z M8 6H5c0 2 1.3 3.6 3.2 4 M16 6h3c0 2-1.3 3.6-3.2 4 M12 12v4 M8.5 20h7 M10 16h4l.5 4h-5z'],act:['Infatigable','M12 3c1.2 3 4.5 5 4.5 9.5a4.5 4.5 0 01-9 0c0-2.2 1.1-3.6 2.3-4.6 0 2 .9 3.3 2.2 3.6-.9-3-.2-6.1 0-8.5z'],don:['Cœur du clan','M12 20s-7-4.4-7-10a4 4 0 017-2.7A4 4 0 0119 10c0 5.6-7 10-7 10z']};
@@ -36,7 +36,7 @@ Promise.all(['data/fiches.json','data/players.json'].map(function(u){return fetc
  document.title=name+' · Gravaen';
  var cats=(staff.filter(function(x){return x._t===q})[0]||{})._c||[];
  var prof0=cats.length?(function(){var a=I[cats[0]],b=cats[1]?I[cats[1]]:null;return a[0]+(b?' et '+b[0].charAt(0).toLowerCase()+b[0].slice(1):'')+'&nbsp;: '+a[1]+'.'})():'Garant de l’organisation&nbsp;: lance les guerres et valide les montées.';
- var SG={cwl:function(){return nb(v.cwl||0)+' étoiles en Ligue de clans ce mois-ci'},gdc:function(){return nb(v.gdc||0)+' étoiles en guerre ce mois-ci'},cap:function(){return nb(v.cap||0)+' d’or pillé en capitale'},rk:function(){return nb(f.tr!=null?f.tr:(v.rk||0))+' trophées en '+lig(f.lg||p.lg)},act:function(){return 'présent '+nb(v.act||0)+' jours cette saison'},don:function(){return nb(v.don||0)+' troupes données à l’équipe'}};
+ var SG={cwl:function(){return nb(v.cwl||0)+' étoiles en Ligue de clans ce mois-ci'},gdc:function(){return nb(v.gdc||0)+' étoiles en guerre ce mois-ci'},cap:function(){return nb(v.cap||0)+' d’or pillé en capitale'},rk:function(){return nb(f.tr!=null?f.tr:(v.rk||0))+' trophées en '+lig(f.lg||p.lg)},don:function(){return nb(v.don||0)+' troupes données à l’équipe'}};
  var cs=Object.keys(G).filter(function(k){return (p.r||{})[k]}).sort(function(a,b){return p.r[a]-p.r[b]}).slice(0,2);
  var prof=cs.length?cs.map(function(k){return SG[k]()}).join(' · ').replace(/^./,function(c){return c.toUpperCase()}):prof0;
  var bd=[];if(p.b)bd=p.b.filter(function(k){return B[k]});else{if(p.rank===1)bd.push('champ');Object.keys(G).forEach(function(k){var r=(p.r||{})[k];if(r&&r<=3)bd.push(k)})}  /* badges de la dernière saison terminée, sinon de la saison en cours */
@@ -72,8 +72,7 @@ Promise.all(['data/fiches.json','data/players.json'].map(function(u){return fetc
  h+='<div class="pw-three">';
  h+='<div class="pw pw-mini"><div class="pw-h"><b>Classé</b><button type="button" class="pw-more" data-go="classe">Voir <span aria-hidden="true">→</span></button></div><div class="pw-rkb">'+(lgi?'<img src="'+esc(lgi)+'" alt="Blason '+esc(lgn)+'">':'<span class="pt-wph" aria-hidden="true"></span>')+'<div><p class="pw-mid">'+esc(lgn)+'</p><p class="pw-sub">'+TRO+nb(tr)+' · record '+nb(f.best||0)+'</p>'+(place('rk')?'<p class="pw-pl">'+place('rk')+'</p>':'')+'</div></div></div>';
  h+=wg('Capitale','',[['Or de capitale pillé','<span data-n="'+(v.cap||0)+'">'+nb(v.cap||0)+'</span>',place('cap')]],null,'pw-mini');
- var hasS=v.actd!=null;
- h+=wg('Activité','',(hasS?[['Score d’activité','<span data-n="'+(v.act||0)+'">'+nb(v.act||0)+'</span>',place('act')],['Jours actifs','<span data-n="'+v.actd+'">'+nb(v.actd)+'</span>']]:[['Jours actifs','<span data-n="'+(v.act||0)+'">'+nb(v.act||0)+'</span>',place('act')]]).concat([['Troupes données','<span data-n="'+(v.don||0)+'">'+nb(v.don||0)+'</span>',place('don')]]),null,'pw-mini');
+ h+=wg('Dons','',[['Troupes données','<span data-n="'+(v.don||0)+'">'+nb(v.don||0)+'</span>',place('don')]],null,'pw-mini');
  h+='</div></div>';
  /* Guerre */
  var rd=f.cwl||[];

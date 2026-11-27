@@ -350,7 +350,7 @@ print(json.dumps(data, ensure_ascii=False))
 # il est repris du fichier déjà en ligne, et remis à zéro à chaque nouvelle saison.
 # ---------------------------------------------------------------------------
 PAGES = os.environ.get("PAGES_URL", "https://gravaen.pages.dev/")
-GRID = {"cwl": (5, 15), "gdc": (4, 10), "cap": (3, 10), "rk": (2, 10), "act": (1.5, 10), "don": (1, 10)}
+GRID = {"cwl": (5, 15), "gdc": (4, 10), "cap": (3, 10), "rk": (2, 10), "don": (1, 10)}  # l'activité ne compte plus : on ne peut pas la mesurer pour tout le monde
 # Liste noire : points retirés par faute, avec un plafond par faute (total au plus -100)
 BLACK = {"rad": 30, "man": 25, "des": 25, "piq": 10, "tou": 10}
 # Recalage sur ClashPerk (référence du clan) quand le simulateur a raté des données : voir saison_corrections.json

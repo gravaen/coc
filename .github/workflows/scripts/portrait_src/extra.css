@@ -325,3 +325,4 @@ body.portrait{background:var(--cream)}
 .pw-chips .c3{background:#FEF5CF!important;box-shadow:inset 0 0 0 1.5px var(--yellow)}
 .pw-chips .c2,.pw-chips .c1,.pw-chips .c0{background:#F3EEE0!important}
 .pw-chips .c0{color:var(--soft)!important}
+.pw-three{grid-template-columns:repeat(3,minmax(0,1fr))}@media (max-width:760px){.pw-three{grid-template-columns:minmax(0,1fr)}}

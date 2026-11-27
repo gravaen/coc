@@ -1500,6 +1500,38 @@ section.s#staff>.wrap{min-width:0}
 .pod-go::after{content:"";position:absolute;inset:0}
 [data-pod="saison"] li:hover .pod-go{color:var(--ink)}[data-pod="saison"] li:hover .pod-go svg{transform:translateX(3px)}
 .pod-go:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+/* fenêtre « Postuler » sur téléphone : tout le résultat tient dans l'écran, sans défiler */
+@media (max-width:760px){
+ .join-dlg{max-height:calc(100dvh - 12px)!important}
+ .join-dlg .jd-body{padding:12px 14px!important}
+ .join-dlg .jd-steps{margin-bottom:10px!important}
+ .join-dlg:has(.pc) .jd-help{display:none}
+ .join-dlg .jd-res{margin-top:10px!important}
+ .join-dlg .pc-id{grid-template-columns:auto minmax(0,1fr) auto!important;gap:10px!important;padding:10px 12px!important}
+ .join-dlg .pc-th{width:50px!important;height:50px!important}
+ .join-dlg .pc-who{gap:1px!important}
+ .join-dlg .pc-who b{font-size:18px!important}
+ .join-dlg .pc-meta{font-size:12.5px!important}
+ .join-dlg .pc-lg{grid-column:auto!important;flex-direction:column!important;align-items:center!important;gap:2px!important;padding-top:0!important;border-top:0!important;max-width:64px!important}
+ .join-dlg .pc-lg img{width:30px!important;height:30px!important}
+ .join-dlg .pc-lg span{font-size:11px!important;text-align:center}
+ .join-dlg .pc-score{padding:8px 0 0!important;gap:12px!important}
+ .join-dlg .pc-num b{font-size:40px!important}
+ .join-dlg .pc-cmp{margin:6px 0 0!important;font-size:13.5px!important}
+ .join-dlg .jr-fiche{margin:10px 0 0!important;padding:0!important;font-size:13px!important;line-height:1.35!important}
+ .join-dlg .jr-fiche b{font-size:15px!important}
+ .join-dlg .jr-send{margin-top:10px!important;padding-top:11px!important;padding-bottom:11px!important}
+ .join-dlg .jr-note{margin-top:6px!important;font-size:12px!important;line-height:1.35!important}
+}
+@media (max-width:760px) and (max-height:620px){
+ .join-dlg:has(.pc) .jd-steps{display:none}
+ .join-dlg .jd-head{padding-top:6px!important;padding-bottom:6px!important}
+ .join-dlg .pc-num b{font-size:34px!important}
+ .join-dlg .jr-fiche span{font-size:12px!important}
+ .join-dlg .jr-send{padding-top:9px!important;padding-bottom:9px!important}
+ .join-dlg .jd-body{padding:10px 14px!important}
+ .join-dlg .jr-fiche{margin-top:8px!important}
+}
 </style>
 </head>
 <body>
@@ -1602,7 +1634,7 @@ section.s#staff>.wrap{min-width:0}
  <div class="wrap">
   <div class="head"><h2 class="eyeb" id="pod-title"><i>—</i>Notre classement</h2><p class="head-desc">Les dix meilleurs de Gravaen en ce moment.</p></div>
   <div class="pod-grid pod-one">
-   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5l4.2 3.3L12 5.5l4.3 6.3 4.2-3.3-1.8 10H5.3z M5.5 21h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Meilleur joueur de la saison</b></h3><p class="pod-crit">Points gagnés en Ligue de clans, en guerre, en capitale, en classé, en activité et en dons.</p><ol class="pod-list" data-pod="saison"><li class="pod-empty">Chargement…</li></ol></div>
+   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5l4.2 3.3L12 5.5l4.3 6.3 4.2-3.3-1.8 10H5.3z M5.5 21h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Meilleur joueur de la saison</b></h3><p class="pod-crit">Points gagnés en Ligue de clans, en guerre, en capitale, en classé et en dons.</p><ol class="pod-list" data-pod="saison"><li class="pod-empty">Chargement…</li></ol></div>
   </div>
  </div>
 </section>
@@ -1610,9 +1642,8 @@ section.s#staff>.wrap{min-width:0}
 
 <section class="s faq" id="questions" aria-labelledby="faq-title">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb" id="faq-title"><i>—</i>Tes questions</h2><p class="head-desc">Les 3 doutes qu’on entend le plus.</p></div>
+  <div class="head"><h2 class="eyeb" id="faq-title"><i>—</i>Tes questions</h2><p class="head-desc">Les doutes qu’on entend le plus.</p></div>
   <div class="qa-list">
-   <div class="qa"><h3 class="bq">Faut-il être très actif&nbsp;?</h3><p class="ba">Non. Un peu, mais régulièrement&nbsp;: tes deux attaques en guerre, et une connexion tous les 3&nbsp;jours a minima si possible.</p></div>
    <div class="qa"><h3 class="bq">Je dois me présenter sur Discord&nbsp;?</h3><p class="ba">Non, un simple bonjour suffit. Je te réponds en moins de 24&nbsp;h.</p></div>
    <div class="qa"><h3 class="bq">Comment évoluer en grade&nbsp;?</h3><p class="ba">Chaque poste est facilement accessible, et <a href="#grades" class="qa-link">les conditions</a> sont visibles par tous. Nous privilégions la confiance et le mérite.</p></div>
   </div>
@@ -1810,7 +1841,7 @@ secs.forEach(x=>io.observe(x));
 (function(){
  var f=document.getElementById('sim-form');if(!f)return;
  var inp=document.getElementById('sim-tag'),res=document.getElementById('sim-res'),cache=null;
-  var CAT=[['cwl','Ligue',75],['gdc','Guerre',40],['cap','Capitale',30],['rk','Ranked',20],['act','Activité',15],['don','Dons',10]];
+  var CAT=[['cwl','Ligue',75],['gdc','Guerre',40],['cap','Capitale',30],['rk','Ranked',20],['don','Dons',10]];
  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
  function num(n){return String(n).replace('.',',')}
  function load(){return cache||(cache=fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}))}
@@ -1826,7 +1857,7 @@ secs.forEach(x=>io.observe(x));
    var pos=p.of>1?(p.rank-1)/(p.of-1)*100:0,sc=String(p.score).replace('.',',');
    res.innerHTML='<div class="sim-card'+z+'" style="--g:'+(top/p.of*100)+'%;--o:'+(mid/p.of*100)+'%">'
     +'<div class="sim-top"><span class="sim-name">'+esc(p.n)+'</span><span class="sim-rank">'+p.rank+(p.rank==1?'er':'e')+' <span>/ '+p.of+'</span></span></div>'
-    +'<p class="sim-score">'+sc+'<small>/ 190 pts</small></p>'
+    +'<p class="sim-score">'+sc+'<small>/ 175 pts</small></p>'
     +'<div class="sim-scale" role="img" aria-label="Place '+p.rank+' sur '+p.of+'"><i style="left:'+pos+'%"></i></div>'
     +'<div class="sim-ends"><span>1er</span><span>'+p.of+'e</span></div>'
     +'<dl class="sim-cats">'+CAT.map(function(c){var v=p.p[c[0]]||0,r=Math.min(1,v/c[2]),k=r>=.8?5:r>=.6?4:r>=.4?3:r>=.2?2:1;return '<div class="q'+k+'" style="--r:'+r.toFixed(3)+'"><dt>'+c[1]+'</dt><dd>'+String(v).replace('.',',')+'<small>/'+c[2]+'</small></dd></div>'}).join('')+'</dl></div>';
@@ -1893,14 +1924,14 @@ secs.forEach(x=>io.observe(x));
   var sc=Math.round(a.total);
   var heroes=a.heroes.map(function(h){var r=h.m?Math.min(1,h.l/h.m):0;return '<li class="'+(h.l?'':'off')+'"><img src="'+(HIMG[h.n]||'')+'" alt="'+esc(h.n)+'" width="44" height="44"><b>'+h.l+'</b><i style="--r:'+r.toFixed(3)+'"></i><small>'+esc(h.n)+'</small></li>'}).join('');
   var cats=a.dims.map(function(d){var v=Math.round(d.v/d.max*100);return '<li class="t-'+tone(v)+'"><span>'+esc(({hdv:'HDV',her:'Héros',cla:'Classé',gue:'Guerre',cap:'Capitale',don:'Dons'})[d.k]||d.label)+'</span><b>'+v+'</b><i style="--r:'+(v/100).toFixed(3)+'"></i></li>'}).join('');
-  var rush=a.tooRushed?['r','Compte trop rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:a.rushed?['o','Compte rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:['g','Pas de rush',''];
+  var rush=a.tooRushed?['r','Compte trop rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:a.rushed?['o','Compte rushé','héros à '+a.rush+' % sous le max de l’HDV '+(a.th-1)]:null;
   return '<div class="pc">'
    +'<div class="pc-id"><img class="pc-th" src="'+th+'" alt="Hôtel de ville '+a.th+'" width="88" height="88">'
     +'<div class="pc-who"><b>'+esc(a.name)+'</b><span class="pc-tag">'+esc(a.tag)+'</span><span class="pc-meta">HDV '+a.th+' · niveau '+a.exp+(a.clan?' · '+esc(a.clan):'')+'</span></div>'
     +(a.leagueIcon?'<div class="pc-lg"><img src="'+a.leagueIcon+'" alt="" width="52" height="52"><span>'+esc(lname(a.league))+'</span></div>':'')+'</div>'
    +'<div class="pc-score t-'+tone(sc)+'"><div class="pc-num"><b>'+sc+'</b><small>/100</small></div>'
     +'<div class="pc-verdict"><span class="pc-reco '+(ok?'g':bad?'r':'o')+'">'+(bad?esc(a.reco):'Recommandé : '+esc(a.reco))+'</span>'
-    +'<span class="pc-rush '+rush[0]+'"><b>'+rush[1]+'</b>'+(rush[2]?' · '+rush[2]:'')+(a.malus?' (−'+a.malus+' pts)':'')+'</span></div></div>'
+    +(rush?'<span class="pc-rush '+rush[0]+'"><b>'+rush[1]+'</b>'+(rush[2]?' · '+rush[2]:'')+(a.malus?' (−'+a.malus+' pts)':'')+'</span>':'')+'</div></div>'
    +(cmp(a)?'<p class="pc-cmp">'+cmp(a)+'</p>':'')
    +(goal(a)?'<p class="pc-goal">'+goal(a)+'</p>':'')
    +'</div>';
