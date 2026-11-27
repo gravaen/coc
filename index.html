@@ -1278,8 +1278,8 @@ section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
 .ba::after{right:22px!important;left:auto!important;bottom:-11px!important;border-width:12px 0 0 12px!important}
 /* 4 questions : 2 × 2 sur ordinateur ; lien « les conditions » surligné en jaune */
 @media (min-width:761px){.qa-list{grid-template-columns:repeat(3,1fr)!important;column-gap:28px}}
-.ba .qa-link{color:inherit;font-weight:600;text-decoration:none;background:linear-gradient(transparent 60%,rgba(248,200,1,.55) 60%);padding:0 1px}
-.ba .qa-link:hover,.ba .qa-link:focus-visible{background:rgba(248,200,1,.55)}
+.ba .qa-link{color:inherit;font-weight:600;text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:4px;background:none;padding:0}
+.ba .qa-link:hover,.ba .qa-link:focus-visible{text-decoration-thickness:3px}
 /* mot de Clasheur sous le blason : police Clash of Clans, plus jovial */
 .hero .hero-lede,.hero .hero-sign{font-family:var(--title)!important;font-weight:400!important;letter-spacing:.01em}
 .hero .hero-lede{line-height:1.5!important}
@@ -1431,16 +1431,10 @@ section.s#staff>.wrap{min-width:0}
 .st-foot .st-ar{font-size:18px;color:var(--ink);transition:transform .2s}
 .st-foot:hover{color:var(--ink)}.st-foot:hover .st-ar{transform:translateX(4px)}
 .st-empty{color:var(--soft)}
-/* cartes du staff sur le noir de Gravaen pour qu'elles ressortent */
-.st-card{background:#212320;border-top-color:#3A3C36}
-.st-card.chef{border-top-color:var(--yellow)}
-.st-card .st-role{background:#34362F;color:#F2EDDE}
-.st-card.chef .st-role{background:var(--yellow);color:#212320}
-.st-card .st-name{color:#FFFDF5}
-.st-card .st-txt{color:#D8D3C4}
-.st-card .st-foot{border-top-color:#3A3C36;color:#B8B3A4}
-.st-card .st-foot .st-ar{color:var(--yellow)}
-.st-card .st-foot:hover{color:#FFFDF5}
+/* infobulles des badges alignées à gauche (plus coupées par le bord) */
+.st-card .bdg::after{left:0;transform:none}
+.st-row{padding-top:40px;margin-top:-38px}
+.st-name{margin-top:0}
 .st-row:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 @media (max-width:760px){.st-card{padding:18px 16px 14px}.st-name{font-size:21px}.st-txt{font-size:14px}}
 /* badges de la saison sur les cartes du staff : petits carrés crème au trait, nom du badge au survol / au toucher */
@@ -1482,6 +1476,21 @@ section.s#staff>.wrap{min-width:0}
 /* puces carrées, icône d'en-tête alignée sur le rang 1 */
 .pod-ic,.pod-r{border-radius:0!important;width:32px!important;height:32px!important}
 @media (max-width:760px){.pod-ic,.pod-r{width:26px!important;height:26px!important}}
+/* une couleur par badge pour les distinguer */
+.bdg.b-champ{background:#F8C801}.bdg.b-cwl{background:#8DBCEB}.bdg.b-gdc{background:#EE9481}.bdg.b-cap{background:#7FCDB9}.bdg.b-rk{background:#C1AAEE}.bdg.b-act{background:#A9D37C}.bdg.b-don{background:#F0A9C9}
+.wv-star{width:.95em;height:.95em;margin:0 .15em 0 .2em;vertical-align:-.1em;fill:var(--yellow);stroke:var(--yellow);stroke-width:1.5;stroke-linejoin:round}
+/* staff : grade sous le nom, badges en liste verticale avec leur nom */
+.st-grade{margin:0 0 12px;font-size:14px;color:var(--soft)}
+.st-bl{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px}
+.st-bl li{display:flex;align-items:center;gap:10px;font-size:14.5px;font-weight:600;color:var(--ink)}
+.st-bl .bdg{flex:none;width:24px;height:24px}
+.st-name{margin-bottom:2px}
+.st-card .st-txt{margin-bottom:18px}
+/* « meilleur joueur de la saison » dans la pyramide : surligné, ouvre la bulle (volet du bas sur téléphone) */
+.pl .glink{font-weight:600;background:none!important;padding:0;text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:4px}
+.pl .glink:hover,.pl .glink[aria-expanded="true"]{text-decoration-thickness:3px}
+.mj-go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:15px;font-weight:700;color:var(--ink);text-decoration:none}
+.mj-go span{color:var(--yellow);transition:transform .2s}.mj-go:hover span{transform:translateX(3px)}
 </style>
 </head>
 <body>
@@ -1545,7 +1554,7 @@ section.s#staff>.wrap{min-width:0}
   <div class="sub-head"><h3 class="sub-t">Les grades</h3><p class="sub-desc">Chaque grade a ses avantages à faire valoir au quotidien&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
   <div class="pseg" role="tablist" aria-label="Afficher pour chaque grade"><span class="ps-ind" aria-hidden="true"></span><button type="button" role="tab" class="ps-b" aria-selected="true" data-v="c">Conditions</button><button type="button" role="tab" class="ps-b" aria-selected="false" data-v="a">Avantages</button></div>
   <div class="pyr" role="list">
-   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints</b><span class="pv"><span class="pc">3 mois dans le clan et élu meilleur joueur de la saison</span><span class="pa" aria-hidden="true">Invitations · Lancement sondage et GDC · Promotions · Rétrogradations · Exclusions</span></span></div>
+   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints</b><span class="pv"><span class="pc">3 mois dans le clan et élu <button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">meilleur joueur de la saison</button></span><span class="pa" aria-hidden="true">Invitations · Lancement sondage et GDC · Promotions · Rétrogradations · Exclusions</span></span></div>
    <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span class="pv"><span class="pc">1&nbsp;000 dons et 3 guerres de clans</span><span class="pa" aria-hidden="true">Invitations des joueurs qui répondent aux profils recherchés par le clan</span></span></div>
    <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span class="pv"><span class="pc">Dès ton arrivée</span><span class="pa" aria-hidden="true">Participation aux événements · Dons · Partage des récompenses du clan, comme pour tous les gradés</span></span></div>
   </div>
@@ -1608,6 +1617,14 @@ section.s#staff>.wrap{min-width:0}
  </div>
 </section>
 </main>
+<div class="mj-veil" id="mj-veil" hidden></div>
+<div class="mj-pop" id="mj-pop" role="dialog" aria-modal="false" aria-label="Le meilleur joueur de la saison" hidden>
+ <span class="mj-grip" aria-hidden="true"></span>
+ <button type="button" class="mj-x" id="mj-x" aria-label="Fermer">×</button>
+ <p class="mj-p">Chaque saison, le clan élit son meilleur joueur et publie le top 10 sur <a href="https://discord.gg/wRrx7tZnz" target="_blank" rel="noopener">Discord</a>. La Ligue de clans et la guerre comptent d’abord, puis la capitale, le classé, l’activité et les dons.</p>
+ <a class="mj-go" href="#meilleurs" onclick="document.getElementById('mj-x').click()">Voir notre classement <span aria-hidden="true">→</span></a>
+ <i class="mj-arrow" aria-hidden="true"></i>
+</div>
 <dialog class="join-dlg" id="join-dlg" aria-labelledby="join-title">
  <div class="jd-head"><h2 id="join-title">Postuler sur Discord</h2><button class="jd-x" type="button" id="join-x" aria-label="Fermer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
  <div class="jd-body">
@@ -1765,7 +1782,7 @@ secs.forEach(x=>io.observe(x));
    if(w.state!=='preparation'&&w.state!=='inWar')return;
    var e_=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
    var live=w.state==='inWar',head=(live?'En guerre':'En préparation')+(w.cwl?' de Ligue de clans':''),sub=[];
-   if(live&&w.us!=null)sub.push('<span class="wv-sc">'+(w.us||0)+'\u00a0★ à '+(w.them||0)+'</span>');
+   if(live&&w.us!=null)sub.push('<span class="wv-sc">'+(w.us||0)+'<svg class="wv-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg> à '+(w.them||0)+'</span>');
    if(w.cwl&&w.cwl.round)sub.push('manche '+w.cwl.round+'/'+(w.cwl.rounds||7));
    el.classList.add('wv');el.classList.toggle('live',live);
    el.innerHTML='<span class="wv-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M14.5 6.5L18 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3M3 19l2 2"/></svg>'+'</span><span class="wv-t"><strong>'+head+'</strong> contre '+e_(w.opponent)+'</span>';
@@ -2070,19 +2087,42 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
  var badges=function(p){var o=[];if(p.rank===1)o.push('champ');['cwl','gdc','cap','rk','act','don'].forEach(function(k){var r=(p.r||{})[k];if(r&&r<=3)o.push(k)});return o};
  fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
   var all=Object.keys(d.players||{}).map(function(t){var x=d.players[t];if(x)x._t=t;return x}).filter(function(p){return p&&(p.role==='leader'||p.role==='coLeader')});
-  var by={};all.forEach(function(p){var k=p.n,o=by[k];if(!o||(p.role==='leader'&&o.role!=='leader')||((p.role===o.role)&&(p.score||0)>(o.score||0)))by[k]=p});
-  var st=Object.values(by).sort(function(a,b){return (a.role==='leader'?0:1)-(b.role==='leader'?0:1)||(b.score||0)-(a.score||0)});
+  /* une seule carte par personne : les comptes secondaires (« Fred 2 », « Losscho 3.0 », « panaone mini »…) sont regroupés avec le compte principal */
+  var who=function(n){var w=String(n||'').toLowerCase().replace(/[^a-z0-9à-ÿ\s.]/g,' ').trim().split(/\s+/);while(w.length>1&&/^(\d+(\.\d+)?|mini|max|alt|bis)$/.test(w[w.length-1]))w.pop();return w.join(' ').replace(/\d+$/,'')||String(n)};
+  var by={};all.forEach(function(p){var k=who(p.n),o=by[k];if(!o||(p.th||0)>(o.th||0)||((p.th||0)===(o.th||0)&&(p.score||0)>(o.score||0)))by[k]=p;if(p.role==='leader')by[k]._chef=1;if(o&&o._chef)by[k]._chef=1});
+  var st=Object.values(by).sort(function(a,b){var A=a.role==='leader'||a._chef,B2=b.role==='leader'||b._chef;return (A?0:1)-(B2?0:1)||(b.score||0)-(a.score||0)});
   if(!st.length){box.closest('section').hidden=true;return}
   var used={};st.forEach(function(p){var c=Object.keys(I).filter(function(k){return force(p,k)>0}).sort(function(a,b){return force(p,b)-force(p,a)});
    var main=c.filter(function(k){return !used[k]})[0]||c[0];if(main)used[main]=1;p._c=main?[main].concat(c.filter(function(k){return k!==main}).slice(0,1)):[]});
+  var USED={};
   box.innerHTML=st.map(function(p){var v=p.v||{},pt=p.p||{},rk=p.r||{};
    var cats=p._c;
-   var chef=p.role==='leader',txt;
-   if(cats.length){var a=I[cats[0]],b=cats[1]?I[cats[1]]:null;
-    txt=a[0]+(b?' et '+b[0].charAt(0).toLowerCase()+b[0].slice(1):'')+'&nbsp;: '+a[1]+'.';}
-   else{txt='Garant de l’organisation&nbsp;: lance les guerres et valide les montées.'}
+   var chef=p.role==='leader'||p._chef,txt;
+   /* un sous-titre court, façon « meilleurs joueurs » du Discord : ses deux points forts en une phrase, jamais de classement, jamais deux fois la même */
+   var PA={cwl:['Ligue de clans appliquée','Belle Ligue de clans','Manches de ligue maîtrisées','Ligue de clans sans fausse note','Grosse régularité en Ligue de clans'],
+    gdc:['Impact constant en guerre','Triples à la chaîne en guerre','Précision chirurgicale en guerre','Guerres jouées sans trembler','Attaques décisives en guerre'],
+    cap:['Raids de capitale efficaces','Pillages XXL en capitale','Apport régulier en capitale','Week-ends de raid rentables','Capitale toujours bien servie'],
+    rk:['Gros push de trophées','Chasse aux trophées sans relâche','Classé poussé chaque semaine','Ambition sans limite en classé','Ladder pris au sérieux'],
+    act:['Présence constante','Activité de tous les jours','Connexion quotidienne','Fidélité au poste','Présence sans faille'],
+    don:['Renforts toujours à l’heure','Dons sans compter','Châteaux toujours remplis','Générosité sans faille','Renforts généreux']};
+   var PB={cwl:['Ligue de clans solide','points précieux en ligue','manches de ligue bien jouées','sang-froid en Ligue de clans'],
+    gdc:['impact constant en guerre','triples réguliers en guerre','précision en guerre','attaques de guerre fiables'],
+    cap:['apport régulier en capitale','raids de capitale rentables','gros pillages en capitale','week-ends de raid assurés'],
+    rk:['bon push de trophées','trophées en hausse','classé pris au sérieux','ambition en classé'],
+    act:['présence constante','activité de tous les jours','connexion quotidienne','fidélité au poste'],
+    don:['renforts toujours prêts','dons généreux','châteaux bien remplis','générosité en renforts']};
+   var PC={cwl:'des points précieux à chaque manche',gdc:'un finisseur fiable',cap:'le moteur des week-ends de raid',rk:'jamais rassasié',act:'le cœur battant du clan',don:'l’âme logistique de Gravaen'};
+   var CH=['Saison monstrueuse','Saison de patron','Une saison XXL'];
+   var low=function(x){return /^Ligue/.test(x)?x:x.charAt(0).toLowerCase()+x.slice(1)};
+   var hs=function(x){var h=0;for(var i=0;i<x.length;i++)h=(h*31+x.charCodeAt(i))>>>0;return h};
+   var rs=Object.keys(rk).filter(function(k){return PA[k]}).sort(function(a,b){return rk[a]-rk[b]});
+   var ks=rs.concat(cats.filter(function(k){return rs.indexOf(k)<0&&PA[k]})),k0=ks[0],k1=ks[1],h0=hs(String(p.n));
+   var pick=function(L){for(var i=0;i<L.length;i++){var c=L[(h0+i)%L.length];if(!USED[c]){USED[c]=1;return c}}return L[h0%L.length]};
+   if(!k0)txt=pick(['Il veille sur le clan en coulisses','Garant de l’organisation du clan','L’organisateur discret de Gravaen','Il garde le cap quand ça tangue']);
+   else{var a0=pick(PA[k0]),b0=k1?pick(PB[k1]):'';
+    txt=p.rank===1?pick(CH)+'&nbsp;: '+low(a0)+(b0?' et '+b0:''):(b0?a0+' et '+b0:a0+'&nbsp;: '+PC[k0])}
    var href='joueur.html?t='+encodeURIComponent(String(p._t||'').replace('#',''));
-   return '<article class="st-card'+(chef?' chef':'')+'" role="listitem"><span class="st-role">'+(chef?'Chef':'Chef adjoint')+(p.c==='second'?' · Gravaen 2':' · Gravaen 1')+'</span><h3 class="st-name">'+esc(p.n)+'</h3>'+(function(){var b=badges(p);return b.length?'<div class="bdgs st-b">'+b.map(function(k){return '<span class="bdg" tabindex="0" role="img" aria-label="'+B[k][0]+'" data-tip="'+B[k][0]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+B[k][1]+'"/></svg></span>'}).join('')+'</div>':''})()+'<p class="st-txt">'+txt+'</p><a class="st-foot" href="'+href+'"><span>Portrait</span><span class="st-ar" aria-hidden="true">→</span></a></article>'}).join('');
+   return '<article class="st-card'+(chef?' chef':'')+'" role="listitem"><h3 class="st-name">'+esc(p.n)+'</h3>'+'<p class="st-grade">'+(chef?'Chef':'Chef adjoint')+'</p>'+(function(){var b=badges(p);return b.length?'<ul class="st-bl">'+b.map(function(k){return '<li><span class="bdg b-'+k+'" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="'+B[k][1]+'"/></svg></span>'+B[k][0]+'</li>'}).join('')+'</ul>':''})()+'<p class="st-txt">'+txt+'</p><a class="st-foot" href="'+href+'"><span>Profil</span><span class="st-ar" aria-hidden="true">→</span></a></article>'}).join('');
   box.tabIndex=0;box.setAttribute('aria-label','Membres du staff, faire défiler pour tout voir');
  }).catch(function(){box.closest('section').hidden=true});
 })();

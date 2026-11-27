@@ -664,7 +664,9 @@ def season_scores():
             act_days = len([d for d in sn.get("md", []) if d >= season]) if sn else None
             lt = p.get("leagueTier") or p.get("league") or {}
             v = {"cwl": cs, "gdc": gs, "cap": max(raid_loot.get(t, 0), now_v["agc"] - b["agc"]),
-                 "rk": now_v["tr"], "act": act_days if act_days is not None else p.get("attackWins", 0),
+                 # activité : score façon ClashPerk (+1 par heure où une activité est repérée), sinon les jours actifs
+                 "rk": now_v["tr"], "act": (sn.get("ma") if sn.get("ms") == season and sn.get("ma") is not None else act_days) if act_days is not None else p.get("attackWins", 0),
+                 "actd": act_days or 0,
                  # dons de la saison, même en changeant de clan (le compteur du jeu repart à zéro à chaque changement)
                  "don": max(p.get("donations", 0), now_v["fin"] - b["fin"])}
             for k in GRID:

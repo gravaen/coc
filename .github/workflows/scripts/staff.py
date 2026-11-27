@@ -480,11 +480,14 @@ def track(state):
             s = seen.setdefault(m["tag"], {"since": NOW.isoformat(timespec="seconds"), "h": []})
             season = NOW.strftime("%Y-%m-01") if NOW.day > 1 or NOW.hour >= 5 else (NOW - datetime.timedelta(days=1)).strftime("%Y-%m-01")
             if s.get("ms") != season:  # nouvelle saison : on repart de zéro
-                s["ms"], s["md"] = season, []
+                s["ms"], s["md"], s["ma"] = season, [], 0
+            if "ma" not in s:      # score d'activité façon ClashPerk : on part des heures déjà relevées cette saison
+                s["ma"] = len([h for h in s["h"] if h >= season])
             if "fp" in s and s["fp"] != fp:
                 s["last"] = NOW.isoformat(timespec="seconds")
                 if hour not in s["h"]:
                     s["h"].append(hour)
+                    s["ma"] = s.get("ma", 0) + 1   # +1 par heure où une activité est repérée (dons, attaques, trophées, améliorations…)
                 if NOW.strftime("%Y-%m-%d") not in s["md"]:
                     s["md"].append(NOW.strftime("%Y-%m-%d"))
             s["fp"] = fp

@@ -4,8 +4,8 @@ import os
 D=os.path.dirname(os.path.abspath(__file__))+'/'
 src=open(sys.argv[1],encoding='utf-8').read()
 head=src[:src.index('</head>')]
-head=re.sub(r'<title>.*?</title>','<title>Portrait · Gravaen</title>',head)
-head=re.sub(r'<meta name="description"[^>]*>','<meta name="description" content="Portrait d’un membre du staff de Gravaen : sa saison, sa ligue de clans, ses guerres et son armée."><meta name="robots" content="noindex">',head)
+head=re.sub(r'<title>.*?</title>','<title>Profil · Gravaen</title>',head)
+head=re.sub(r'<meta name="description"[^>]*>','<meta name="description" content="Profil d’un membre du staff de Gravaen : sa saison, sa ligue de clans, ses guerres et son armée."><meta name="robots" content="noindex">',head)
 head=re.sub(r'<link rel="canonical"[^>]*>','',head)
 head=head.replace('<link rel="preload" href="data/clan.json" as="fetch" crossorigin>','')
 head=head.replace('</style>',open(D+'extra.css',encoding='utf-8').read()+'\n</style>',1) if head.count('</style>')==1 else head[:head.rindex('</style>')]+open(D+'extra.css',encoding='utf-8').read()+'\n'+head[head.rindex('</style>'):]
