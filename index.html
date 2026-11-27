@@ -1345,6 +1345,47 @@ section.s#meilleurs{scroll-snap-align:start}
 @media (max-width:760px){.pod-ic{width:28px;height:28px}.pod-ic svg{width:16px;height:16px}.pod-r{width:24px!important;height:24px!important}.pod-b{width:26px;height:26px}}
 @media (max-width:760px){.pod-n{overflow:hidden;min-width:0}.pod-n b{flex:none;max-width:100%}.pod-n small{overflow:hidden;text-overflow:ellipsis;min-width:0}.pod-col{overflow:hidden}}
 .pod-h .pod-ic{margin-left:0!important}
+/* menu à 4 entrées : plus serré entre 961 et 1180 px pour ne pas déborder */
+@media (min-width:961px) and (max-width:1180px){.nav ul{gap:4px!important}#links a{font-size:13px!important;padding:8px 5px!important}.nav .wrap{padding-left:20px!important;padding-right:20px!important}.nav-cta{font-size:14px!important;padding:10px 10px!important}}
+/* ligne « En guerre contre … » des cartes de clan : icône d'épées, adversaire, score et temps restant */
+.clan .pill.wv{display:flex!important;align-self:stretch!important;align-items:center;gap:12px;width:auto!important;max-width:none!important;margin:14px 0 0!important;padding:14px 0 0!important;border-top:1px solid rgba(33,35,32,.1)!important;background:none!important;color:var(--text);font-size:15px!important;line-height:1.35!important;white-space:normal!important;text-transform:none!important;letter-spacing:0!important;min-height:0}
+.clan .pill.wv .wv-ic{position:relative;flex:none;width:32px;height:32px;display:grid;place-items:center;background:#F3EEE0;color:var(--ink)}
+.clan .pill.wv .wv-ic svg{width:19px;height:19px}
+.clan .pill.wv .wv-t{min-width:0;display:block;overflow:hidden}
+.clan .pill.wv strong{font-weight:700;color:var(--ink)}
+.clan .pill.wv small{display:block;margin-top:2px;font-size:13.5px;color:var(--soft)}
+.clan .pill.wv .wv-sc{font-weight:700;color:var(--ink)}
+@media (max-width:760px){.clan .pill.wv{gap:10px;margin-top:10px!important;padding-top:10px!important;font-size:14px!important}.clan .pill.wv .wv-ic{width:26px;height:26px}.clan .pill.wv .wv-ic svg{width:16px;height:16px}.clan .pill.wv small{font-size:12.5px}}
+@media (max-width:760px) and (max-height:700px){.clan .pill.wv{margin-top:6px!important;padding-top:6px!important}}
+.clans .clan .facts{margin-top:0!important}
+/* vérif finale des espaces : stratégie tient dans un petit téléphone, pyramide un peu plus haute sur grand téléphone */
+@media (max-width:760px) and (max-height:700px){section.s#strategie{padding-top:8px!important;padding-bottom:8px!important}section.s#strategie .sub-head{margin-bottom:8px!important}section.s#strategie .regles{margin-top:6px!important}}
+@media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl{flex-basis:132px!important}}
+/* pyramide à deux faces : conditions (par défaut) ou avantages, bascule par la flèche */
+.pyr .pl .pv{display:grid!important;align-items:center;flex:1}
+.pyr .pl .pv>span{grid-area:1/1;display:block!important;text-align:center;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.8,.2,1)}
+.pyr .pa{opacity:0;transform:translateX(24px);pointer-events:none}
+.pyr.av .pc{opacity:0;transform:translateX(-24px)}
+.pyr.av .pa{opacity:1;transform:none}
+.pyr .pl b{transition:color .2s}
+.pseg{position:relative;display:flex;width:max-content;max-width:100%;margin:2px auto 12px;padding:0;background:none;isolation:isolate}
+.pseg .ps-ind{position:absolute;z-index:-1;bottom:2px;left:0;width:50%;height:3px;background:var(--yellow);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.pseg.av .ps-ind{transform:translateX(100%)}
+.ps-b{flex:1 1 0;min-width:120px;min-height:40px;padding:8px 14px;background:none;border:0;font:inherit;font-weight:700;font-size:15px;color:var(--soft);cursor:pointer;transition:color .2s}
+.ps-b[aria-selected="true"]{color:var(--ink)}
+.ps-b:hover{color:var(--ink)}
+.ps-b:focus-visible{outline:3px solid var(--ink);outline-offset:-3px}
+@media (max-width:760px){section.s#grades .pseg{margin-top:auto!important}section.s#grades .pyr{flex:0 0 auto!important;margin-bottom:auto}.pseg{margin:2px auto 10px}.ps-b{min-width:118px;min-height:38px;font-size:14px;padding:7px 14px}}
+@media (prefers-reduced-motion:reduce){.pyr .pv>span,.pseg .ps-ind{transition:none}}
+/* pyramide : on la construit de la base au sommet (Membres, puis Aînés, puis Adjoints) quand elle arrive à l'écran */
+@media (max-width:760px){section.s#grades .pyr{justify-content:center}section.s#grades .pyr .pl{flex:0 1 112px}}
+.js-pyr .pyr .pl{opacity:0;transform:translateY(18px) scale(.97)}
+.js-pyr .pyr.built .pl{opacity:1;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.9,.3,1.15)}
+.js-pyr .pyr.built .pl:nth-child(3){transition-delay:.05s}
+.js-pyr .pyr.built .pl:nth-child(2){transition-delay:.4s}
+.js-pyr .pyr.built .pl:nth-child(1){transition-delay:.75s}
+.js-pyr .pyr.done .pl{transition-delay:0s!important}
+@media (prefers-reduced-motion:reduce){.js-pyr .pyr .pl{opacity:1!important;transform:none!important;transition:none!important}}
 /* puces carrées, icône d'en-tête alignée sur le rang 1 */
 .pod-ic,.pod-r{border-radius:0!important;width:32px!important;height:32px!important}
 @media (max-width:760px){.pod-ic,.pod-r{width:26px!important;height:26px!important}}
@@ -1357,9 +1398,10 @@ section.s#meilleurs{scroll-snap-align:start}
   <a class="brand" href="#top" aria-label="Gravaen, retour en haut de page"><img class="brand-b" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="34" height="34" alt="" hidden><span class="brand-t">Gravaen</span></a>
   <a class="cta open nav-cta" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join aria-label="Postuler sur Discord">Postuler<span class="cta-long">&nbsp;sur Discord</span></a>
   <ul id="links"><li class="nav-ind" aria-hidden="true"></li>
-   <li><a href="#vision">Qui nous sommes</a></li>
-   <li><a href="#clans">Nos clans</a></li>
-   <li><a href="#grades">Notre organisation</a></li>
+   <li><a href="#vision">Accueil</a></li>
+   <li><a href="#clans">Clans</a></li>
+   <li><a href="#grades">Organisation</a></li>
+   <li><a href="#meilleurs">Classement</a></li>
    
    <li class="drawer-cta"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Postuler sur Discord</a></li>
   </ul>
@@ -1373,7 +1415,7 @@ section.s#meilleurs{scroll-snap-align:start}
   <div class="hero-txt">
   <img class="hero-badge" data-badge="hero" src="icon-512.png" alt="Blason du clan Gravaen" width="512" height="512" fetchpriority="high">
   <h1 class="slogan sr-h1">Clash of Clans&nbsp;: Gravaen</h1>
-  <p class="slogan-sub hero-lede"><b>Ici, ton état d’esprit compte plus que ton niveau.</b> Un clan adulte, actif et organisé, créé en août 2025 avec un ami. Sympa et respectueux&nbsp;? Tu progresses avec nous.</p><p class="hero-sign"><b>Clasheur</b>, chef adjoint</p>
+  <p class="slogan-sub hero-lede"><b>Un clan adulte, actif et organisé,</b> créé en août 2025 avec un ami. Le guerrier Gravaen répond présent en guerre, en ligue, en capitale comme en classé.</p><p class="hero-sign"><b>Clasheur</b>, chef adjoint</p>
   </div>
   <a class="scroll-cue" href="#suite" aria-label="Voir la suite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
  </div>
@@ -1398,13 +1440,13 @@ section.s#meilleurs{scroll-snap-align:start}
 <section class="s" id="grades">
  <div class="wrap">
   <div class="head"><h2 class="eyeb"><i>—</i>Notre organisation</h2></div>
-  <div class="sub-head"><h3 class="sub-t">Les grades</h3><p class="sub-desc">Chaque grade a ses avantages et ses exigences&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
+  <div class="sub-head"><h3 class="sub-t">Les grades</h3><p class="sub-desc">Chaque grade a ses avantages à faire valoir au quotidien&nbsp;: l’attention de chacun fait vivre le clan.</p></div>
+  <div class="pseg" role="tablist" aria-label="Afficher pour chaque grade"><span class="ps-ind" aria-hidden="true"></span><button type="button" role="tab" class="ps-b" aria-selected="true" data-v="c">Conditions</button><button type="button" role="tab" class="ps-b" aria-selected="false" data-v="a">Avantages</button></div>
   <div class="pyr" role="list">
-   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints et chef</b><span>Invitations · Lancement sondage et GDC · Promotions · Rétrogradations · Exclusions</span></div>
-   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span>Invitations des joueurs qui répondent aux profils recherchés par le clan</span></div>
-   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span>Participation aux événements · Dons · Partage des récompenses du clan, comme pour tous les gradés</span></div>
+   <div class="pl" role="listitem" style="--w:58%;--c:#C79A00"><b>Adjoints</b><span class="pv"><span class="pc">3 mois dans le clan et élu meilleur joueur de la saison</span><span class="pa" aria-hidden="true">Invitations · Lancement sondage et GDC · Promotions · Rétrogradations · Exclusions</span></span></div>
+   <div class="pl" role="listitem" style="--w:76%;--c:var(--yellow)"><b>Aînés</b><span class="pv"><span class="pc">1&nbsp;000 dons et 3 guerres de clans</span><span class="pa" aria-hidden="true">Invitations des joueurs qui répondent aux profils recherchés par le clan</span></span></div>
+   <div class="pl" role="listitem" style="--w:94%;--c:#D9D3C2"><b>Membres</b><span class="pv"><span class="pc">Dès ton arrivée</span><span class="pa" aria-hidden="true">Participation aux événements · Dons · Partage des récompenses du clan, comme pour tous les gradés</span></span></div>
   </div>
-  <p class="gr-more"><button type="button" class="glink" id="mj-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="mj-pop">Comment monter en grade&nbsp;?</button></p>
  </div>
 </section>
 
@@ -1447,7 +1489,7 @@ section.s#meilleurs{scroll-snap-align:start}
   <div class="qa-list">
    <div class="qa"><h3 class="bq">Faut-il être très actif&nbsp;?</h3><p class="ba">Non. Un peu, mais régulièrement&nbsp;: tes deux attaques en guerre, et une connexion tous les 3&nbsp;jours a minima si possible.</p></div>
    <div class="qa"><h3 class="bq">Je dois me présenter sur Discord&nbsp;?</h3><p class="ba">Non, un simple bonjour suffit. Je te réponds en moins de 24&nbsp;h.</p></div>
-   <div class="qa"><h3 class="bq">Comment évoluer en grade&nbsp;?</h3><p class="ba">Chaque poste est facilement accessible, et <a href="#grades" class="qa-link" data-open-mj>les conditions</a> sont visibles par tous. Nous privilégions la confiance et le mérite.</p></div>
+   <div class="qa"><h3 class="bq">Comment évoluer en grade&nbsp;?</h3><p class="ba">Chaque poste est facilement accessible, et <a href="#grades" class="qa-link">les conditions</a> sont visibles par tous. Nous privilégions la confiance et le mérite.</p></div>
   </div>
  </div>
 </section>
@@ -1459,18 +1501,6 @@ section.s#meilleurs{scroll-snap-align:start}
  </div>
 </section>
 </main>
-<div class="mj-veil" id="mj-veil" hidden></div>
-<div class="mj-pop" id="mj-pop" role="dialog" aria-modal="false" aria-label="Monter en grade" hidden>
- <span class="mj-grip" aria-hidden="true"></span>
- <button type="button" class="mj-x" id="mj-x" aria-label="Fermer">×</button>
- <p class="mj-t">Monter en grade</p>
- <p class="mj-p"><b>Aîné</b>&nbsp;: 1&nbsp;000 dons et 3 guerres de clans.</p>
- <p class="mj-p"><b>Adjoint</b>&nbsp;: 3 mois dans le clan et élu <b>meilleur joueur de la saison</b>.</p>
- <p class="mj-p">Élu chaque saison, top 10 publié sur <a href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener">Discord</a>&nbsp;: Ligue de clans et guerre d’abord, puis capitale, classé, activité et dons.</p>
- <p class="mj-p mj-s">Envie d’encadrer&nbsp;? Parles-en au chef.</p>
- <i class="mj-arrow" aria-hidden="true"></i>
-</div>
-
 <dialog class="join-dlg" id="join-dlg" aria-labelledby="join-title">
  <div class="jd-head"><h2 id="join-title">Postuler sur Discord</h2><button class="jd-x" type="button" id="join-x" aria-label="Fermer"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
  <div class="jd-body">
@@ -1625,8 +1655,14 @@ secs.forEach(x=>io.observe(x));
   /* pastille des cartes : preuve d'activité, seulement pendant une guerre (préparation ou bataille) */
   ['main','second'].forEach(function(k){
    var el=document.querySelector('.pill[data-w="'+k+'"]'),w=((d.clans||{})[k]||{}).war;if(!el||!w)return;
-   var t={preparation:w.cwl?'Ligue de clans : préparation':'En préparation de guerre',inWar:w.cwl?'Ligue de clans en cours':'En guerre en ce moment'}[w.state];if(!t)return;
-   el.innerHTML='<i></i><b>'+t+'</b>';el.hidden=false;
+   if(w.state!=='preparation'&&w.state!=='inWar')return;
+   var e_=function(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+   var live=w.state==='inWar',head=(live?'En guerre':'En préparation')+(w.cwl?' de Ligue de clans':''),sub=[];
+   if(live&&w.us!=null)sub.push('<span class="wv-sc">'+(w.us||0)+'\u00a0★ à '+(w.them||0)+'</span>');
+   if(w.cwl&&w.cwl.round)sub.push('manche '+w.cwl.round+'/'+(w.cwl.rounds||7));
+   el.classList.add('wv');el.classList.toggle('live',live);
+   el.innerHTML='<span class="wv-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M14.5 6.5L18 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3M3 19l2 2"/></svg>'+'</span><span class="wv-t"><strong>'+head+'</strong> contre '+e_(w.opponent)+(sub.length?'<small>'+sub.join(' · ')+'</small>':'')+'</span>';
+   el.hidden=false;
   });
   if(d.updated){var dt=new Date(d.updated);if(!isNaN(dt)){
    var depuis=function(){var m=Math.max(0,Math.round((Date.now()-dt)/60000));
@@ -1789,7 +1825,7 @@ secs.forEach(x=>io.observe(x));
  var root=document.documentElement,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
  /* 5 : cascade (cartes de clan, pyramide, colonnes, règles) */
  if('IntersectionObserver' in window){
-  var groups=[['#clans .clan'],['.pyr .pl'],['.strat .step'],['.regles']];
+  var groups=[['#clans .clan'],['.strat .step'],['.regles']];
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
   groups.forEach(function(g){document.querySelectorAll(g[0]).forEach(function(el,i){el.classList.add('rv2');el.style.transitionDelay=(i*90)+'ms';io.observe(el)})});
  }
@@ -1848,7 +1884,10 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
   return '<li><span class="pod-r'+(i===0?' top':'')+'">'+(i+1)+'</span>'+(badge?(p.lgi?'<img class="pod-b" src="'+esc(p.lgi)+'" alt="" width="34" height="34" loading="lazy">':'<span class="pod-b"></span>'):'')+'<span class="pod-n"><b>'+esc(p.n)+'</b></span><span class="pod-v">'+val+(unit?'<small>'+unit+'</small>':'')+'</span></li>'}
  fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
   var ps=Object.values(d.players||{}).filter(function(p){return p&&p.v});
-  var tro=ps.filter(function(p){return p.v.rk>0}).sort(function(a,b){return b.v.rk-a.v.rk}).slice(0,5);
+  /* Mode classé : les trophées repartent de zéro chaque semaine dans chaque ligue (sauf Légende I).
+     On classe donc d'abord par ligue (Légende I > II > III > Électro 33 > …), puis par trophées dans la ligue. */
+  var tier=function(p){var n=String(p.lg||'');if(!n||/Unranked/.test(n))return 0;var m=n.match(/^Legend League (I{1,3})$/);if(m)return 37-m[1].length;var d=n.match(/(\d+)\s*$/);return d?+d[1]:0};
+  var tro=ps.filter(function(p){return tier(p)>0}).sort(function(a,b){return tier(b)-tier(a)||b.v.rk-a.v.rk}).slice(0,5);
   var el=document.querySelector('[data-pod="tro"]');
   if(el)el.innerHTML=tro.length?tro.map(function(p,i){return row(i,p,nb(p.v.rk),'trophées',true)}).join(''):'<li class="pod-empty">Pas encore de données.</li>';
   var cwl=ps.some(function(p){return p.v.cwl>0});
@@ -1858,6 +1897,27 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
   var ew=document.querySelector('[data-pod="war"]');
   if(ew)ew.innerHTML=war.length?war.map(function(p,i){return row(i,p,nb(p.v[k]),'étoiles')}).join(''):'<li class="pod-empty">La saison vient de commencer : le classement arrive avec les premières guerres.</li>';
  }).catch(function(){document.querySelectorAll('.pod-list').forEach(function(e){e.innerHTML='<li class="pod-empty">Classement indisponible pour le moment.</li>'})});
+})();
+</script>
+<script>
+/* pyramide des grades : construction de la base au sommet à l'arrivée dans l'écran */
+(function(){var y=document.querySelector('#grades .pyr');if(!y||!('IntersectionObserver' in window))return;
+ document.documentElement.classList.add('js-pyr');
+ var go=function(){if(y.classList.contains('built'))return;y.classList.add('built');setTimeout(function(){y.classList.add('done')},1600)};
+ var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){go();o.disconnect()}})},{threshold:.35});o.observe(y);
+ setTimeout(function(){var r=y.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)go()},50);
+})();
+</script>
+<script>
+/* pyramide : onglets Conditions | Avantages */
+(function(){var g=document.querySelector('#grades .pseg'),y=document.querySelector('#grades .pyr');if(!g||!y)return;
+ var bs=g.querySelectorAll('.ps-b');
+ function set(av,f){y.classList.toggle('av',av);g.classList.toggle('av',av);
+  bs.forEach(function(b){var on=(b.dataset.v==='a')===av;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;if(on&&f)b.focus()});
+  y.querySelectorAll('.pc').forEach(function(e){e.setAttribute('aria-hidden',av)});y.querySelectorAll('.pa').forEach(function(e){e.setAttribute('aria-hidden',!av)})}
+ bs.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.v==='a')})});
+ g.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();set(e.key==='ArrowRight',true)}});
+ set(false);
 })();
 </script>
 </body>
