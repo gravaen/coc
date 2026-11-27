@@ -1358,6 +1358,62 @@ section.s#meilleurs{scroll-snap-align:start}
 @media (max-width:760px){.clan .pill.wv{gap:10px;margin-top:10px!important;padding-top:10px!important;font-size:14px!important}.clan .pill.wv .wv-ic{width:26px;height:26px}.clan .pill.wv .wv-ic svg{width:16px;height:16px}.clan .pill.wv small{font-size:12.5px}}
 @media (max-width:760px) and (max-height:700px){.clan .pill.wv{margin-top:6px!important;padding-top:6px!important}}
 .clans .clan .facts{margin-top:0!important}
+/* classement de la saison : une seule colonne, sous-titre des critères sous chaque joueur */
+.pod-grid.pod-one{grid-template-columns:minmax(0,1fr)}
+@media (min-width:761px){.pod-one .pod-list{display:grid;grid-template-rows:repeat(5,auto);grid-auto-flow:column;column-gap:48px}.pod-one .pod-list li:nth-child(6){border-top-color:transparent}}
+.pod-one .pod-n{display:grid!important;gap:1px}
+.pod-one .pod-n b{max-width:100%!important}
+.pod-one .pod-n small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;color:var(--soft)}
+.pod-one .pod-list li{padding:11px 0}
+.pod-crit{margin:-2px 0 8px;font-size:14px;line-height:1.4;color:var(--soft)}
+@media (max-width:760px){.pod-crit{font-size:12.5px;margin:-4px 0 6px}}
+@media (max-width:760px){.pod-one .pod-list li{padding:6px 0}.pod-one .pod-n small{font-size:12px}.pod-one .pod-v small{display:block!important;font-size:11px}}
+@media (max-width:760px) and (max-height:700px){.pod-one .pod-list li{padding:6px 0}}
+@media (max-width:420px){.pod-one .pod-n small .s3{display:none}}
+/* cartes de clan : aperçu des 5 meilleurs en classé (ligue en majuscules). Sur téléphone, un clan à la fois avec des onglets */
+.crk{display:none}
+.clan .crk:not([hidden]){display:block;margin-top:auto;padding-top:12px;border-top:1px solid rgba(33,35,32,.1)}
+@media (min-width:761px){.clan .crk:not([hidden]){margin-top:auto;padding-top:14px}.clan .pill.wv+.crk:not([hidden]){margin-top:14px}}
+.crk-l{list-style:none;margin:0;padding:0}
+.crk-l li{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line)}
+.crk-l li:first-child{border-top:0;padding-top:0}
+.crk-r{flex:none;width:18px;font-size:13px;font-weight:700;color:var(--soft);text-align:center}
+.crk-b{flex:none;width:24px;height:24px;object-fit:contain}
+.crk-n{flex:1;min-width:0;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crk-lg{flex:none;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--soft)}
+.ctabs{display:none!important}
+@media (max-width:760px){
+ .ctabs{display:flex!important;margin:0 auto 10px}
+ .clans[data-show]{display:grid!important;grid-template-columns:minmax(0,1fr)!important}
+ .clans[data-show]>.clan{grid-area:1/1;align-self:stretch!important}
+ .clans[data-show="main"] .clan:nth-child(2),.clans[data-show="second"] .clan:nth-child(1){visibility:hidden;pointer-events:none}
+ .clan .crk:not([hidden]){margin-top:10px}
+ .crk-l li{padding:5px 0;gap:8px}.crk-b{width:22px;height:22px}.crk-n{font-size:14px}.crk-lg{font-size:11px}
+}
+@media (min-width:761px){.crk-l{display:grid;grid-template-rows:repeat(5,auto);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);column-gap:28px}.crk-l li:nth-child(6){border-top:0;padding-top:0}.crk-l li{gap:7px}.crk-r{width:14px;font-size:12px}.crk-b{width:20px;height:20px}.crk-n{font-size:14px}.crk-lg{font-size:10px;letter-spacing:.03em}}
+@media (min-width:761px) and (max-width:1180px){.crk-l{column-gap:18px}.crk-l li{gap:5px}.crk-b{width:18px;height:18px}.crk-n{font-size:13.5px}.crk-lg{font-size:9.5px;letter-spacing:.02em}}
+@media (max-width:760px) and (max-height:780px){.crk-l li{padding:1px 0;line-height:20px}.crk-b{width:19px;height:19px}.crk-n{font-size:13px}}
+@media (max-width:360px){.clan .tagrow{row-gap:2px!important;margin-bottom:4px!important}.clan .cwl-chip{line-height:1.2}.clan .pill.wv .wv-t{white-space:nowrap;text-overflow:ellipsis}.clan .pill.wv{font-size:13.5px!important}}
+@media (max-width:760px) and (max-height:700px){.crk-l li{padding:1px 0;line-height:20px}.crk-b{width:19px;height:19px}.crk-n{font-size:13px}.crk-r{font-size:12px}.clan .crk:not([hidden]){margin-top:6px;padding-top:6px}.ctabs{margin-bottom:6px}.ctabs .ps-b{min-height:34px;padding:5px 12px}}
+/* ligne de guerre plus compacte : une seule ligne (adversaire puis score), moins d'espace autour ; Gravaen 2 sans vide ; espaces entre sections harmonisés */
+.clan .pill.wv{margin-top:10px!important;padding-top:10px!important;gap:10px}
+.clan .pill.wv .wv-t{white-space:nowrap;text-overflow:ellipsis}
+.clan .pill.wv small{display:inline!important;margin:0 0 0 2px!important;font-size:inherit!important}
+.clan .pill.wv small::before{content:"· ";color:var(--soft)}
+.clan .pill.wv+.crk:not([hidden]){margin-top:10px!important;padding-top:10px!important}
+@media (max-width:760px){.clan .pill.wv{margin-top:8px!important;padding-top:8px!important}.clan .pill.wv+.crk:not([hidden]){margin-top:8px!important;padding-top:8px!important}
+ .clans[data-show]>.clan{align-self:start!important}}
+@media (min-width:761px){section.s.faq#questions{padding-bottom:48px!important}}
+/* PC : les infos du clan sur une seule ligne, et les 10 joueurs en une seule colonne */
+@media (min-width:761px){
+ .clans .clan .facts{grid-template-columns:repeat(4,max-content)!important;gap:8px 28px!important}
+ .crk-l{display:block!important}
+ .crk-l li:nth-child(6){border-top:1px solid var(--line)!important;padding-top:4px!important}
+ .crk-l li{padding:4px 0!important;gap:10px!important}
+ .crk-r{width:18px!important;font-size:13px!important}.crk-b{width:22px!important;height:22px!important}.crk-n{font-size:15px!important}.crk-lg{font-size:11px!important;letter-spacing:.05em!important}
+}
+@media (min-width:961px){section.s#clans{padding-top:48px!important}}
+@media (max-width:760px) and (min-height:701px){section.s#meilleurs{padding-top:24px!important;padding-bottom:24px!important}}
 /* vérif finale des espaces : stratégie tient dans un petit téléphone, pyramide un peu plus haute sur grand téléphone */
 @media (max-width:760px) and (max-height:700px){section.s#strategie{padding-top:8px!important;padding-bottom:8px!important}section.s#strategie .sub-head{margin-bottom:8px!important}section.s#strategie .regles{margin-top:6px!important}}
 @media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl{flex-basis:132px!important}}
@@ -1429,10 +1485,11 @@ section.s#meilleurs{scroll-snap-align:start}
 
 <section class="s" id="clans">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2><p class="head-desc">Évoluer avec des joueurs de ton niveau, sans déséquilibre majeur en guerre ni en Ligue de clans.</p></div>
-  <div class="clans">
-   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="clan-name">Gravaen 1</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="main-cwl" hidden></span></div><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt data-c="main-wfl">Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Places libres</dt><dd data-c="main-mem">6</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span></div></article>
-   <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="clan-name">Gravaen 2</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="second-cwl" hidden></span></div><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt data-c="second-wfl">Guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Places libres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span></div></article>
+  <div class="head"><h2 class="eyeb"><i>—</i>Nos clans</h2></div>
+  <div class="pseg ctabs" role="tablist" aria-label="Choisir le clan"><span class="ps-ind" aria-hidden="true"></span><button type="button" role="tab" class="ps-b" aria-selected="true" data-v="main">Gravaen 1</button><button type="button" role="tab" class="ps-b" aria-selected="false" data-v="second">Gravaen 2</button></div>
+  <div class="clans" data-show="main">
+   <article class="clan"><div class="top" style="background:var(--yellow)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="main" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan principal" hidden><h3 class="clan-name">Gravaen 1</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2C0CVRCPV" aria-label="Copier le tag #2C0CVRCPV"><span class="tt">#2C0CVRCPV</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="main-cwl" hidden></span></div><dl class="facts"><div><dt>HDV requis</dt><dd data-c="main-th">16+</dd></div><div><dt>Ligue requise</dt><dd data-c="main-lg">P.E.K.K.A 22+</dd></div><div><dt data-c="main-wfl">Guerre</dt><dd data-c="main-wf">Toujours</dd></div><div data-c="main-memrow"><dt>Places libres</dt><dd data-c="main-mem">6</dd></div></dl><span class="pill" role="status" data-w="main" hidden></span><div class="crk" data-crk="main" hidden><ol class="crk-l" aria-label="Meilleurs joueurs en classé"></ol></div></div></article>
+   <article class="clan"><div class="top" style="background:var(--ink)"></div><div class="in"><img decoding="async" class="cbadge" data-badge="second" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="72" height="72" alt="Blason du clan secondaire" hidden><h3 class="clan-name">Gravaen 2</h3><div class="tagrow"><button class="tagid copytag" type="button" data-copy="#2J0UPJVQJ" aria-label="Copier le tag #2J0UPJVQJ"><span class="tt">#2J0UPJVQJ</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button><span class="cwl-chip" data-c="second-cwl" hidden></span></div><dl class="facts"><div><dt>HDV requis</dt><dd data-c="second-th">7+</dd></div><div><dt>Ligue requise</dt><dd data-c="second-lg">Aucune</dd></div><div><dt data-c="second-wfl">Guerre</dt><dd data-c="second-wf">Toujours</dd></div><div hidden data-c="second-memrow"><dt>Places libres</dt><dd data-c="second-mem"></dd></div></dl><span class="pill" role="status" data-w="second" hidden></span><div class="crk" data-crk="second" hidden><ol class="crk-l" aria-label="Meilleurs joueurs en classé"></ol></div></div></article>
   </div>
  </div>
 </section>
@@ -1474,10 +1531,9 @@ section.s#meilleurs{scroll-snap-align:start}
 
 <section class="s podium" id="meilleurs" aria-labelledby="pod-title">
  <div class="wrap">
-  <div class="head"><h2 class="eyeb" id="pod-title"><i>—</i>Notre classement</h2><p class="head-desc">Les cinq meilleurs de Gravaen en ce moment.</p></div>
-  <div class="pod-grid">
-   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1.5A3.5 3.5 0 0 0 8.5 11M16 6h3v1.5A3.5 3.5 0 0 1 15.5 11M12 13v4M9 20h6M10 17h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Trophées<span class="pod-t">En direct</span></h3><ol class="pod-list" data-pod="tro"><li class="pod-empty">Chargement…</li></ol></div>
-   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span><b data-pod-t>Ligue de clans</b><span class="pod-t" data-pod-s>Cette saison</span></h3><ol class="pod-list" data-pod="war"><li class="pod-empty">Chargement…</li></ol></div>
+  <div class="head"><h2 class="eyeb" id="pod-title"><i>—</i>Notre classement</h2><p class="head-desc">Les dix meilleurs de Gravaen en ce moment.</p></div>
+  <div class="pod-grid pod-one">
+   <div class="pod-col"><h3 class="pod-h"><span class="pod-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5l4.2 3.3L12 5.5l4.3 6.3 4.2-3.3-1.8 10H5.3z M5.5 21h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Meilleur joueur de la saison</b></h3><p class="pod-crit">Points gagnés en Ligue de clans, en guerre, en capitale, en classé, en activité et en dons.</p><ol class="pod-list" data-pod="saison"><li class="pod-empty">Chargement…</li></ol></div>
   </div>
  </div>
 </section>
@@ -1661,7 +1717,7 @@ secs.forEach(x=>io.observe(x));
    if(live&&w.us!=null)sub.push('<span class="wv-sc">'+(w.us||0)+'\u00a0★ à '+(w.them||0)+'</span>');
    if(w.cwl&&w.cwl.round)sub.push('manche '+w.cwl.round+'/'+(w.cwl.rounds||7));
    el.classList.add('wv');el.classList.toggle('live',live);
-   el.innerHTML='<span class="wv-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M14.5 6.5L18 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3M3 19l2 2"/></svg>'+'</span><span class="wv-t"><strong>'+head+'</strong> contre '+e_(w.opponent)+(sub.length?'<small>'+sub.join(' · ')+'</small>':'')+'</span>';
+   el.innerHTML='<span class="wv-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M14.5 6.5L18 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3M3 19l2 2"/></svg>'+'</span><span class="wv-t"><strong>'+head+'</strong> contre '+e_(w.opponent)+'</span>';
    el.hidden=false;
   });
   if(d.updated){var dt=new Date(d.updated);if(!isNaN(dt)){
@@ -1874,28 +1930,17 @@ secs.forEach(x=>io.observe(x));
 document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListener('click',function(e){var g=document.getElementById('grades'),b=document.getElementById('mj-btn');if(!g||!b)return;e.preventDefault();g.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){b.click()},650)})});
 </script>
 <script>
-/* « Nos meilleurs joueurs » : top 5 trophées (en direct) et top 5 ligue de clans de la saison, depuis data/players.json */
+/* « Notre classement » : top 10 du meilleur joueur de la saison (même calcul que l'élection), depuis data/players.json.
+   Les critères sont rappelés sous le titre du tableau. */
 (function(){
  var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
- var nb=function(n){return Number(n).toLocaleString('fr-FR')};
- var FRL={Legend:'Légende',Electro:'Électro',Master:'Maître',Crystal:'Cristal',Gold:'Or',Silver:'Argent',Witch:'Sorcière',Wizard:'Sorcier',Barbarian:'Barbare',Skeleton:'Squelette'};
- function lig(n){if(!n||n==='Unranked')return '';return String(n).replace(/\s*League/,'').replace(/^(\w+)/,function(w){return FRL[w]||w})}
- function row(i,p,val,unit,badge){
-  return '<li><span class="pod-r'+(i===0?' top':'')+'">'+(i+1)+'</span>'+(badge?(p.lgi?'<img class="pod-b" src="'+esc(p.lgi)+'" alt="" width="34" height="34" loading="lazy">':'<span class="pod-b"></span>'):'')+'<span class="pod-n"><b>'+esc(p.n)+'</b></span><span class="pod-v">'+val+(unit?'<small>'+unit+'</small>':'')+'</span></li>'}
+ var nb=function(n){return Number(n).toLocaleString('fr-FR',{maximumFractionDigits:1})};
  fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  var ps=Object.values(d.players||{}).filter(function(p){return p&&p.v});
-  /* Mode classé : les trophées repartent de zéro chaque semaine dans chaque ligue (sauf Légende I).
-     On classe donc d'abord par ligue (Légende I > II > III > Électro 33 > …), puis par trophées dans la ligue. */
-  var tier=function(p){var n=String(p.lg||'');if(!n||/Unranked/.test(n))return 0;var m=n.match(/^Legend League (I{1,3})$/);if(m)return 37-m[1].length;var d=n.match(/(\d+)\s*$/);return d?+d[1]:0};
-  var tro=ps.filter(function(p){return tier(p)>0}).sort(function(a,b){return tier(b)-tier(a)||b.v.rk-a.v.rk}).slice(0,5);
-  var el=document.querySelector('[data-pod="tro"]');
-  if(el)el.innerHTML=tro.length?tro.map(function(p,i){return row(i,p,nb(p.v.rk),'trophées',true)}).join(''):'<li class="pod-empty">Pas encore de données.</li>';
-  var cwl=ps.some(function(p){return p.v.cwl>0});
-  var k=cwl?'cwl':'gdc';
-  var war=ps.filter(function(p){return p.v[k]>0}).sort(function(a,b){return b.v[k]-a.v[k]||(b.cwlPct||0)-(a.cwlPct||0)}).slice(0,5);
-  if(!cwl){var t=document.querySelector('[data-pod-t]');if(t)t.textContent='Guerres de clans'}
-  var ew=document.querySelector('[data-pod="war"]');
-  if(ew)ew.innerHTML=war.length?war.map(function(p,i){return row(i,p,nb(p.v[k]),'étoiles')}).join(''):'<li class="pod-empty">La saison vient de commencer : le classement arrive avec les premières guerres.</li>';
+  var ps=Object.values(d.players||{}).filter(function(p){return p&&p.v&&p.score>0});
+  ps.sort(function(a,b){return (a.rank||999)-(b.rank||999)||b.score-a.score});
+  var top=ps.slice(0,10),el=document.querySelector('[data-pod="saison"]');if(!el)return;
+  el.innerHTML=top.length?top.map(function(p,i){
+    return '<li><span class="pod-r'+(i===0?' top':'')+'">'+(i+1)+'</span><span class="pod-n"><b>'+esc(p.n)+'</b>'+'</span><span class="pod-v">'+nb(p.score)+'</span></li>'}).join(''):'<li class="pod-empty">Le classement arrive avec les premières guerres de la saison.</li>';
  }).catch(function(){document.querySelectorAll('.pod-list').forEach(function(e){e.innerHTML='<li class="pod-empty">Classement indisponible pour le moment.</li>'})});
 })();
 </script>
@@ -1918,6 +1963,33 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
  bs.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.v==='a')})});
  g.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();set(e.key==='ArrowRight',true)}});
  set(false);
+})();
+</script>
+<script>
+/* cartes de clan : 10 meilleurs de chaque clan en classé (ligue d'abord, puis trophées), ligue affichée en majuscules */
+(function(){
+ var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+ var FR={Legend:'Légende',Electro:'Électro',Dragon:'Dragon',Titan:'Titan',Golem:'Golem',Witch:'Sorcière',Valkyrie:'Valkyrie',Wizard:'Sorcier',Archer:'Archère',Barbarian:'Barbare',Skeleton:'Squelette'};
+ var name=function(n){n=String(n||'');var m=n.match(/^(.+?)\s*League\s*(.*)$/);if(!m)return n;return ((FR[m[1]]||m[1])+(m[2]?' '+m[2]:'')).toUpperCase()};
+ var tier=function(n){n=String(n||'');if(!n||/Unranked/.test(n))return 0;var m=n.match(/^Legend League (I{1,3})$/);if(m)return 37-m[1].length;var d=n.match(/(\d+)\s*$/);return d?+d[1]:0};
+ fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+  var ps=Object.values(d.players||{}).filter(function(p){return p&&tier(p.lg)>0});
+  ['main','second'].forEach(function(k){var box=document.querySelector('[data-crk="'+k+'"]');if(!box)return;
+   var l=ps.filter(function(p){return p.c===k}).sort(function(a,b){return tier(b.lg)-tier(a.lg)||((b.v||{}).rk||0)-((a.v||{}).rk||0)}).slice(0,10);
+   if(!l.length)return;
+   box.querySelector('.crk-l').innerHTML=l.map(function(p,i){return '<li><span class="crk-r">'+(i+1)+'</span>'+(p.lgi?'<img class="crk-b" src="'+esc(p.lgi)+'" alt="" width="24" height="24" loading="lazy">':'<span class="crk-b"></span>')+'<span class="crk-n">'+esc(p.n)+'</span><span class="crk-lg">'+esc(name(p.lg))+'</span></li>'}).join('');
+   box.hidden=false});
+ }).catch(function(){});
+})();
+</script>
+<script>
+/* téléphone : onglets Gravaen 1 | Gravaen 2 au-dessus des cartes de clan */
+(function(){var g=document.querySelector('.ctabs'),c=document.querySelector('.clans[data-show]');if(!g||!c)return;
+ var bs=g.querySelectorAll('.ps-b');
+ function set(v,f){c.setAttribute('data-show',v);g.classList.toggle('av',v==='second');bs.forEach(function(b){var on=b.dataset.v===v;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;if(on&&f)b.focus()})}
+ bs.forEach(function(b){b.addEventListener('click',function(){set(b.dataset.v)})});
+ g.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();set(e.key==='ArrowRight'?'second':'main',true)}});
+ set('main');
 })();
 </script>
 </body>

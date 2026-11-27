@@ -348,6 +348,29 @@ PAGES = os.environ.get("PAGES_URL", "https://gravaen.pages.dev/")
 GRID = {"cwl": (5, 15), "gdc": (4, 10), "cap": (3, 10), "rk": (2, 10), "act": (1.5, 10), "don": (1, 10)}
 # Liste noire : points retirés par faute, avec un plafond par faute (total au plus -100)
 BLACK = {"rad": 30, "man": 25, "des": 25, "piq": 10, "tou": 10}
+# Recalage sur ClashPerk (référence du clan) quand le simulateur a raté des données : voir saison_corrections.json
+CORR_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "saison_corrections.json")
+
+
+def corrections(season):
+    try:
+        with open(CORR_FILE, encoding="utf-8") as f:
+            return {t: v for t, v in (json.load(f).get(season) or {}).items() if t.startswith("#")}
+    except Exception as e:
+        print(f"  corrections illisibles : {e}", file=sys.stderr)
+        return {}
+
+
+def league_tier(name):
+    """Mode classé : Légende I > II > III > Électro 33 > … ; les trophées repartent de zéro chaque semaine dans chaque ligue."""
+    n = str(name or "")
+    if not n or "Unranked" in n:
+        return 0
+    m = re.match(r"^Legend League (I{1,3})$", n)
+    if m:
+        return 37 - len(m.group(1))
+    d = re.search(r"(\d+)\s*$", n)
+    return int(d.group(1)) if d else 0
 
 
 def season_start(now):
@@ -456,6 +479,8 @@ def season_scores():
     cwl_log = old.get("cwlLog", {}) if same else {}
     war_log = old.get("warLog", {}) if same else {}    # guerres classiques de la saison
     raid_log = old.get("raidLog", {}) if same else {}  # week-ends de raid de la saison
+    corr = corrections(season)
+    corr_done = same and old.get("corrApplied") == season  # recalage des points de départ : une seule fois par saison
     out = {"season": season, "updated": data["updated"], "base": base, "cwlLog": cwl_log,
            "warLog": war_log, "raidLog": raid_log, "players": {}}
     season_iso = season.replace("-", "")  # 20261026, comparable aux dates de l'API
@@ -524,10 +549,22 @@ def season_scores():
             if not p:
                 continue
             t = p["tag"]
-            heist = next((a.get("value", 0) for a in p.get("achievements") or [] if a.get("name") == "Heroic Heist"), 0)
-            now_v = {"ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0), "tr": p.get("trophies", 0), "dee": heist}
-            b = base.setdefault(t, now_v)  # nouveau venu : on part de ses chiffres du jour
-            b.setdefault("dee", heist)
+            ach = {a.get("name"): a.get("value", 0) for a in p.get("achievements") or []}
+            heist = ach.get("Heroic Heist", 0)
+            now_v = {"ws": p.get("warStars", 0), "cap": p.get("clanCapitalContributions", 0), "tr": p.get("trophies", 0), "dee": heist,
+                     "fin": ach.get("Friend in Need", 0), "agc": ach.get("Aggressive Capitalism", 0)}
+            b = base.setdefault(t, dict(now_v))  # nouveau venu : on part de ses chiffres du jour
+            for k_b in ("dee", "fin", "agc"):
+                b.setdefault(k_b, now_v[k_b])
+            cp = corr.get(t) or next((v_ for v_ in corr.values() if v_.get("n") == p.get("name")
+                                      and abs((v_.get("th") or p.get("townHallLevel") or 0) - (p.get("townHallLevel") or 0)) <= 1), {})
+            if cp and not corr_done:  # recale le point de départ pour retrouver les chiffres de ClashPerk
+                if "ws" in cp:
+                    b["ws"] = now_v["ws"] - cp["ws"]
+                if "don" in cp:
+                    b["fin"] = now_v["fin"] - cp["don"]
+                if "loot" in cp:
+                    b["agc"] = now_v["agc"] - cp["loot"]
             if t not in ck:
                 try:
                     ck[t] = ck_warhits(t, start, (TAG, TAG2))
@@ -540,14 +577,21 @@ def season_scores():
                 cs = sum(w[t][0] for w in cwl_log.values() if t in w)
                 cd = sum(w[t][1] for w in cwl_log.values() if t in w)
                 gs = max(0, now_v["ws"] - b["ws"] - cs)
+            if cp.get("cwl") and (cp["cwl"][0], cp["cwl"][1]) > (cs, cd):  # Ligue de clans relevée sur ClashPerk
+                cs, cd = cp["cwl"][0], cp["cwl"][1]
+            gs = max(gs, now_v["ws"] - b["ws"] - cs)                     # étoiles de guerre gagnées, ligue déduite
             sn = seen.get(t) or {}
             act_days = len([d for d in sn.get("md", []) if d >= season]) if sn else None
-            v = {"cwl": cs, "gdc": gs, "cap": raid_loot.get(t, max(0, now_v["cap"] - b["cap"])),
-                 "rk": now_v["tr"], "act": act_days if act_days is not None else p.get("attackWins", 0), "don": p.get("donations", 0)}
+            lt = p.get("leagueTier") or p.get("league") or {}
+            v = {"cwl": cs, "gdc": gs, "cap": max(raid_loot.get(t, 0), now_v["agc"] - b["agc"]),
+                 "rk": now_v["tr"], "act": act_days if act_days is not None else p.get("attackWins", 0),
+                 # dons de la saison, même en changeant de clan (le compteur du jeu repart à zéro à chaque changement)
+                 "don": max(p.get("donations", 0), now_v["fin"] - b["fin"])}
             for k in GRID:
                 vals[k][t] = v[k]
+            tier = league_tier(lt.get("name"))
+            vals["rk"][t] = tier * 10000 + now_v["tr"] if tier else 0  # classé : la ligue d'abord, puis les trophées
             tie[t] = cd
-            lt = p.get("leagueTier") or p.get("league") or {}
             out["players"][t] = {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "v": v, "cwlPct": cd,
                                  "lg": lt.get("name"), "lgi": (lt.get("iconUrls") or {}).get("small"),
                                  "dee": max(0, heist - b["dee"]), "hp": hero_progress(p)}
@@ -572,6 +616,8 @@ def season_scores():
             out["players"][t]["m"] = m_
             out["players"][t]["bl"] = -sum(m_.values())
 
+    if corr:
+        out["corrApplied"] = season
     pts = {k: rank_points(vals[k], GRID[k][1], tie if k == "cwl" else None) for k in GRID}
     tags = list(out["players"])
     for t in tags:
