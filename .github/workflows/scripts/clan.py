@@ -392,7 +392,8 @@ def ck_warhits(tag, start, clans):
     req = urllib.request.Request(url, headers={"User-Agent": "gravaen-site (github.com/gravaen/coc)"})
     with urllib.request.urlopen(req, timeout=30) as r:
         items = json.load(r).get("items") or []
-    o = {"cs": 0, "cd": 0, "gs": 0, "zero": 0, "one": 0, "missed": 0, "wars": 0}
+    o = {"cs": 0, "cd": 0, "gs": 0, "zero": 0, "one": 0, "missed": 0, "wars": 0,
+         "det": {"cwl": [], "war": []}}  # détail des attaques, pour les fiches du staff
     for it in items:
         w, me = it.get("war_data") or {}, it.get("member_data") or {}
         if (w.get("clan") or {}).get("tag") not in clans or w.get("type") == "friendly":
@@ -401,11 +402,21 @@ def ck_warhits(tag, start, clans):
         th = me.get("townhallLevel") or 0
         stars = sum(a.get("stars", 0) for a in atks)
         o["wars"] += 1
+        start_ = w.get("preparationStartTime") or w.get("startTime") or ""
         if w.get("type") == "cwl":
             o["cs"] += stars
             o["cd"] += sum(a.get("destructionPercentage", 0) for a in atks)
+            a0 = atks[0] if atks else {}
+            o["det"]["cwl"].append([start_, a0.get("stars", 0), a0.get("destructionPercentage", 0),
+                                    (a0.get("defender") or {}).get("townhallLevel", 0), len(atks)])
         else:
             o["gs"] += stars
+            for a in atks:
+                o["det"]["war"].append([start_, a.get("stars", 0), a.get("destructionPercentage", 0),
+                                        (a.get("defender") or {}).get("townhallLevel", 0)])
+            if w.get("state") == "warEnded":
+                o["det"].setdefault("missed", 0)
+                o["det"]["missed"] += max(0, (w.get("attacksPerMember") or 2) - len(atks))
         for a in atks:
             if (a.get("defender") or {}).get("townhallLevel", 99) <= th:
                 o["zero"] += a.get("stars", 0) == 0
@@ -470,6 +481,74 @@ def hero_progress(p):
     return round(sum(min(lv.get(n, 0), c) for n, c in zip(HERO_NAMES, caps)) / tot, 3) if tot else 1
 
 
+PETS = {"L.A.S.S.I", "Electro Owl", "Mighty Yak", "Unicorn", "Frosty", "Diggy", "Poison Lizard", "Phoenix",
+        "Spirit Fox", "Angry Jelly", "Sneezy", "Greedy Raven"}
+SIEGE = {"Wall Wrecker", "Battle Blimp", "Stone Slammer", "Siege Barracks", "Log Launcher", "Flame Flinger",
+         "Battle Drill", "Troop Launcher"}
+SUPER = {"Super Barbarian", "Super Archer", "Super Giant", "Sneaky Goblin", "Super Wall Breaker", "Rocket Balloon",
+         "Super Wizard", "Super Dragon", "Inferno Dragon", "Super Minion", "Super Valkyrie", "Super Witch", "Ice Hound",
+         "Super Bowler", "Super Miner", "Super Hog Rider", "Super Yeti"}
+
+
+def _ts(x):
+    try:
+        return int(datetime.datetime.strptime((x or "")[:15], "%Y%m%dT%H%M%S").replace(tzinfo=datetime.timezone.utc).timestamp())
+    except ValueError:
+        return 0
+
+
+def ck_hits90(tag, clans):
+    """Attaques et défenses des 90 derniers jours (guerre et ligue de clans), pour les moyennes des fiches du staff."""
+    now = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
+    url = (f"{CKAPI}/player/{urllib.parse.quote(tag)}/warhits?timestamp_start={now - 90 * 86400}&timestamp_end={now}&limit=500")
+    req = urllib.request.Request(url, headers={"User-Agent": "gravaen-site (github.com/gravaen/coc)"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        items = json.load(r).get("items") or []
+    atk, dfn = [], []
+    for it in items:
+        w = it.get("war_data") or {}
+        if (w.get("clan") or {}).get("tag") not in clans or w.get("type") == "friendly":
+            continue
+        kind, ts = ("cwl" if w.get("type") == "cwl" else "war"), _ts(w.get("endTime") or w.get("startTime"))
+        for a in it.get("attacks") or []:
+            atk.append([ts, kind, a.get("stars", 0), a.get("destructionPercentage", 0)])
+        for a in it.get("defenses") or []:
+            dfn.append([ts, kind, a.get("stars", 0), a.get("destructionPercentage", 0)])
+    return {"atk": atk, "def": dfn}
+
+
+def previous_fiches():
+    try:
+        with urllib.request.urlopen(urllib.request.Request(PAGES + "data/fiches.json?ts=" + str(int(datetime.datetime.now().timestamp())), headers={"User-Agent": "Mozilla/5.0 (compatible; GravaenBot/1.0; +https://gravaen.pages.dev)"}), timeout=20) as r:
+            return json.loads(r.read().decode()).get("players") or {}
+    except Exception:
+        return {}
+
+
+def fiche(p, k_, key):
+    """Fiche détaillée d'un membre du staff (page joueur.html) : ligue de clans, guerres, armée."""
+    home = lambda xs: [x for x in xs or [] if x.get("village") == "home"]
+    lvl = lambda x: [x.get("name"), x.get("level", 0), x.get("maxLevel", 0)]
+    troops = home(p.get("troops"))
+    det = (k_ or {}).get("det") or {}
+    cwl = [r[1:] for r in sorted(det.get("cwl") or [], key=lambda r: r[0])][:7]
+    war = det.get("war") or []
+    lt = p.get("leagueTier") or p.get("league") or {}
+    return {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "xp": p.get("expLevel"), "role": p.get("role"),
+            "tr": p.get("trophies", 0), "best": p.get("bestTrophies", 0), "wsT": p.get("warStars", 0),
+            "lg": lt.get("name"), "lgi": (lt.get("iconUrls") or {}).get("medium") or (lt.get("iconUrls") or {}).get("small"),
+            "cwl": cwl,
+            "war": {"atk": len(war), "tri": sum(1 for a in war if a[1] == 3), "stars": sum(a[1] for a in war),
+                    "pct": round(sum(a[2] for a in war) / len(war), 1) if war else 0, "missed": det.get("missed", 0)},
+            "army": {"heroes": [lvl(h) + [[[e.get("name"), e.get("level", 0)] for e in h.get("equipment") or []]]
+                                for h in home(p.get("heroes"))],
+                     "equip": [lvl(e) for e in home(p.get("heroEquipment"))],
+                     "troops": [lvl(t) for t in troops if t.get("name") not in PETS | SIEGE | SUPER],
+                     "spells": [lvl(t) for t in home(p.get("spells"))],
+                     "pets": [lvl(t) for t in troops if t.get("name") in PETS],
+                     "siege": [lvl(t) for t in troops if t.get("name") in SIEGE]}}
+
+
 def season_scores():
     now = datetime.datetime.now(datetime.timezone.utc)
     season = season_start(now)
@@ -481,6 +560,7 @@ def season_scores():
     raid_log = old.get("raidLog", {}) if same else {}  # week-ends de raid de la saison
     corr = corrections(season)
     corr_done = same and old.get("corrApplied") == season  # recalage des points de départ : une seule fois par saison
+    fiches = {}
     out = {"season": season, "updated": data["updated"], "base": base, "cwlLog": cwl_log,
            "warLog": war_log, "raidLog": raid_log, "players": {}}
     season_iso = season.replace("-", "")  # 20261026, comparable aux dates de l'API
@@ -594,7 +674,14 @@ def season_scores():
             tie[t] = cd
             out["players"][t] = {"n": p.get("name"), "c": key, "th": p.get("townHallLevel"), "v": v, "cwlPct": cd,
                                  "lg": lt.get("name"), "lgi": (lt.get("iconUrls") or {}).get("small"),
-                                 "dee": max(0, heist - b["dee"]), "hp": hero_progress(p)}
+                                 "dee": max(0, heist - b["dee"]), "hp": hero_progress(p),
+                                 # pour la section staff du site : grade et quelques chiffres de carrière
+                                 "role": p.get("role"), "wsT": p.get("warStars", 0), "xp": p.get("expLevel")}
+            if p.get("role") in ("leader", "coLeader"):
+                try:
+                    fiches[t] = fiche(p, k_, key)
+                except Exception as e:
+                    print(f"  fiche {t} : {e}", file=sys.stderr)
 
             # Liste noire
             if k_:
@@ -634,6 +721,37 @@ def season_scores():
 
     with open("data/players.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
+    # fiches du staff : moyennes sur 90 jours, comparaison au reste de Gravaen, historique saison après saison
+    prevf = previous_fiches()
+    fam = {}
+    for t_, kk in ck.items():   # attaques de la saison de chaque membre (ligue + guerre), pour « face à Gravaen »
+        d_ = (kk or {}).get("det") or {}
+        hits = [(r[1], r[2]) for r in d_.get("cwl") or [] if r[4]] + [(a[1], a[2]) for a in d_.get("war") or []]
+        if len(hits) >= 5 and t_ in out["players"]:
+            fam[t_] = (sum(1 for h in hits if h[0] == 3) / len(hits) * 100, sum(h[1] for h in hits) / len(hits))
+    monday = (now - datetime.timedelta(days=now.weekday())).strftime("%Y-%m-%d")
+    for t_, fi in fiches.items():
+        try:
+            fi["hits"] = ck_hits90(t_, (TAG, TAG2))
+        except Exception as e:
+            print(f"  ClashKing 90 j {t_} : {e}", file=sys.stderr)
+            fi["hits"] = (prevf.get(t_) or {}).get("hits") or {"atk": [], "def": []}
+        if t_ in fam and len(fam) > 1:
+            me, others = fam[t_], [v_ for k2, v_ in fam.items() if k2 != t_]
+            fi["fam"] = {"n": len(fam), "tri": round(me[0]), "triBetter": round(sum(1 for o in others if o[0] < me[0]) / len(others) * 100),
+                         "triAvg": round(sum(v_[0] for v_ in fam.values()) / len(fam)), "pct": round(me[1]),
+                         "pctBetter": round(sum(1 for o in others if o[1] < me[1]) / len(others) * 100),
+                         "pctAvg": round(sum(v_[1] for v_ in fam.values()) / len(fam))}
+        x = out["players"].get(t_) or {}
+        h_ = (prevf.get(t_) or {}).get("hist") or {"s": {}, "w": {}, "since": now.strftime("%Y-%m-%d")}
+        h_["s"][season] = {"score": x.get("score", 0), "rank": x.get("rank"), "of": x.get("of"), "cwl": (x.get("v") or {}).get("cwl", 0),
+                           "lg": fi.get("lg"), "lgi": fi.get("lgi"), "tr": fi.get("tr", 0)}
+        h_["w"][monday] = [fi.get("lg"), fi.get("lgi"), fi.get("tr", 0)]   # écrasé à chaque passage : reste la valeur de fin de semaine
+        h_["s"] = dict(sorted(h_["s"].items())[-12:])
+        h_["w"] = dict(sorted(h_["w"].items())[-12:])
+        fi["hist"] = h_
+    with open("data/fiches.json", "w", encoding="utf-8") as f:   # fiches détaillées du staff (joueur.html)
+        json.dump({"season": season, "updated": data["updated"], "players": fiches}, f, ensure_ascii=False, separators=(",", ":"))
     print(f"  players.json : {len(out['players'])} joueurs, saison du {season}")
 
 

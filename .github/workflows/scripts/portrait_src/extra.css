@@ -1,0 +1,153 @@
+/* ===== portrait d'un membre du staff (joueur.html) : mêmes composants que la page d'accueil ===== */
+.pt-back{display:inline-block;margin:0 0 16px;font-weight:600;font-size:15px;color:var(--soft);text-decoration:none}
+.pt-back:hover{color:var(--ink)}
+section.s.pt{padding-top:28px;padding-bottom:28px}
+section.s.pt:first-of-type{padding-top:36px}
+.pt-card{background:#fff;padding:22px 24px}
+.pt-id .hdvsq{position:absolute;left:20px;top:22px;width:72px;height:72px;background:var(--yellow);color:var(--ink);display:grid;place-items:center;text-align:center;line-height:1}
+.pt-id .hdvsq small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em}
+.pt-id .hdvsq b{display:block;font-size:30px;font-weight:700;margin-top:2px}
+.pt-id .in{position:relative}
+.pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:94px!important}
+.pt-id .facts{margin-top:16px}
+.pt-bd{display:flex;gap:6px;margin:16px 0 0}
+.pt-bd .bdg{width:26px;height:26px}
+.pt-prof{margin:12px 0 0;font-size:16px;line-height:1.5;color:var(--text);max-width:640px}
+.pt-acts{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 0}
+.pt-split{height:12px;display:flex;background:#F3EEE0;margin:10px 0 8px}
+.pt-split i{display:block;height:100%;border-right:2px solid #fff}
+.pt-leg{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;color:var(--soft)}
+.pt-leg b{color:var(--ink);font-weight:600}
+.pt-leg u{display:inline-block;width:10px;height:10px;margin-right:6px;text-decoration:none;vertical-align:-1px}
+.pt-rounds{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:4px}
+.pt-rd{background:#F3EEE0;text-align:center;padding:10px 4px;display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:92px}
+.pt-rd.tri{background:var(--yellow)}
+.pt-rd .n{font-size:12px;font-weight:700;color:var(--soft)}.pt-rd.tri .n{color:var(--ink)}
+.pt-rd .st{font-size:15px;letter-spacing:1px;color:var(--ink);line-height:1}.pt-rd .st i{color:#CFC8B4;font-style:normal}
+.pt-rd .p{font-weight:700;color:var(--ink);font-size:15px}
+.pt-rd .h{font-size:12px;color:var(--soft)}.pt-rd.tri .h{color:var(--ink)}
+.pt-rd.off .p{font-weight:500;color:var(--soft);font-size:13px}
+.pt-card .facts{margin-top:14px}
+.pt-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.pt-mini{margin:0;font-size:12.5px;font-weight:600;color:var(--soft)}
+.pt-h{margin:0 0 4px;font-size:17px;font-weight:600;color:var(--ink)}
+.pt-fm{margin:12px 0 0}
+.pt-fm .t{display:flex;justify-content:space-between;font-weight:600;color:var(--ink);font-size:15px}
+.pt-fm .tr{position:relative;height:8px;background:#F3EEE0;margin:6px 0 4px}
+.pt-fm .tr i{display:block;height:100%;background:var(--ink)}
+.pt-fm .tr em{position:absolute;top:-4px;width:3px;height:16px;background:var(--yellow)}
+.pt-fm .d{font-size:13.5px;color:var(--soft)}.pt-fm .d b{color:var(--ink)}
+.pt-tabs{margin:0 0 12px!important}
+.pt-tabs .ps-b{min-width:0!important;flex:0 0 auto!important;padding:8px 14px!important}
+.pt-wk{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px}
+.pt-wk div{flex:none;min-width:92px;text-align:center;background:#F3EEE0;padding:10px 8px}
+.pt-wk img{width:34px;height:34px;object-fit:contain}
+.pt-wk b{display:block;font-size:13px;color:var(--ink)}.pt-wk span{display:block;font-size:12px;color:var(--soft)}
+.pt-army li{align-items:flex-start!important}
+.pt-army .eq{display:block;font-size:12.5px;font-weight:500;color:var(--soft);white-space:normal}
+.pt-army .lvl{flex:none;font-size:13px;font-weight:700;color:var(--ink)}
+.pt-army .lvl.max{background:var(--yellow);padding:0 6px}
+.pt-army .lvl span{color:var(--soft);font-weight:500}
+.pt-army{columns:2;column-gap:36px}
+.pt-army li{break-inside:avoid}
+.pt-empty{color:var(--soft);margin:0}
+.pt-note{margin:10px 0 0;font-size:13px;color:var(--soft)}
+@media (max-width:760px){
+ section.s.pt{padding-top:20px;padding-bottom:20px}
+ .pt-card{padding:16px}
+ .pt-id .hdvsq{left:16px;top:18px;width:56px;height:56px}.pt-id .hdvsq b{font-size:24px}.pt-id .hdvsq small{font-size:10px}
+ .pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:70px!important}
+ .pt-rounds{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .pt-two{grid-template-columns:minmax(0,1fr)}
+ .pt-army{columns:1}
+}
+/* blason de classé mis en valeur dans la carte d'identité */
+.pt-id .in{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px}
+.pt-id .in>*{grid-column:1}
+.pt-lg{grid-column:2!important;grid-row:1 / span 6;align-self:start;text-align:center;min-width:150px;padding:14px 16px;background:#F3EEE0}
+.pt-lg img{display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 6px}
+.pt-lg b{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.pt-lg span{display:block;font-size:13px;color:var(--soft);margin-top:2px}
+@media (max-width:760px){.pt-id .in{grid-template-columns:minmax(0,1fr)}.pt-lg{grid-column:1!important;grid-row:auto;display:flex;align-items:center;gap:12px;text-align:left;margin-top:14px;min-width:0;padding:10px 12px}.pt-lg img{width:52px;height:52px;margin:0}}
+/* ajustements : espaces entre sections comme les sous-parties de l'accueil, infos sur une ligne */
+body.portrait section.s.pt{padding-top:24px!important;padding-bottom:24px!important;min-height:0!important}
+body.portrait section.s.pt:first-of-type{padding-top:32px!important}
+body.portrait section.s.pt .head{margin-bottom:16px!important}
+.pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:100px!important}
+.pt-id .hdvsq{top:24px}
+.pt-card>.facts:first-child,.pt-card .pt-two .facts{border-top:0!important;margin-top:0!important;padding-top:0!important}
+@media (min-width:761px){.pt-id .facts,.pt-card .facts{grid-template-columns:repeat(4,max-content)!important;gap:8px 40px!important}}
+.pt-card .pt-two .facts{grid-template-columns:repeat(3,max-content)!important;gap:8px 28px!important}
+@media (max-width:760px){body.portrait section.s.pt{padding-top:16px!important;padding-bottom:16px!important}.pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:70px!important}.pt-card .pt-two .facts{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px 12px!important}}
+/* en-tête sombre, comme le haut de la page d'accueil */
+.pt-hero{background:var(--ink);color:var(--light);padding:22px 0 30px}
+.pt-hero .pt-back{color:#BDB8A8}.pt-hero .pt-back:hover{color:var(--light)}
+.pt-hgrid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:start}
+.pt-who{display:flex;gap:18px;align-items:flex-start}
+.pt-hero .hdvsq{position:static;flex:none;width:80px;height:80px;background:var(--yellow);color:var(--ink);display:grid;place-items:center;text-align:center;line-height:1}
+.pt-hero .hdvsq small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em}.pt-hero .hdvsq b{display:block;font-size:34px;font-weight:700;margin-top:2px}
+.pt-nm{min-width:0}
+.pt-role{margin:0 0 4px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#D8D3C4}
+.pt-chip{font-size:12px;font-weight:700;letter-spacing:.03em;padding:3px 8px;background:#3A3C37;color:var(--light)}.pt-chip.chef{background:var(--yellow);color:var(--ink)}
+.pt-hero h1{margin:0;font-family:var(--title);font-weight:400;font-size:clamp(28px,4vw,42px);line-height:1.05;color:var(--light);overflow-wrap:anywhere}
+.pt-tag{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:#2E302C;color:#D8D3C4;border:0;padding:4px 8px;font:inherit;font-size:13px;cursor:pointer}
+.pt-tag .tt{font-family:ui-monospace,Menlo,Consolas,monospace}
+.pt-xp{margin-left:10px;font-size:13px;color:#BDB8A8}
+.pt-hero .pt-bd{margin-top:16px}
+.pt-hero .pt-prof{color:#E6E1D2}
+.pt-hero .pt-lg{background:#2E302C;color:var(--light)}
+.pt-hero .pt-lg b{color:var(--light)}.pt-hero .pt-lg span{color:#BDB8A8}
+.pt-lgph{display:block;width:92px;height:92px;margin:0 auto 6px;border-radius:50%;background:#3A3C37}
+.pt-k .pt-card{margin-top:-1px}
+.pt-det>summary{cursor:pointer;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.pt-det>summary::-webkit-details-marker{display:none}
+.pt-det>summary::after{content:"→";transition:transform .2s}
+.pt-det[open]>summary{margin-bottom:12px}.pt-det[open]>summary::after{transform:rotate(90deg)}
+.pt-tabs{max-width:100%!important;overflow-x:auto;scrollbar-width:none}
+@media (max-width:760px){
+ .pt-hgrid{grid-template-columns:minmax(0,1fr);gap:16px}
+ .pt-hero .hdvsq{width:60px;height:60px}.pt-hero .hdvsq b{font-size:26px}
+ .pt-hero .pt-lg{grid-column:auto!important;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 12px;margin:0}
+ .pt-hero .pt-lg img,.pt-lgph{width:52px;height:52px;margin:0}
+}
+.pt-hero .pt-lg{grid-row:auto!important;grid-column:auto!important;align-self:start}
+.pt-left{min-width:0}
+
+/* en-tête : vraie image d'hôtel de ville, grade discret */
+.pt-hdv{flex:none;width:84px;height:auto;max-height:98px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.pt-role{font-size:13px!important;font-weight:600!important;color:#A9A496!important;letter-spacing:.02em;margin-bottom:2px!important}
+@media (max-width:760px){.pt-hdv{width:62px}}
+.pt-hero .pt-tag{height:26px!important;min-height:0!important;padding:0 8px!important;margin-top:8px!important;line-height:1!important}
+.pt-hero .pt-nm{align-self:center}
+/* en-tête sombre : même police que le haut de l'accueil (Clash), comme la phrase d'accroche et la signature */
+.pt-hero,.pt-hero p,.pt-hero span,.pt-hero b,.pt-hero a{font-family:var(--title)}
+.pt-hero .pt-tag .tt{font-family:ui-monospace,Menlo,Consolas,monospace}
+.pt-hero .pt-prof{font-weight:400;font-size:18px;line-height:1.45;letter-spacing:.005em}
+.pt-hero .pt-role{font-weight:400!important;font-size:14px!important;letter-spacing:.03em}
+.pt-hero .pt-xp{font-weight:400}
+.pt-hero .pt-lg b{font-weight:900;letter-spacing:.04em}
+.pt-hero .pt-lg span{font-weight:400}
+.pt-hero .pt-back{font-weight:400}
+/* titres internes des cartes : même police que les sous-titres de l'accueil (« Le staff », « La stratégie ») */
+.pt-h,.pt-det>summary{font-family:var(--title)!important;font-weight:600!important;font-size:17px!important}
+.pt-mini{font-family:var(--title);font-weight:600;font-size:13px;letter-spacing:.02em}
+/* évolution : une case par semaine, blason de ligue et diminutif, comme dans le jeu */
+.pt-wk{display:flex;align-items:center;gap:0;overflow-x:auto;padding:6px 0 4px}
+.pt-wk .pt-w{flex:none;min-width:96px;background:none;padding:0 6px;text-align:center}
+.pt-wk .pt-w img,.pt-wph{display:block;width:56px;height:56px;object-fit:contain;margin:0 auto 6px}
+.pt-wph{border-radius:50%;background:#EDE6D3}
+.pt-wk .pt-w b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.pt-wk .pt-w span{display:block;font-size:12.5px;color:var(--soft)}
+.pt-wk .pt-tro{display:inline-flex!important;align-items:center;gap:3px;font-weight:600;color:var(--ink)!important}
+.pt-ti{width:13px;height:13px;fill:none;stroke:#C9A43A;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pt-sep{flex:none;width:18px;height:2px;background:#D9D2BE;margin-bottom:34px}
+/* phrase de profil : police des textes, plus petite */
+.pt-hero .pt-prof{font-family:var(--body)!important;font-weight:400!important;font-size:16px!important;line-height:1.5!important;color:#D8D3C4!important}
+/* icône « ouvrir » dans le bouton */
+.pt-ext{width:16px;height:16px;margin-left:8px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pt-acts .cta{display:inline-flex;align-items:center}
+/* classé : blason en grand à gauche des infos */
+.pt-rk{display:flex;align-items:center;gap:22px}
+.pt-rk>img,.pt-rk>.pt-wph{flex:none;width:88px;height:88px;object-fit:contain;margin:0}
+.pt-rk .facts{margin:0!important;border-top:0!important;padding-top:0!important}
+@media (max-width:760px){.pt-rk{gap:14px;align-items:flex-start}.pt-rk>img,.pt-rk>.pt-wph{width:60px;height:60px}}

@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<script>function safeRS(a,b,u){try{history.replaceState(a,b,u)}catch(e){}}</script>
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Portrait d’un membre du staff de Gravaen : sa saison, sa ligue de clans, ses guerres et son armée."><meta name="robots" content="noindex">
+
+<title>Portrait · Gravaen</title>
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Site du clan Gravaen">
+<meta property="og:url" content="https://gravaen.pages.dev/">
+<meta property="og:image" content="https://gravaen.pages.dev/og-image.jpg?v=4">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Clash of Clans : Gravaen">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gravaen.pages.dev/og-image.jpg?v=4">
+<meta name="theme-color" content="#212320">
+<link rel="preload" href="clash-bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="clash-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="rubik-400.woff2" as="font" type="font/woff2" crossorigin>
+
+<link rel="icon" type="image/png" href="icone.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gravaen">
+<style>
+@font-face{font-family:'Clash';src:url(clash-regular.woff2) format('woff2');font-weight:100 800;font-style:normal;font-display:swap}
+@font-face{font-family:'Clash';src:url(clash-bold.woff2) format('woff2');font-weight:900;font-style:normal;font-display:swap}
+
+:root{--ink:#212320;--ink2:#2E302C;--cream:#F8F0D9;--paper:#FFFFFF;--sand:#F5EEDC;--text:#34352F;--soft:#6A6B64;--line:#E4DECD;--yellow:#F8C801;--hl:#FFF3C4;--light:#FFFDF5;
+--display:'Clash','Arial Black',sans-serif;--body:'Clash','Helvetica Neue',Arial,sans-serif;--w:1160px;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cream);color:var(--text);font-family:var(--body);font-weight:500;font-size:18px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px;box-shadow:0 0 0 3px var(--ink)}
+.disp,h1,h2,h3{font-family:var(--display);font-weight:900;font-stretch:125%;letter-spacing:-0.03em;color:var(--ink);margin:0}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 28px}
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--light);padding-top:env(safe-area-inset-top,0px)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:900;font-stretch:125%;font-size:21px;letter-spacing:-0.03em;color:var(--light)}
+.brand i{display:none}
+.brand{position:relative;isolation:isolate;display:inline-block;min-height:0!important;padding:0 0 10px;line-height:.9}
+.brand::before{content:"";position:absolute;z-index:-1;left:-1px;right:-4px;top:auto;bottom:0;height:7px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 16' preserveAspectRatio='none'%3E%3Ccircle cx='5' cy='8' r='4.5' fill='%23F8C801'/%3E%3Crect x='8' y='6' width='14' height='4' fill='%23C99F00'/%3E%3Crect x='22' y='0' width='5' height='16' rx='1' fill='%23F8C801'/%3E%3Cpath d='M27 5 H148 L159 8 L148 11 H27 Z' fill='%23F8C801'/%3E%3Cpath d='M27 7.4 H148 L159 8 L148 8.6 H27 Z' fill='%23C99F00'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.nav ul{list-style:none;display:flex;gap:24px;margin:0;padding:0;font-weight:700;font-size:16px}
+.nav ul a{text-decoration:none;color:#D8D3C4}
+.nav ul a:hover{color:var(--light)}
+.nav .sp{flex:1}
+.cta{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:800;text-decoration:none;padding:11px 18px;font-size:16px;border:0;cursor:pointer}
+.cta.dark{background:var(--ink);color:var(--light)}
+.menu{display:none;background:none;border:0;color:var(--light);font-weight:800;font-size:16px;cursor:pointer}
+/* hero */
+.hero{background:var(--ink);color:var(--light);padding:70px 0 0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;align-items:center}
+.hero .wrap.hero-top{grid-template-columns:minmax(0,1fr)}
+.hero-txt{grid-column:1;grid-row:1}
+.hero h1.slogan{font-size:clamp(34px,5vw,64px);line-height:1.06;text-wrap:balance}
+.castle{grid-column:2;grid-row:1;margin:0;padding-bottom:40px;display:flex;justify-content:center}
+.castle img{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.hero h1,.hero p.lead{max-width:820px}
+.tag{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:700;font-size:15px;line-height:34px;padding:0 14px;text-transform:uppercase;letter-spacing:.01em}
+.hero h1{color:var(--light);-webkit-text-stroke:1px var(--light);font-size:clamp(42px,6.4vw,78px);line-height:1.02;margin:22px 0 22px}
+.hero p.lead{font-size:21px;line-height:1.5;color:#D8D3C4;max-width:560px;margin:0 0 30px}
+.hero .ranks{display:inline-flex;flex-direction:column;align-items:stretch;gap:10px;margin:0 0 30px}
+.hero .rank{display:inline-flex;align-items:center;gap:14px;margin:0;padding:8px 22px 8px 12px;background:var(--ink2);border-left:4px solid var(--yellow)}
+.hero .rank img{width:64px;height:auto;flex:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+.hero .rank b{display:block;font-family:var(--display);font-weight:900;font-stretch:125%;font-size:20px;line-height:1.1;letter-spacing:-0.02em;color:var(--light)}
+.hero .rank span{display:block;margin-top:3px;font-size:15px;color:#D8D3C4}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding-bottom:70px}
+.hero .actions a.more{color:var(--light);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+/* sections */
+section.s{padding:80px 0}
+section.alt{background:var(--paper)}
+.head{display:grid;grid-template-columns:280px 1fr;gap:48px;margin-bottom:46px}
+.eyeb{font-weight:800;color:var(--ink);font-size:16px;display:flex;gap:10px;align-items:baseline;padding-top:12px}
+.eyeb i{color:var(--yellow);font-style:normal}
+.head h2{font-size:clamp(32px,4.2vw,50px);line-height:1.06}
+.head p{font-size:20px;color:var(--text);margin:18px 0 0;max-width:640px}
+.body-grid{display:grid;grid-template-columns:280px 1fr;gap:48px}
+.body-grid > .side{font-size:15px;color:var(--soft)}
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pillar{background:var(--paper);display:flex;flex-direction:column}
+section.alt .pillar{background:var(--sand)}
+.pillar .bar{height:8px}
+.pillar .in{padding:24px 24px 26px}
+.pillar h3{font-size:24px;line-height:1.12;margin-bottom:12px}
+.pillar p{margin:0;font-size:17px}
+.pillar ul{margin:14px 0 0;padding:0;list-style:none;font-size:16px}
+.pillar li{padding:7px 0;border-top:1px solid var(--line)}
+/* rules */
+.rules{display:grid;gap:14px}
+.rule{background:var(--paper);display:grid;grid-template-columns:76px 1fr}
+.rule .n{display:flex;align-items:flex-start;justify-content:center;padding-top:22px;font-family:var(--display);font-weight:900;font-stretch:125%;font-size:34px;color:#fff}
+.rule .in{padding:24px 28px 26px}
+.rule h3{font-size:26px;margin-bottom:6px}
+.rule .intro{color:var(--soft);margin:0 0 14px;font-size:17px}
+.rule table{width:100%;border-collapse:collapse;font-size:17px}
+.rule th{text-align:left;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);padding:0 14px 10px 0;border-bottom:2px solid var(--ink)}
+.rule td{padding:12px 14px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.rule td:first-child{color:var(--ink);font-weight:700;width:46%}
+.sanc{display:inline-block;font-weight:800;font-size:15px;padding:2px 10px}
+.sanc.ex{background:#FBE1E2;color:#9C1519}
+.sanc.re{background:var(--hl);color:#6B5200}
+.sanc.ok{background:#DCF1E4;color:#12663A}
+.footnote{background:var(--ink);color:var(--light);padding:22px 28px;font-size:17px}
+.footnote b{color:var(--yellow)}
+/* ranks */
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--paper)}
+.step{padding:26px 24px 28px;border-left:1px solid var(--line);position:relative}
+.step:first-child{border-left:0}
+.step .lv{font-family:var(--display);font-weight:900;font-stretch:125%;font-size:15px;color:var(--soft);letter-spacing:0}
+.step h3{font-size:25px;margin:6px 0 12px}
+.step p{margin:0;font-size:16px}
+.step .top{position:absolute;left:0;right:0;top:0;height:6px}
+/* season */
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cat{background:var(--sand);padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
+.cat .k{flex:none;width:44px;height:44px;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-stretch:125%;font-size:20px;color:#fff}
+.cat h3{font-size:19px;margin:2px 0 4px}
+.cat p{margin:0;font-size:15px;color:var(--soft)}
+.goals{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:16px}
+.goal{background:var(--paper);padding:20px}
+.goal b{display:block;font-family:var(--display);font-weight:900;font-stretch:125%;letter-spacing:-0.03em;font-size:40px;line-height:1;color:var(--ink)}
+.goal span{display:block;font-weight:700;color:var(--ink);margin-top:10px;font-size:16px;line-height:1.3}
+.goal small{display:block;color:var(--soft);font-size:14px;margin-top:6px}
+/* clan 2 */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:var(--paper);padding:28px}
+section.alt .box{background:var(--sand)}
+.box h3{font-size:24px;margin-bottom:10px}
+.box p{margin:0 0 10px}
+.flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px;font-weight:800;color:var(--ink)}
+.flow span{background:var(--ink);color:var(--light);padding:8px 14px}
+.flow span.y{background:var(--yellow);color:var(--ink)}
+/* join */
+.join{background:var(--ink);color:var(--light);padding:90px 0}
+.join .wrap{display:grid;grid-template-columns:1fr;gap:56px;align-items:center}
+.join h2{color:var(--yellow);font-size:clamp(34px,4.6vw,56px);line-height:1.04}
+.join p{color:#D8D3C4;font-size:20px}
+.checks{list-style:none;margin:0;padding:0;background:var(--ink2)}
+.checks li{display:flex;gap:14px;padding:16px 20px;border-bottom:1px solid #3D403B;font-size:17px}
+.checks li:last-child{border-bottom:0}
+.checks li::before{content:'';flex:none;width:12px;height:12px;margin-top:8px;background:var(--yellow)}
+footer{background:var(--ink);color:#A9A598;font-size:15px;padding:0 0 calc(40px + env(safe-area-inset-bottom,0px))}
+footer .wrap{border-top:1px solid #3D403B;padding-top:26px;display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+@media (max-width:960px){
+ .hero .wrap,.join .wrap{grid-template-columns:1fr}
+ .head,.body-grid{grid-template-columns:1fr;gap:12px}
+ .pillars,.cats{grid-template-columns:1fr}
+ .ladder{grid-template-columns:1fr 1fr}.step:nth-child(3){border-left:0}.step:nth-child(n+3){border-top:1px solid var(--line)}
+ .goals{grid-template-columns:repeat(2,1fr)}
+ .split{grid-template-columns:1fr}
+ .hero .actions{padding-bottom:36px}
+ .nav ul{display:none;position:absolute;top:68px;left:0;right:0;background:var(--ink);flex-direction:column;gap:0;padding:6px 28px 18px}
+ .nav ul li a{display:block;padding:12px 0}
+ .menu{display:block}
+ section.s{padding:68px 0}
+}
+@media (max-width:560px){.wrap{padding:0 18px}.rule{grid-template-columns:48px 1fr}.rule .n{font-size:24px}.rule .in{padding:20px 18px}.rule td:first-child{width:auto}.rule tr{display:grid}.rule td{border-bottom:0;padding:4px 0}.rule tr{border-bottom:1px solid var(--line);padding:10px 0}.rule thead{display:none}.ladder{grid-template-columns:1fr}.step{border-left:0;border-top:1px solid var(--line)}.nav .cta{display:none}}
+
+@media (max-width:560px){
+ body{font-size:17px}
+ .nav .wrap{height:60px;gap:14px}
+ .nav ul{top:60px}
+ html{scroll-padding-top:72px}
+ .hero{padding:40px 0 0}
+ .hero h1{font-size:40px;line-height:1.04;margin:18px 0 16px;-webkit-text-stroke:.6px var(--light)}
+ .hero p.lead{font-size:18px;margin-bottom:24px}
+ .hero .actions{flex-direction:column;align-items:stretch;gap:12px;padding-bottom:40px}
+ .hero .actions .cta{text-align:center;padding:15px 18px}
+ .hero .actions a.more{text-align:center;padding:6px}
+ .tag{font-size:13px;line-height:30px}
+ section.s{padding:52px 0}
+ .head{margin-bottom:26px}
+ .head h2{font-size:30px}
+ .head p{font-size:17px;margin-top:12px}
+ .eyeb{padding-top:0;font-size:15px}
+ .pillar .in{padding:20px}
+ .pillar h3{font-size:21px}
+ .rule h3{font-size:22px}
+ .rule .intro{font-size:15px}
+ .rule td{font-size:16px}
+ .footnote{padding:18px;font-size:16px}
+ .step{padding:20px}
+ .step h3{font-size:22px}
+ .cat{padding:16px}
+ .goals{grid-template-columns:1fr 1fr;gap:10px}
+ .goal{padding:16px}
+ .goal b{font-size:30px}
+ .goal:last-child{grid-column:1/-1}
+ .box{padding:22px 20px}
+ .box h3{font-size:21px}
+ .join{padding:56px 0}
+ .join h2{font-size:32px}
+ .join p{font-size:17px}
+ .join .cta{display:block;text-align:center;padding:15px}
+ .checks li{padding:14px 16px;font-size:16px}
+ footer .wrap{flex-direction:column}
+ .menu{padding:10px 0}
+ .flow{gap:8px;font-size:15px}.flow span{padding:7px 10px}
+}
+
+/* nav v2 */
+.nav .wrap{height:68px;gap:0}
+.nav .brand{margin-right:40px}
+.nav ul{gap:4px}
+.nav ul a{display:block;padding:9px 14px;font-size:16px;font-weight:700;color:#CFCABB;text-decoration:none;border-radius:2px}
+.nav ul a:hover,.nav ul a[aria-current="true"]{color:var(--light);background:#33352F}
+.nav .cta{margin-left:16px}
+.menu{width:44px;height:44px;padding:0;display:none;align-items:center;justify-content:center;background:none;border:0;color:var(--light);cursor:pointer}
+.menu svg{width:24px;height:24px}
+.drawer-cta{display:none}
+/* clans */
+.clans{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.clan{background:var(--paper);display:flex;flex-direction:column}
+.clan .top{height:8px}
+.clan .in{padding:26px 26px 28px;display:flex;flex-direction:column;gap:14px;flex:1}
+.clan .kind{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--soft)}
+.clan h3{font-size:30px;line-height:1.05}
+.clan .tagid{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;color:var(--text);background:var(--sand);padding:4px 10px;align-self:flex-start}
+.clan p{margin:0;font-size:17px}
+.clan .cta{align-self:flex-start;margin-top:auto}
+.facts{display:flex;flex-wrap:wrap;gap:12px 28px;margin:2px 0 4px;padding:14px 0 0;border-top:1px solid var(--line)}
+.facts div{min-width:0}
+.facts dt{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--soft)}
+.facts dd{margin:3px 0 0;font-family:var(--display);font-weight:900;font-stretch:110%;font-size:21px;line-height:1.1;letter-spacing:-.01em;color:var(--ink);white-space:nowrap}
+@media (max-width:560px){.facts{gap:10px 22px}.facts dd{font-size:19px}}
+
+.clan .shot{margin:0;aspect-ratio:16/10;overflow:hidden;background:var(--ink)}
+.clan .shot img{display:block;width:100%;height:100%;object-fit:cover}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.cta.discord{background:transparent;color:var(--light);box-shadow:inset 0 0 0 2px var(--light)}
+@media (max-width:560px){.cta-row{flex-direction:column}.cta-row .cta{display:block;text-align:center;padding:15px}}
+@media (max-width:960px){
+ .nav .brand{margin-right:auto}
+ .nav .wrap{height:60px}
+ .nav > .wrap > .cta{display:none}
+ .menu{display:flex}
+ .nav ul{display:flex;position:fixed;inset:60px 0 auto 0;margin-top:env(safe-area-inset-top,0px);background:var(--ink);flex-direction:column;gap:0;padding:8px 18px 22px;border-top:1px solid #3D403B;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .18s,transform .18s,visibility .18s}
+ .nav ul.is-open{opacity:1;visibility:visible;transform:none}
+ .nav ul li a{padding:16px 4px;font-size:19px;border-bottom:1px solid #33352F;border-radius:0}
+ .nav ul li a:hover{background:none}
+ .drawer-cta{display:block;margin-top:16px}
+ .nav ul li.drawer-cta a.cta{display:block;text-align:center;padding:16px;font-size:17px;color:var(--ink);background:var(--yellow);border-bottom:0;margin-left:0}
+ .nav ul li.drawer-cta a.cta:hover{background:var(--yellow)}
+ .clans{grid-template-columns:1fr}
+}
+@media (max-width:560px){.clan .in{padding:22px 20px}.clan h3{font-size:26px}.clan .cta{align-self:stretch;text-align:center;padding:15px}}
+@media (max-width:960px){.hero .wrap{grid-template-columns:1fr;gap:0}.castle{grid-column:1;grid-row:1;padding:0 0 10px}.castle img{max-width:220px}.hero-txt{grid-row:2}}
+@media (max-width:560px){.castle img{max-width:180px}}
+/* questionnaire HDV */
+
+.essentials{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.essentials li{background:var(--paper);border-left:6px solid var(--yellow);padding:18px 20px;font-size:17px}
+.essentials b{display:block;font-family:var(--display);font-weight:900;font-stretch:125%;letter-spacing:-0.03em;font-size:20px;line-height:1.15;color:var(--ink);margin-bottom:6px}
+@media (max-width:960px){.essentials{grid-template-columns:1fr}.clan.reco{order:-1}}
+.head p a,.season-desc a{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.brand{min-height:44px}
+.hero .actions a.more{display:inline-flex;align-items:center;min-height:44px}
+footer a{display:inline-block;padding:12px 4px;margin:-12px -4px}
+footer .legal{flex-basis:100%;margin:0;font-size:14px;line-height:1.5}
+.season{display:grid;grid-template-columns:1fr;grid-template-areas:"eyeb" "title" "shot" "desc" "cats"}
+.season .eyeb{grid-area:eyeb;margin-bottom:6px}
+.season-title{grid-area:title;font-size:clamp(32px,4.2vw,50px);line-height:1.06}
+.season-shot{grid-area:shot;margin:24px 0 0;overflow:hidden;background:var(--ink)}
+.season-shot img{display:block;width:100%;height:auto}
+.season-desc{grid-area:desc;font-size:20px;color:var(--text);margin:24px 0 28px;max-width:640px}
+.season .cats{grid-area:cats}
+@media (min-width:961px){.season{grid-template-columns:440px minmax(0,1fr);grid-template-areas:"shot eyeb" "shot title" "shot desc" "shot cats";grid-template-rows:auto auto auto 1fr;column-gap:48px}.season-shot{margin:0;align-self:start;position:sticky;top:96px}.season-desc{margin:18px 0 28px}.season .cats{grid-template-columns:repeat(2,1fr);align-content:start}}
+.tagrow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.tagrow .tagid{align-self:auto}
+.statlink{position:relative;display:inline-flex;align-items:center;gap:8px;padding:4px 12px;border:1.5px solid var(--ink);font-weight:700;font-size:15px;color:var(--ink);text-decoration:none}
+.statlink::after{content:"";position:absolute;inset:-7px -4px}
+.statlink:hover{background:var(--ink);color:var(--light)}
+
+/* liens externes */
+.nav ul a.ext{display:flex;align-items:center;gap:6px}
+.nav ul a.ext::after{content:"";width:13px;height:13px;background:currentColor;opacity:.85;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5'/%3E%3C/svg%3E") center/contain no-repeat}
+/* images plus compactes sur mobile */
+@media (max-width:960px){
+ .clan .shot{aspect-ratio:21/9}
+ .clan .shot img{object-position:center 30%}
+}
+
+/* saison allégée */
+.season2{margin-bottom:0}
+.season-side .eyeb{padding-top:12px}
+.season-pic{margin:22px 0 0;background:var(--ink)}
+.season-pic img{display:block;width:100%;height:auto}
+.crit{list-style:none;margin:30px 0 0;padding:0;border-top:2px solid var(--ink);display:grid;grid-template-columns:1fr 1fr;column-gap:36px}
+.crit li{display:grid;grid-template-columns:34px 1fr auto;grid-template-rows:auto auto;column-gap:10px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.crit .n{grid-row:1/3;font-family:var(--display);font-weight:900;font-stretch:125%;font-size:15px;color:var(--soft)}
+.crit b{font-size:18px;color:var(--ink);font-weight:800}
+.crit .d{grid-column:2/4;font-size:15px;color:var(--soft)}
+.crit .prio{grid-column:3;grid-row:1;justify-self:end;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;background:var(--yellow);color:var(--ink);padding:2px 7px;align-self:center}
+@media (max-width:960px){.season-pic{margin:16px 0 8px}.crit{grid-template-columns:1fr;margin-top:24px}}
+
+
+/* grille de notation */
+.gbtn{position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:transparent;border:1.5px solid var(--ink);color:var(--ink);font:inherit;font-weight:700;font-size:15px;padding:4px 12px;cursor:pointer}
+.gbtn::after{content:"";position:absolute;inset:-7px -4px}
+.gbtn:hover{background:var(--ink);color:var(--light)}
+dialog.grille{width:min(720px,calc(100% - 28px))}
+.grille .gh{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--light);background:var(--ink);display:inline-block;padding:4px 10px;margin:22px 0 12px;font-stretch:100%}
+.grille .gh:first-of-type{margin-top:0}
+.glist{list-style:none;margin:0;padding:0}
+.glist li{padding:10px 0 10px 18px;border-bottom:1px solid var(--line);font-size:16px;position:relative}
+.glist li::before{content:"";position:absolute;left:0;top:20px;width:9px;height:2px;background:var(--ink)}
+.glist b,.gtab b{color:var(--ink)}
+.gtab{width:100%;border-collapse:collapse;font-size:16px}
+.gtab th{text-align:left;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);padding:0 0 8px;border-bottom:2px solid var(--ink)}
+.gtab td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.gtab td span{display:block;font-size:14px;color:var(--soft)}
+.gtab .r{text-align:right;white-space:nowrap;padding-left:14px}
+.gtab .w{font-family:var(--display);font-weight:900;font-stretch:115%;color:var(--ink);font-size:18px}
+.gtab tfoot td{border-bottom:0;padding-top:12px;color:var(--soft)}
+.gtab tfoot b{font-size:18px}
+.gsub{font-size:13px!important;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--soft);margin:8px 0 6px!important}
+.gbadges{list-style:none;margin:0 0 6px;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+.gbadges li{padding:9px 0 9px 14px;border-bottom:1px solid var(--line);border-left:3px solid var(--yellow);padding-left:12px;margin-bottom:6px}
+.gbadges li.sp{border-left-color:var(--yellow)}
+.gbadges b{display:block;color:var(--ink);font-size:16px}
+.gbadges span{font-size:14px;color:var(--soft)}
+@media (max-width:560px){.gbadges{grid-template-columns:1fr}.gbtn{width:auto}}
+
+/* grille en image */
+dialog.grille{width:min(760px,calc(100% - 20px));max-height:calc(100% - 20px);padding:0;background:var(--cream)}
+dialog.grille .gimg{display:block;width:100%;height:auto}
+dialog.grille .qclose{position:sticky;top:0;float:right;z-index:2;margin:6px 6px -50px 0;background:var(--ink);color:var(--light);width:40px;height:40px;font-size:24px}
+
+@media (max-width:700px){
+ dialog.grille{width:100%;max-width:100%;height:100%;max-height:100%;margin:0;overflow:auto;-webkit-overflow-scrolling:touch}
+ dialog.grille .gimg{width:620px;max-width:none}
+ dialog.grille .qclose{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:10px;float:none;margin:0}
+}
+
+/* grille de notation en HTML net */
+dialog.gr{border:0;padding:0;width:min(680px,calc(100% - 20px));max-height:calc(100% - 20px);overflow:auto;background:var(--cream);color:var(--text);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+dialog.gr::backdrop{background:rgba(33,35,32,.78)}
+.gr-head{position:sticky;top:0;z-index:2;background:var(--ink);color:var(--light);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:22px 22px 20px}
+.gr-head h2{color:var(--light);font-size:clamp(22px,4.6vw,30px);line-height:1.05;margin:0 0 12px}
+.gr-tag{display:inline-block;background:var(--yellow);color:var(--ink);font-weight:700;font-size:13px;line-height:26px;padding:0 10px;text-transform:uppercase;letter-spacing:.01em}
+.gr-close{flex:none;width:40px;height:40px;border:0;background:#3A3D3C;color:var(--light);font-size:24px;font-weight:800;cursor:pointer}
+.gr-body{padding:6px 18px 22px}
+.gr-h{display:inline-block;background:var(--ink);color:var(--light);font-family:var(--body);font-stretch:100%;letter-spacing:.08em;text-transform:uppercase;font-size:13px;font-weight:800;padding:4px 10px;margin:18px 0 0}
+.gr-h small{font-size:11px;text-transform:none;letter-spacing:0;opacity:.75;margin-left:6px;font-weight:700}
+.gr-card{background:var(--paper);padding:6px 18px;list-style:none;margin:0}
+.gr-calc li{position:relative;padding:11px 0 11px 22px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.45}
+.gr-calc li:last-child{border-bottom:0}
+.gr-calc li::before{content:"";position:absolute;left:0;top:21px;width:11px;height:2px;background:var(--ink)}
+.gr-calc b{color:var(--ink)}
+.gr-cats{list-style:none;margin:0;padding:0}
+.gr-cats li{display:grid;grid-template-columns:1fr auto 86px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.gr-cats li:last-child{border-bottom:2px solid var(--ink)}
+.cn b{display:block;font-size:16px;color:var(--ink)}
+.cn small{font-size:13px;color:var(--soft)}
+.cw{font-family:var(--display);font-weight:900;font-stretch:110%;font-size:19px;color:var(--ink)}
+.cm{text-align:right;font-size:13px;color:var(--soft);white-space:nowrap}
+.gr-total{text-align:right;margin:10px 0 8px;font-size:14px;color:var(--soft)}
+.gr-total b{font-family:var(--display);font-weight:900;font-stretch:110%;font-size:20px;color:var(--ink);margin-left:6px}
+.gr-sub{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:12px 0 2px}
+.gr-badges{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:20px}
+.gr-badges li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}
+.bi{flex:none;width:26px;font-size:20px;line-height:1.2;text-align:center}
+.gr-badges b{display:block;font-size:15px;color:var(--ink)}
+.gr-badges small{font-size:13px;color:var(--soft);line-height:1.35}
+@media (max-width:560px){dialog.gr{width:calc(100% - 24px);max-width:none;height:auto;max-height:calc(100% - 64px);margin:auto}.gr-head{padding:16px}.gr-body{padding:4px 12px calc(20px + env(safe-area-inset-bottom,0px))}.gr-card{padding:4px 14px}.gr-badges{grid-template-columns:1fr}.gr-cats li{grid-template-columns:1fr auto;row-gap:2px}.cm{grid-column:1/-1;text-align:left;margin-top:-2px}}
+
+.rl{list-style:none;margin:0;padding:0;background:var(--paper);border:1px solid var(--line)}
+.rl li{display:flex;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line);font-size:17px;color:var(--text)}
+.rl li:last-child{border-bottom:0}
+.rl li::before{content:'';flex:none;width:12px;height:12px;margin-top:8px;background:var(--yellow)}
+.rl b{color:var(--ink);font-weight:800}
+@media (max-width:560px){.rl li{padding:14px 16px;font-size:16px}}
+.glink{background:none;border:0;padding:0;margin:0;font:inherit;color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px;text-decoration-color:var(--yellow);cursor:pointer;text-align:left}
+.glink:hover{background:var(--hl)}
+.glink:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+dialog.sv{border:0;padding:0;margin:0;width:100%;max-width:100%;height:100%;max-height:100%;background:var(--paper);color:var(--text);overflow:auto;-webkit-overflow-scrolling:touch}
+dialog.sv::backdrop{background:rgba(33,35,32,.78)}
+dialog.sv[open]{display:flex}
+dialog.sv .wrap{margin:auto;width:100%;padding-top:96px;padding-bottom:64px}
+.sv-close{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));right:16px;z-index:3;width:44px;height:44px;border:0;background:var(--ink);color:var(--light);font-size:26px;font-weight:800;cursor:pointer}
+.sv-close:hover{background:#3A3D3C}
+.sv-title{display:flex;align-items:flex-start;gap:16px}
+.ibtn{flex:none;width:38px;height:38px;margin-top:6px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:700;font-size:22px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ibtn:hover,.ibtn:focus-visible{background:var(--ink);color:var(--light)}
+@media (max-width:560px){dialog.sv .wrap{padding-top:84px;padding-bottom:40px}.ibtn{width:34px;height:34px;font-size:20px;margin-top:2px}}
+.gr-panel{margin-top:28px;background:var(--cream);border:1px solid var(--line)}
+.gr-panel .gr-head{position:static}
+.ibtn.on{background:var(--ink);color:var(--light)}
+.hero h1.slogan span{display:block;text-wrap:balance}
+.hero p.slogan-sub{font-style:italic;font-weight:500;font-size:clamp(18px,1.9vw,24px);line-height:1.35;color:var(--light);margin:32px 0 0;max-width:none;white-space:nowrap} /* citation sur une seule ligne, même rythme que le reste (32px, 24px sur mobile) */
+.hero p.slogan-sub::before{content:'«\00a0';color:var(--yellow);font-style:normal;font-weight:800}
+.hero p.slogan-sub::after{content:'\00a0»';color:var(--yellow);font-style:normal;font-weight:800}
+@media (max-width:560px){.hero p.slogan-sub{margin-top:24px;font-size:clamp(14px,4.3vw,18px)}}
+.hero p.lead b{color:var(--light);font-weight:800}
+.season-block{margin-top:56px;background:var(--paper);display:grid;grid-template-columns:400px minmax(0,1fr);gap:40px;align-items:start;padding:32px}
+.season-block .season-pic{margin:0}
+.season-h{font-size:clamp(26px,3vw,36px);line-height:1.08;margin:0}
+.season-txt p{font-size:19px;margin:14px 0 22px;max-width:640px}
+.gbtn{position:relative;display:flex;align-items:center;gap:8px;width:fit-content;margin:22px auto 0;background:transparent;border:1.5px solid var(--ink);color:var(--ink);font:inherit;font-weight:700;font-size:15px;padding:4px 12px;cursor:pointer}
+.gbtn::after{content:"";position:absolute;inset:-7px -4px}
+.gbtn:hover,.gbtn.on{background:var(--ink);color:var(--light)}
+.season-txt .gr-panel{margin-top:22px}
+@media (max-width:760px){.season-block{grid-template-columns:1fr;gap:20px;padding:20px}.season-block .season-pic{background:none}.season-block .season-pic img{width:100%;max-width:none;height:auto;margin:0 auto}.season-txt p{font-size:17px}}
+.season-block{position:relative;border-top:6px solid var(--yellow)}
+.season-block{grid-template-columns:minmax(0,1fr)}
+.clan .in>.pill{position:static;display:inline-flex;align-self:flex-start;width:max-content;max-width:calc(100% - 84px);margin:0 0 12px;background:var(--ink)}
+.clan .in>.pill[hidden]{display:none}
+.season-block::before{content:"";position:absolute;left:62.5%;top:-62px;width:3px;height:56px;margin-left:-1.5px;background:var(--yellow)}
+.season-block::after{content:"";position:absolute;left:62.5%;top:-68px;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:var(--yellow)}
+.season-tag{position:absolute;left:calc(62.5% + 16px);top:-47px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:14px;line-height:1.4;padding:3px 10px}
+@media (max-width:960px){.season-block::before,.season-block::after{left:25%}.season-tag{left:calc(25% + 16px)}}
+@media (max-width:560px){.season-block::before,.season-block::after{display:none}.season-tag{left:0;top:-32px}}
+.nav ul a{white-space:nowrap}
+@media (min-width:961px) and (max-width:1180px){.nav .wrap{gap:14px}.nav ul{gap:12px;font-size:14px}.nav .cta{margin-left:0;padding:10px 12px;font-size:14px}.brand{font-size:19px}}
+@media (min-width:961px) and (max-width:1060px){.nav > .wrap > .cta{display:none}}
+
+/* grades : illustrations en filigrane */
+.step{overflow:hidden;isolation:isolate}
+.step>.lv,.step>h3,.step>p{position:relative;z-index:1}
+.step .gimg{position:absolute;z-index:0;right:-3%;top:var(--gy,0);height:125%;width:auto;max-width:70%;object-fit:contain;object-position:right top;opacity:.32;pointer-events:none;user-select:none;-webkit-mask-image:linear-gradient(to left,#000 0%,#000 30%,transparent 100%);mask-image:linear-gradient(to left,#000 0%,#000 30%,transparent 100%)}
+.step:nth-child(1){--gy:-9%}.step:nth-child(2){--gy:5%}.step:nth-child(3){--gy:2%}.step:nth-child(4){--gy:-10%}
+@media (hover:hover){.step .gimg{transition:opacity .35s}.step:hover .gimg{opacity:.45}}
+@media (max-width:760px){.step .gimg{height:140%;max-width:50%;opacity:.3}.step:nth-child(1){--gy:-8%}.step:nth-child(2){--gy:0%}.step:nth-child(3){--gy:-2%}.step:nth-child(4){--gy:-10%}}
+
+.castle.wolf img{filter:none;max-width:300px}
+@media (max-width:960px){.castle.wolf img{max-width:170px}}
+@media (max-width:560px){.castle.wolf img{max-width:150px}}
+
+/* badges du hero : noir et blanc pour coller à la DA */
+.hero .rank img{filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+
+/* accueil : slogan + logo seuls au premier écran, sous-titre en dessous entre deux filets jaunes */
+.hero .wrap.hero-top{position:relative;min-height:calc(88vh - 68px - 70px);min-height:calc(88svh - 68px - 70px);align-content:center;padding-bottom:56px}
+.hero-sub{max-width:var(--w);margin:0 auto;padding:0 28px 72px}
+.hero-sub{padding-top:0}
+.hero .sub-band p.lead{max-width:640px;padding:28px 0 0;margin:0 0 28px;position:relative}
+.hero .sub-band .ranks{margin-bottom:28px} /* même espace partout : barre → texte → distinctions → boutons */
+.hero .ranks .ranks-date{grid-column:1/-1;margin:0;font-size:13px;line-height:1.3;color:#A9A598}
+.hero .sub-band .actions{padding-bottom:0}
+.hero .sub-band .ranks:last-child{margin-bottom:0}
+@media (max-width:960px){.hero .wrap.hero-top{min-height:calc(88vh - 60px - 40px);min-height:calc(88svh - 60px - 40px)}}
+@media (max-width:560px){.hero-sub{padding:0 18px 48px}.hero-sub{padding-top:0}.hero .sub-band p.lead{padding:22px 0 0;margin-bottom:22px}.hero .sub-band .ranks{margin-bottom:22px}
+ .hero .sub-band .actions{flex-direction:row;align-items:center;gap:18px} /* Postuler et « Voir nos attentes » côte à côte */
+ .hero .sub-band .actions .cta{flex:1}
+ .hero .sub-band .actions a.more{padding:6px 0}}
+@media (max-width:420px){ /* petits téléphones : titres des distinctions sur une ligne */
+ .hero .sub-band .rank b{font-size:17px}
+ .hero .sub-band .rank img{width:54px}
+ .hero .sub-band .rank span{font-size:14px}
+}
+@media (max-width:560px) and (max-height:600px){ /* très petits écrans (iPhone SE) : bloc un peu plus serré pour tout voir */
+ .hero .sub-band p.lead{padding-top:16px;margin-bottom:14px;font-size:15px}
+ .hero .sub-band .ranks{gap:6px;margin-bottom:14px}
+ .hero .sub-band .rank{padding-top:4px;padding-bottom:4px}
+ .hero .sub-band .rank img{width:46px}
+ .hero .sub-band .actions .cta{padding-top:12px;padding-bottom:12px}
+}
+
+/* barres dorées du sous-titre */
+.hero .sub-band p.lead::before,.hero .sub-band p.lead::after{content:"";position:absolute;left:0;right:0;height:2px;background:#C99F00;transform-origin:left center}
+.hero .sub-band p.lead::before{top:0}
+.hero .sub-band p.lead::after{bottom:0}
+/* flèche pour inviter à défiler */
+.scroll-cue{position:absolute;left:50%;bottom:6px;width:44px;height:44px;margin-left:-22px;display:flex;align-items:center;justify-content:center;color:#D8D3C4;opacity:.75;animation:cue 2.2s ease-in-out infinite}
+.scroll-cue:hover{opacity:1}
+.scroll-cue svg{width:26px;height:26px}
+@keyframes cue{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+/* apparition au défilement (seulement si JavaScript est actif) */
+html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+html.js .rv.in{opacity:1;transform:none}
+html.js .hero .sub-band p.lead::before,html.js .hero .sub-band p.lead::after{transform:scaleX(0);transition:transform .8s cubic-bezier(.2,.7,.2,1) .2s}
+html.js .hero .sub-band p.lead::after{transition-delay:.35s}
+.hero .sub-band p.lead::before,.hero .sub-band p.lead::after,html.js .hero .sub-band p.lead::before,html.js .hero .sub-band p.lead::after{display:none} /* une seule barre, au-dessus du sous-titre */
+html.js .hero .sub-band p.lead.in::before,html.js .hero .sub-band p.lead.in::after{transform:scaleX(1)}
+html.js .sub-band .ranks.rv{transition-delay:.15s}
+html.js .sub-band .actions.rv{transition-delay:.3s}
+@media (prefers-reduced-motion:reduce){
+ html.js .rv{opacity:1;transform:none;transition:none}
+ html.js .hero .sub-band p.lead::before,html.js .hero .sub-band p.lead::after{transform:none;transition:none}
+ .scroll-cue{animation:none}
+}
+
+
+/* ordinateur : Postuler calé sur le bord droit du contenu */
+@media (min-width:961px){.nav > .wrap > a.cta{margin-left:auto}}
+/* conditions du clan gardées ensemble sur une ligne */
+.clan .kind .nw{white-space:nowrap}
+/* bouton Détail aligné à gauche comme le texte */
+.gbtn{margin-left:0;margin-right:0}
+
+.scroll-cue{transition:opacity .25s ease}.scroll-cue.gone{opacity:0!important;pointer-events:none}
+/* tags copiables */
+.copytag{position:relative;display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;color:var(--text);background:var(--sand);padding:4px 10px}
+.copytag::after{content:"";position:absolute;inset:-7px -4px}
+.copytag svg{opacity:.7;flex:none}
+.tagrow{flex-wrap:nowrap;align-items:stretch} /* Stats toujours à côté du tag, jamais en dessous */
+.tagrow .statlink{flex:none}
+@media (max-width:360px){.copytag{font-size:14px;gap:6px;padding:4px 8px}.copytag svg{width:13px;height:13px}}
+.copytag:hover{background:#EDE3C6}
+.copytag:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.copytag.ok{background:var(--yellow);color:var(--ink)}
+.copytag.ok svg{opacity:1}
+/* zones tactiles d'au moins 44 px */
+.nav > .wrap > a.cta{position:relative}
+.nav > .wrap > a.cta::after{content:"";position:absolute;inset:-6px -4px}
+.season-desc a,.head p a{padding:12px 0;margin:-12px 0}
+/* petites tablettes à l’horizontale : garder Postuler dans la barre */
+@media (min-width:961px) and (max-width:1060px){.nav > .wrap > a.cta{display:inline-block}}
+/* ordinateur : les 4 distinctions sur une ligne */
+@media (min-width:1100px){
+ .hero .sub-band .ranks{display:grid;grid-template-columns:repeat(4,auto);gap:12px;width:100%} /* chaque case prend la largeur de son texte : tout sur une ligne */
+ .hero .sub-band .rank{gap:10px;padding-right:10px}
+ .hero .sub-band .rank img{width:46px}
+ .hero .sub-band .rank b{font-size:16px;text-wrap:balance}
+ .hero .sub-band p.lead{max-width:none} /* la barre dorée prend la même largeur que les 4 distinctions */
+}
+@media (min-width:961px) and (max-width:1099px){
+ .hero .sub-band .ranks{display:grid;grid-template-columns:repeat(2,minmax(0,max-content));gap:12px}
+}
+
+/* distinctions : sans cadre ni barre (icône + chiffre + libellé) ; 2 par ligne sur téléphone, 3 sur iPad et ordinateur */
+.hero .sub-band .ranks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px;width:100%}
+.hero .sub-band .rank{min-width:0;gap:10px;padding:0;background:none;border:0}
+.hero .sub-band .rank img{width:40px}
+.hero .sub-band .rank b{font-size:15px;line-height:1.15;font-stretch:105%;white-space:nowrap}
+.hero .sub-band .rank span{font-size:12.5px;line-height:1.3;margin-top:2px;white-space:nowrap}
+@media (max-width:359px){.hero .sub-band .rank img{width:34px}.hero .sub-band .rank b{font-size:14px}.hero .sub-band .rank span{font-size:11.5px}}
+@media (min-width:700px){.hero .sub-band .ranks{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.hero .sub-band .rank{gap:14px}.hero .sub-band .rank img{width:50px}.hero .sub-band .rank b{font-size:18px;font-stretch:110%}.hero .sub-band .rank span{font-size:14px}}
+@media (min-width:1100px){.hero .sub-band .ranks{gap:12px}.hero .sub-band .rank img{width:52px}.hero .sub-band .rank b{font-size:19px;font-stretch:125%}}
+/* téléphone tenu à l’horizontale sur un petit écran : on resserre pour que tout tienne après la flèche */
+@media (max-height:420px) and (max-width:899px){.hero .sub-band p.lead{padding-top:6px;margin-bottom:12px;font-size:17px}.hero .sub-band .ranks{gap:8px 12px}}
+/* zones de toucher confortables sur téléphone (44 px minimum) */
+@media (pointer:coarse){.copytag,.gbtn{min-height:44px}.nav .brand{padding-top:8px;padding-bottom:8px}}
+/* pastille « en direct » sur la photo de chaque clan : guerre en cours ou dernière GDC */
+.clan .shot{position:relative}
+.pill{position:absolute;left:12px;bottom:12px;display:inline-block;max-width:calc(100% - 24px);padding:7px 12px 7px 10px;background:rgba(18,19,17,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#FFFDF5;font-size:13px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:3px}
+.pill[hidden]{display:none}
+.pill i{display:inline-block;width:8px;height:8px;margin-right:7px;vertical-align:1px;border-radius:50%;background:#34C759;box-shadow:0 0 0 0 rgba(52,199,89,.6);animation:nowpulse 2s infinite}
+@keyframes nowpulse{0%{box-shadow:0 0 0 0 rgba(52,199,89,.55)}70%{box-shadow:0 0 0 9px rgba(52,199,89,0)}100%{box-shadow:0 0 0 0 rgba(52,199,89,0)}}
+@media (prefers-reduced-motion:reduce){.pill i{animation:none}}
+.pill.past i{animation:none;background:#A9A598}
+.pill b{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11.5px}
+.pill .sep{opacity:.6;margin:0 5px}
+.pill strong{font-family:var(--display);font-weight:900;font-stretch:110%;font-size:15px}
+/* distinctions : tuiles discrètes (fond, sans barre jaune) sur iPad et ordinateur */
+@media (min-width:700px){.hero .sub-band .rank{background:var(--ink2);padding:12px 16px}}
+/* phrase de mise à jour, sous les distinctions, alignée comme le reste */
+.hero .sub-band .ranks-date{margin:16px 0 24px;font-size:13px;line-height:1.3;color:#A9A598}
+/* bouton sur une seule ligne : sur petit téléphone, le lien passe en dessous */
+.hero .sub-band .actions .cta,.hero .sub-band .actions a.more{white-space:nowrap}
+@media (max-width:440px){.hero .sub-band .actions{flex-direction:column;align-items:stretch;gap:6px}.hero .sub-band .actions .cta{flex:none;text-align:center}.hero .sub-band .actions a.more{align-self:center}}
+
+/* CTA visible dès le premier écran */
+.hero-cta{margin-top:30px}
+@media (max-width:560px){.hero-cta{margin-top:24px}.hero-cta .cta{display:block;text-align:center;padding:15px 18px}}
+
+
+
+
+@media (min-width:761px) and (max-width:1000px){.season-block{grid-template-columns:300px minmax(0,1fr)}}
+
+
+
+
+
+
+/* simulateur de score : total calculé en CSS (compteurs), fonctionne sans JavaScript */
+.season-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.season-actions .gbtn{margin:0}
+.sim-lbl{display:block;margin-bottom:6px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.sim-in{display:flex;gap:8px}
+.sim-in input{flex:1;min-width:0;height:44px;padding:0 12px;border:1.5px solid var(--ink);background:#fff;font:700 16px ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;color:var(--ink)}
+.sim-in input:focus{outline:3px solid var(--yellow);outline-offset:1px}
+.sim-in button{height:44px;padding:0 16px;border:0;background:var(--ink);color:var(--light);font:inherit;font-weight:700;cursor:pointer}
+.sim-res:empty{display:none}
+.sim-msg{margin:0;color:var(--soft);font-size:15px}
+.sim-card{--c:#1F8A4C;--bg:#E8F5EC}
+.sim-card.mid{--c:#C26A00;--bg:#FDF0DE}
+.sim-card.low{--c:#C0392B;--bg:#FBE7E4}
+.sim-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sim-name{font-weight:800;font-size:16px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-rank{flex:none;font-weight:800;font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums}
+.sim-rank span{color:var(--soft);font-weight:700}
+.season-block .sim-card .sim-score{margin:8px 0 0;font-family:var(--display);font-weight:900;font-size:56px;line-height:1;color:var(--c);font-variant-numeric:tabular-nums}
+.season-block .sim-card .sim-score small{margin-left:6px;font-family:var(--body);font-size:16px;font-weight:700;color:var(--soft)}
+.sim-scale{position:relative;margin-top:18px;height:6px;border-radius:3px;background:linear-gradient(90deg,#1F8A4C 0 var(--g),#E08A1E var(--g) var(--o),#C0392B var(--o) 100%)}
+.sim-scale i{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px var(--c),0 2px 6px rgba(0,0,0,.2)}
+.sim-cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:18px;background:var(--line);border:1px solid var(--line)}
+.sim-cats div{padding:10px 8px;background:#fff;text-align:center}
+.sim-cats dt{font-size:12px;font-weight:700;color:var(--soft);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sim-cats dd{margin:2px 0 0;font-weight:800;font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums}
+.sim-cats dd.z{color:#B9B4A6}
+.sim-ends{display:flex;justify-content:space-between;margin-top:8px;font-size:12.5px;font-weight:700;color:var(--soft)}
+@media (max-width:560px){.sim-body{padding:16px}.season-block .sim-card .sim-score{font-size:48px}.sim-in button{padding:0 14px}.sim-cats dd{font-size:17px}}
+.sim-t{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.sim-body{display:none!important}
+.sim-t:checked~.sim-body{display:grid!important}
+.sim-t:checked+.season-actions .sim-btn{background:var(--ink);color:var(--light)}
+.sim-t:focus-visible+.season-actions .sim-btn{outline:3px solid var(--yellow);outline-offset:2px}
+.sim-body{margin-top:14px;padding:20px;min-width:0;grid-template-columns:minmax(0,1fr);background:#fff;box-shadow:inset 0 0 0 1px var(--line);gap:18px}
+
+@media (max-width:760px){.season-block{grid-template-columns:minmax(0,1fr)!important;gap:22px}}
+
+/* cases du simulateur : couleur selon la part du maximum de la catégorie */
+.sim-cats div{position:relative;--qb:#FBE4E2;--qt:#A4271C;--qa:#D9483B;background:var(--qb)}
+.sim-cats div.q2{--qb:#FCEADC;--qt:#9C4708;--qa:#E07B24}
+.sim-cats div.q3{--qb:#FCF2D6;--qt:#7F5B00;--qa:#D4A000}
+.sim-cats div.q4{--qb:#EDF5DE;--qt:#46650F;--qa:#73A626}
+.sim-cats div.q5{--qb:#E1F2E7;--qt:#146B3A;--qa:#1F8A4C}
+.sim-cats div:after{content:"";position:absolute;left:0;bottom:0;height:3px;width:calc(var(--r,0)*100%);background:var(--qa)}
+.sim-cats dt{color:var(--qt);opacity:.8}
+.sim-cats dd{color:var(--qt)}
+.sim-cats dd small{font-size:12px;font-weight:700;opacity:.55;margin-left:2px}
+.head.solo{grid-template-columns:1fr}
+.head.solo p{margin-top:12px}
+
+/* titres de section : petit titre à tiret (le vrai titre) + phrase d'accroche de taille moyenne */
+h2.eyeb{margin:0;font-family:var(--body);font-weight:800;font-size:16px;line-height:1.3;letter-spacing:0;font-stretch:100%;text-transform:none}
+.head .lede{margin:0;max-width:20em;font-family:var(--display);font-weight:800;font-stretch:110%;letter-spacing:-.015em;font-size:clamp(28px,3.1vw,39px);line-height:1.15;color:var(--ink)}
+@media (max-width:760px){h2.eyeb{font-size:15px}.head .lede{font-size:28px}}
+
+/* sous-titre du haut : la phrase d'accroche, en texte normal (plus d'italique ni de guillemets) */
+.hero p.slogan-sub.hero-lede{font-style:normal;font-weight:500;white-space:normal;max-width:30em;color:rgba(255,253,245,.82);font-size:clamp(17px,1.6vw,21px);line-height:1.5}
+.hero p.slogan-sub.hero-lede::before,.hero p.slogan-sub.hero-lede::after{content:none}
+.hero p.slogan-sub.hero-lede b{color:var(--light);font-weight:800}
+@media (min-width:961px){.hero p.slogan-sub.hero-lede,.hero h1.slogan{max-width:none}}
+
+/* candidature express */
+.join-dlg{width:min(560px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;background:var(--paper);color:var(--text);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.join-dlg::backdrop{background:rgba(20,21,19,.6)}
+.jd-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 14px 20px;background:var(--ink);color:var(--light);border-top:6px solid var(--yellow)}
+.jd-head h2{margin:0;font-size:22px;color:var(--light)}
+.jd-x{width:40px;height:40px;display:grid;place-items:center;border:0;background:none;color:var(--light);cursor:pointer}
+.jd-body{padding:20px}
+.jd-help{margin:8px 0 0;font-size:14px;color:var(--soft)}
+.jd-res:empty{display:none}
+.jd-res{margin-top:18px}
+.jd-err{margin:0;padding:12px 14px;background:#FBE4E2;color:#A4271C;font-weight:700}
+.jd-load{margin:0;color:var(--soft);font-weight:700}
+.jr-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.jr-top b{font-family:var(--display);font-weight:900;font-size:22px;color:var(--ink)}
+.jr-top span{font:700 14px ui-monospace,Menlo,Consolas,monospace;color:var(--soft)}
+.jr-meta{margin:4px 0 0;font-size:14px;color:var(--soft)}
+.jr-score{display:flex;align-items:baseline;gap:6px;margin-top:12px;font-family:var(--display);font-weight:900;font-size:52px;line-height:1;color:var(--c,#1F8A4C)}
+.jr-score small{font-family:var(--body);font-size:16px;font-weight:700;color:var(--soft)}
+.jr-reco{display:inline-block;margin:10px 0 0;padding:4px 10px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:14px}
+.jr-rush{margin:10px 0 0;font-size:14px;font-weight:700}
+.jr-rush.ok{color:#146B3A}.jr-rush.warn{color:#A4271C}
+.jr-heroes{margin:6px 0 0;font-size:13px;color:var(--soft)}
+.jd-res .sim-cats{margin-top:14px}
+.jr-send{display:block;width:100%;margin-top:16px;text-align:center;border:0;cursor:pointer;font:inherit;font-weight:800}
+.jr-note{margin:10px 0 0;font-size:13px;color:var(--soft);text-align:center}
+.jr-ok{margin:0 0 4px;font-family:var(--display);font-weight:900;font-size:22px;color:var(--ink)}
+
+/* bouton Postuler à gauche, à la place du nom */
+.nav .wrap>.nav-cta{display:inline-flex!important;align-items:center;flex:none;margin:0 40px 0 0!important}
+@media (max-width:960px){.nav .wrap>.nav-cta{margin:0 auto 0 0!important;padding:10px 14px;font-size:14px}}
+/* check-up espaces */
+.facts{display:grid!important;grid-template-columns:repeat(2,max-content);gap:12px 40px!important;justify-content:start}
+@media (max-width:560px){.s{padding:44px 0}.facts{gap:10px 28px!important}}
+@media (min-width:761px){.clan{display:flex;flex-direction:column}.clan .in{flex:1;display:flex;flex-direction:column}.clan .in>p{margin-bottom:18px}.clan .facts{margin-top:auto!important}}
+@media (max-width:760px){.clans{grid-template-columns:minmax(0,1fr)!important}.clan{min-width:0}.facts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px 16px!important}.facts dd,.facts dt{overflow-wrap:break-word}}
+/* PC et tablette : Gravaen + épée à gauche, bouton à droite. Téléphone : bouton à la place du nom */
+@media (min-width:761px){.nav .wrap>.brand{display:inline-block!important;margin-right:auto!important}.nav .wrap>.nav-cta{order:5;margin:0 0 0 16px!important}.nav .wrap>.menu{order:6}}
+@media (min-width:961px){.nav .wrap>.brand{margin-right:40px!important}.nav .wrap>.nav-cta{margin-left:auto!important}}
+@media (max-width:760px){.nav .wrap>.brand{display:inline-block!important;margin-right:auto!important}.nav .wrap>.nav-cta{order:5;margin:0 4px 0 0!important;padding:10px 14px!important}.nav .wrap>.menu{order:6}.cta-long{display:none}}
+#clans{padding-bottom:48px!important}#grades{padding-top:48px!important}
+@media (max-width:560px){#clans{padding-bottom:32px!important}#grades{padding-top:32px!important}}
+/* téléphone : les tuiles du clan occupent tout l'écran, en rectangles sombres comme sur PC */
+@media (max-width:760px){
+ .hero-sub{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;box-sizing:border-box;padding-top:20px;padding-bottom:20px}
+ .hero-sub .sub-band{width:100%}
+ .ranks{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .rank{background:var(--ink2)!important;border-left:4px solid var(--yellow)!important;padding:14px 10px 14px 10px!important;min-height:74px;box-sizing:border-box;min-width:0}
+ .rank>div{min-width:0}
+ .rank b{overflow-wrap:anywhere}
+}
+@media (max-width:760px){
+ .rank{min-height:clamp(84px,13svh,120px)!important;flex-direction:row!important;align-items:center!important;gap:10px!important;padding:12px 10px!important}
+ .rank img{width:44px!important;height:44px!important;object-fit:contain}
+ .rank b{font-size:17px!important}
+ .ranks{gap:12px!important}
+}
+@media (max-width:389px){.rank{gap:8px!important;padding:12px 8px!important}.rank img{width:36px!important;height:36px!important}.rank b{font-size:15px!important}.rank span{font-size:13px!important}}
+@media (max-width:760px){.rank b{font-size:clamp(12.5px,3.9vw,17px)!important;white-space:nowrap}.rank img{width:clamp(30px,10vw,44px)!important;height:clamp(30px,10vw,44px)!important}.rank{gap:clamp(6px,2vw,10px)!important;padding:12px clamp(6px,2vw,10px)!important}}
+@media (max-width:760px){.facts dd{font-size:clamp(13px,4.5vw,20px)!important;white-space:nowrap}}
+@media (min-width:761px){.ranks{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%}.rank{min-width:0}}
+
+@media (max-width:760px){.rank span{white-space:normal!important;font-size:clamp(11.5px,3.6vw,14px)!important;line-height:1.25}}
+@media (min-width:1200px){.ranks{grid-template-columns:repeat(5,minmax(0,1fr))!important}.rank b{font-size:18px!important}.rank img{width:48px!important}}
+@media (max-width:760px) and (max-height:700px){.rank{min-height:66px!important;padding-top:8px!important;padding-bottom:8px!important}.ranks{gap:8px!important}}
+.rank img.badge-api{aspect-ratio:1/1;object-fit:contain}
+.jr-reco.bad{background:#C8412F;color:#fff}
+
+/* fiche joueur de la candidature */
+.join-dlg{width:min(600px,calc(100% - 20px))}
+.pc{margin-top:4px}
+.pc-id{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px;background:var(--ink);color:var(--light)}
+.pc-th{width:88px;height:88px;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+.pc-who{min-width:0;display:flex;flex-direction:column;gap:3px}
+.pc-who b{font-family:var(--display);font-weight:900;font-stretch:115%;font-size:24px;line-height:1.05;color:var(--light);overflow-wrap:anywhere}
+.pc-tag{font:700 13px ui-monospace,Menlo,Consolas,monospace;color:#B9B4A6}
+.pc-meta{font-size:13.5px;color:#D8D3C4}
+.pc-lg{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;max-width:84px}
+.pc-lg img{width:52px;height:52px;object-fit:contain}
+.pc-lg span{font-size:12px;font-weight:800;color:var(--light);line-height:1.15}
+.pc-score{display:flex;align-items:center;gap:16px;padding:16px 0 4px}
+.pc-num{display:flex;align-items:baseline;gap:4px;flex:none}
+.pc-num b{font-family:var(--display);font-weight:900;font-size:56px;line-height:.9;color:var(--c)}
+.pc-num small{font-size:15px;font-weight:700;color:var(--soft)}
+.pc-score.t-g{--c:#1F8A4C}.pc-score.t-o{--c:#D9761E}.pc-score.t-r{--c:#C8412F}
+.pc-verdict{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pc-reco{align-self:flex-start;padding:5px 10px;font-weight:800;font-size:14px;color:#fff}
+.pc-reco.g{background:#1F8A4C}.pc-reco.o{background:#D9761E}.pc-reco.r{background:#C8412F}
+.pc-rush{font-size:13.5px;color:var(--soft);line-height:1.35}
+.pc-rush b{font-weight:800}.pc-rush.g b{color:#146B3A}.pc-rush.o b{color:#B5600F}.pc-rush.r b{color:#A4271C}
+.pc-h{margin:18px 0 8px;font-family:var(--body);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.pc-heroes{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.pc-heroes li{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px 6px;background:var(--sand)}
+.pc-heroes img{width:44px;height:44px;object-fit:contain}
+.pc-heroes li.off img{filter:grayscale(1);opacity:.4}
+.pc-heroes b{font-family:var(--display);font-weight:900;font-size:17px;line-height:1;color:var(--ink);margin-top:2px}
+.pc-heroes i,.pc-cats i{display:block;width:80%;height:3px;background:#D8D3C4;position:relative;margin-top:4px}
+.pc-heroes i:after,.pc-cats i:after{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--r)*100%);background:var(--ink)}
+.pc-heroes small{font-size:11px;color:var(--soft);margin-top:2px}
+.pc-cats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pc-cats li{padding:10px 12px;background:var(--sand);display:flex;flex-direction:column}
+.pc-cats span{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--soft)}
+.pc-cats b{font-family:var(--display);font-weight:900;font-size:26px;line-height:1.1;color:var(--c)}
+.pc-cats i{width:100%;margin-top:6px;height:4px}
+.pc-cats i:after{background:var(--c)}
+.pc-cats .t-g{--c:#1F8A4C}.pc-cats .t-o{--c:#D9761E}.pc-cats .t-r{--c:#C8412F}
+@media (max-width:480px){
+ .pc-id{grid-template-columns:auto 1fr;gap:12px;padding:12px}
+ .pc-th{width:64px;height:64px}
+ .pc-who b{font-size:20px}
+ .pc-lg{grid-column:1/-1;flex-direction:row;max-width:none;justify-content:flex-start;gap:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)}
+ .pc-lg img{width:32px;height:32px}
+ .pc-lg span{font-size:13px}
+ .pc-num b{font-size:46px}
+ .pc-heroes{gap:4px}.pc-heroes li{padding:6px 0 5px}.pc-heroes img{width:34px;height:34px}.pc-heroes b{font-size:14px}.pc-heroes small{display:none}
+ .jd-head h2{font-size:19px}.jd-head{padding:10px 10px 10px 16px}
+ .pc-cats b{font-size:22px}
+ .jd-body{padding:16px}
+}
+.clan .in{position:relative}.cbadge{position:absolute;top:16px;right:18px;width:72px;height:72px;object-fit:contain}.clan .in>h3,.clan .in>.tagrow{padding-right:84px}
+@media (max-width:760px){.cbadge{top:14px;right:14px;width:60px;height:60px}.clan .in>h3,.clan .in>.tagrow{padding-right:70px}}
+
+/* guerre en cours : pastille cliquable + fenêtre « carte de guerre » (inspirée de ClashScout) */
+span.pill{border:0;font:inherit;cursor:default;display:inline-flex;align-items:center;gap:0;text-align:left;transition:background .15s,transform .15s}
+span.pill b{overflow:hidden;text-overflow:ellipsis}
+button.pill .go{display:inline-flex;align-items:center;gap:3px;margin-left:10px;padding:3px 7px 3px 9px;background:var(--yellow);color:var(--ink);border-radius:2px;font-weight:800;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;flex:none}
+button.pill .go svg{width:14px;height:14px}
+button.pill:hover,button.pill:focus-visible{background:rgba(18,19,17,.92);transform:translateY(-1px)}
+button.pill:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+.shot.war-on{cursor:pointer}
+.shot.war-on img{transition:transform .5s}
+.shot.war-on:hover img{transform:scale(1.03)}
+@media (max-width:560px){ button.pill .go{margin-left:8px;padding:3px 4px}}
+
+/* en-tête : nom du clan en jaune, sans l'épée */
+.nav .brand{color:var(--yellow)!important;padding-top:0!important;padding-bottom:0!important;line-height:1}
+.nav .brand::before{display:none!important}
+.nav .brand{display:inline-flex!important;align-items:center;gap:10px}
+.brand.has-b .brand-t{display:none}
+.brand-b{width:54px;height:54px;object-fit:contain;flex:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.brand-b[hidden]{display:none}
+@media (max-width:760px){.brand-b{width:46px;height:46px}.nav .brand{gap:8px}}
+
+/* état de guerre sur la carte : simple mention en gris (information, pas un bouton) */
+.clan .in>.pill{display:block!important;width:auto!important;max-width:none!important;white-space:normal!important;margin:16px 0 0!important;background:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:0!important;border-radius:0;color:var(--soft);cursor:default;transform:none!important;box-shadow:none}
+.clan .in>.pill i{display:none}
+.clan .in>.pill{min-height:17px;line-height:17px}
+@media (min-width:761px){.clan .in>.pill[hidden]{display:block!important;visibility:hidden}}
+.clan .in>.pill b{font-weight:800;font-size:12.5px;letter-spacing:.08em;color:var(--soft)}
+
+.hero .sub-eyeb{color:var(--light);padding-top:0;margin:0 0 16px}
+@media (max-width:760px){.hero .wrap.hero-top{min-height:calc(100vh - 104px);min-height:calc(100svh - 104px)}}
+@media (min-width:761px){.hero .sub-band .ranks{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+
+/* en-têtes de section : un vrai titre court (trait jaune + police Clash) et une phrase d'accroche lisible, en encre, pas en gris */
+.head{display:block!important;margin-bottom:28px}
+.head h2.eyeb{display:flex;align-items:center;gap:12px;padding-top:0;font-family:var(--display);font-weight:900;font-size:30px;line-height:1.1;letter-spacing:-.01em;color:var(--ink)}
+.head h2.eyeb i{display:block;flex:none;width:26px;height:6px;background:var(--yellow);font-size:0;color:transparent}
+.head p.head-desc{margin:10px 0 0 38px;max-width:38em;font-size:18px;font-weight:400;line-height:1.45;color:var(--text)}
+@media (max-width:760px){.head{margin-bottom:10px}.head h2.eyeb{font-size:22px;gap:10px}.head h2.eyeb i{width:20px;height:5px}.head p.head-desc{margin:6px 0 0;font-size:15px;line-height:1.38}}
+/* téléphone : les deux cartes de clan tiennent ensemble sur l'écran */
+@media (max-width:760px){
+ .clans{gap:10px!important}
+ .clan .top{height:5px}
+ .clan .in{padding:14px 16px 14px!important;gap:7px!important}
+ .clan h3{font-size:22px}
+ .cbadge{top:12px!important;right:12px!important;width:44px!important;height:44px!important}
+ .clan .in>h3,.clan .in>.tagrow{padding-right:54px!important}
+ .clan .tagid{font-size:13px;padding:3px 8px}
+ .clan p{font-size:14.5px;line-height:1.4}
+ .clan .in>p{margin-bottom:4px!important}
+ .facts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px 12px!important;padding-top:9px!important;margin:0!important}
+ .facts dt{font-size:10.5px}
+ .facts dd{font-size:16px!important;margin-top:1px}
+ .clan .in>.pill{margin-top:8px!important}
+ section.s#clans{padding-top:10px}
+ .clans{grid-auto-rows:auto!important;align-items:start}
+ .clan{height:auto!important}
+ .clan .in{flex:none!important}
+ .facts{margin-top:2px!important}
+ .clan .in>.pill[hidden]{display:none!important}
+ .facts dt{letter-spacing:.03em;white-space:normal;line-height:1.2}
+ .facts>div{min-width:0}
+ .clan p{font-size:14px}
+ .clan .copytag{min-height:0!important;padding:3px 8px!important}
+ .clan .tagrow{align-items:center}
+}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.clan .in>.tagrow{min-height:44px;align-items:center}
+@media (max-width:760px){.clan .in>.tagrow{min-height:44px}}
+
+/* téléphone : les 4 grades en grille 2 × 2, visibles d'un coup */
+@media (max-width:760px){
+ section.s#grades{padding-top:10px}
+ .ladder{grid-template-columns:1fr 1fr!important}
+ .step{padding:12px 12px 14px!important;border-top:0!important}
+ .step:nth-child(n+3){border-top:1px solid var(--line)!important}
+ .step:nth-child(2n){border-left:1px solid var(--line)!important}
+ .step .lv{font-size:12px}
+ .step h3{font-size:19px!important;margin:3px 0 6px!important}
+ .step p{font-size:13.5px;line-height:1.35}
+ .season-block::before{left:25%!important}
+ .season-tag{left:0!important}
+}
+
+/* bulle « meilleur joueur de la saison » : fond blanc, texte noir, un court paragraphe
+   (popover ancré au lien sur grand écran, feuille qui monte du bas sur téléphone) */
+.mj-pop{position:fixed;z-index:60;width:min(340px,calc(100vw - 32px));padding:18px 44px 18px 20px;background:#fff;color:var(--ink);border:1px solid rgba(33,35,32,.12);box-shadow:0 14px 36px rgba(0,0,0,.18),0 2px 6px rgba(0,0,0,.08);transform-origin:var(--ox,50%) 0;animation:mjin .16s ease-out}
+.mj-pop[hidden],.mj-veil[hidden]{display:none}
+@keyframes mjin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.mj-arrow{position:absolute;top:-8px;left:var(--ax,40px);width:14px;height:14px;margin-left:-7px;background:#fff;border-left:1px solid rgba(33,35,32,.12);border-top:1px solid rgba(33,35,32,.12);transform:rotate(45deg)}
+.mj-pop.up{transform-origin:var(--ox,50%) 100%}
+.mj-pop.up .mj-arrow{top:auto;bottom:-8px;border:0;border-right:1px solid rgba(33,35,32,.12);border-bottom:1px solid rgba(33,35,32,.12)}
+.mj-p{margin:0;font-size:16px;line-height:1.5;color:var(--ink)}
+.mj-p a{color:var(--ink);font-weight:800;text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:2px;text-underline-offset:3px}
+.mj-x{position:absolute;top:6px;right:6px;width:40px;height:40px;border:0;background:none;color:var(--soft);font-size:24px;line-height:1;cursor:pointer;border-radius:2px}
+.mj-x:hover{color:var(--ink);background:var(--sand)}
+.mj-x:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.mj-grip{display:none}
+.mj-veil{position:fixed;inset:0;z-index:59;background:rgba(18,19,17,.4);animation:mjfade .2s}
+@keyframes mjfade{from{opacity:0}}
+#mj-btn[aria-expanded="true"]{background:var(--hl)}
+@media (max-width:760px){
+ .mj-pop{left:0!important;right:0;top:auto!important;bottom:0;width:auto;padding:12px 52px calc(24px + env(safe-area-inset-bottom,0px)) 20px;border:0;animation:mjsheet .24s cubic-bezier(.2,.9,.3,1)}
+ .mj-arrow{display:none}
+ .mj-grip{display:block;width:40px;height:4px;margin:0 auto 14px;background:#D9D4C4;border-radius:2px;transform:translateX(16px)}
+ .mj-x{top:10px}
+ .mj-p{font-size:17px}
+}
+@keyframes mjsheet{from{transform:translateY(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.mj-pop,.mj-veil{animation:none}}
+
+/* Notre stratégie : déroulé d'une guerre en 4 temps + règles */
+section.strat{background:var(--paper)}
+.plan{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);counter-reset:pl;background:var(--cream)}
+.pstep{position:relative;counter-increment:pl;padding:24px 24px 26px;border-left:1px solid var(--line)}
+.pstep:first-child{border-left:0}
+.pstep::before{content:counter(pl);position:absolute;top:20px;right:20px;width:30px;height:30px;display:grid;place-items:center;background:var(--ink);color:var(--yellow);font-family:var(--display);font-weight:900;font-size:16px}
+.pstep::after{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--yellow)}
+.pstep .pn{display:block;font-family:var(--display);font-weight:900;font-size:14px;color:var(--soft);padding-right:40px}
+.pstep h3{font-size:24px;margin:6px 0 10px}
+.pstep p{margin:0;font-size:16px;line-height:1.45}
+.pstep sup{font-size:.65em}
+.rules{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 32px}
+.rules li{position:relative;padding:0 0 0 22px;font-size:16px;line-height:1.45;color:var(--text)}
+.rules li::before{content:"";position:absolute;left:3px;top:.5em;width:9px;height:9px;background:var(--yellow);transform:rotate(45deg)}
+.rules b{color:var(--ink)}
+@media (max-width:760px){
+ section.s.strat{padding-top:10px}
+ .plan{grid-template-columns:1fr 1fr}
+ .pstep{padding:14px 12px 14px;border-left:0}
+ .pstep:nth-child(2n){border-left:1px solid var(--line)}
+ .pstep:nth-child(n+3){border-top:1px solid var(--line)}
+ .pstep::before{top:14px;right:10px;width:24px;height:24px;font-size:13px}
+ .pstep::after{height:5px}
+ .pstep .pn{font-size:11.5px;padding-right:28px;margin-top:2px}
+ .pstep h3{font-size:19px;margin:4px 0 6px}
+ .pstep p{font-size:13.5px;line-height:1.35}
+ .rules{grid-template-columns:1fr;gap:7px;margin-top:14px}
+ .rules li{font-size:14px;line-height:1.35;padding-left:20px}
+}
+
+/* grades et stratégie : même présentation, des lignes « Nom : condition » avec un trait de couleur */
+.s ul.rows{list-style:none!important;margin:0!important;padding:0!important;display:grid!important;grid-template-columns:1fr 1fr;gap:12px}
+.s ul.rows>li{list-style:none;margin:0;background:var(--paper);border-left:6px solid var(--c,var(--yellow));padding:16px 20px}
+.s ul.rows>li::marker{content:none}
+section.strat ul.rows>li{background:var(--cream)}
+.rows p{margin:0;font-size:16px;line-height:1.5;color:var(--text)}
+.rows b{font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:-.005em;color:var(--ink)}
+.rows sup{font-size:.62em}
+.rows .glink{font-size:inherit}
+@media (max-width:760px){
+ .s ul.rows{grid-template-columns:1fr!important;gap:8px}
+ .s ul.rows>li{padding:12px 14px;border-left-width:5px}
+ .rows p{font-size:15px;line-height:1.42}
+ .rows b{font-size:16.5px}
+ section.s#grades{padding-bottom:40px}
+}
+
+/* stratégie : colonnes comme l'ancienne présentation des grades (fond blanc, petit libellé gris, titre plus petit) */
+section.strat{background:var(--cream)}
+section.strat .ladder,section.strat .step{background:var(--paper)}
+section.strat .step .lv{font-size:13px;color:var(--soft)}
+section.strat .step .lv sup{font-size:.62em}
+section.strat .step h3{font-size:19px;margin:4px 0 10px}
+section.strat .step p{font-size:15.5px;line-height:1.45}
+@media (max-width:760px){section.strat .step .lv{font-size:11.5px}section.strat .step h3{font-size:16px!important;margin:3px 0 6px!important}section.strat .step p{font-size:14px;line-height:1.38}}
+
+/* téléphone : « Nos grades » occupe tout l'écran */
+@media (max-width:760px){
+ section.s#grades{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);box-sizing:border-box;display:flex;flex-direction:column;padding-top:18px;padding-bottom:22px}
+ section.s#grades>.wrap{flex:1;display:flex;flex-direction:column}
+ section.s#grades ul.rows{flex:1;grid-auto-rows:1fr}
+ section.s#grades ul.rows>li{display:flex;align-items:center}
+ section.s#grades .head p.head-desc{font-size:15px;line-height:1.45}
+ section.s#grades ul.rows p{font-size:16px}
+ section.s#grades ul.rows b{font-size:18px}
+}
+@media (max-width:760px) and (max-height:760px){section.s#grades .head p.head-desc{font-size:14px;line-height:1.38}section.s#grades ul.rows p{font-size:14.5px}section.s#grades ul.rows b{font-size:16.5px}section.s#grades ul.rows>li{padding:10px 14px}}
+.head p.head-note{margin-top:10px;padding-left:12px;border-left:3px solid var(--yellow);font-weight:800;color:var(--ink)}
+@media (max-width:760px){.head p.head-note{margin-top:8px}}
+.rows-foot{margin:14px 0 0;font-size:16px;font-weight:800;color:var(--ink)}
+@media (max-width:760px){.rows-foot{margin-top:10px;font-size:15px}}
+
+/* point 2 : haut de page moins haut sur PC, les chiffres arrivent plus tôt */
+@media (min-width:761px){.hero .wrap.hero-top{min-height:calc(100vh - 138px)!important;min-height:calc(100svh - 138px)!important;padding-top:40px;padding-bottom:64px;box-sizing:border-box}}
+/* point 6 : règles de la stratégie avec des tirets jaunes */
+.rules li::before{content:"";left:0;top:.68em;width:12px;height:3px;transform:none;background:var(--yellow)}
+/* point 4 : aucun texte sous 12 px sur téléphone */
+@media (max-width:760px){
+ .facts dt{font-size:12px!important}
+ .step .lv,section.strat .step .lv{font-size:12px!important}
+ .pill b,.clan .in>.pill b{font-size:12px!important}
+ .copytag,.clan .copytag{font-size:13px!important}
+}
+@media (min-width:761px){.head p.head-desc{max-width:none!important}}
+@media (min-width:761px){section.s.strat{padding-top:16px}}
+/* polices : Clash en gras seulement pour les titres 1 et 2, petite police lisible pour tout le reste */
+@font-face{font-family:'Rubik';src:url(rubik-400.woff2) format('woff2');font-weight:100 500;font-style:normal;font-display:swap}
+@font-face{font-family:'Rubik';src:url(rubik-600.woff2) format('woff2');font-weight:600 900;font-style:normal;font-display:swap}
+:root{--display:'Rubik','Helvetica Neue',Arial,sans-serif;--body:'Rubik','Helvetica Neue',Arial,sans-serif;--title:'Clash','Arial Black',sans-serif}
+h1,h2{font-family:var(--title)!important;font-weight:900;font-stretch:125%;letter-spacing:-0.03em}
+h3,.brand,.hero .rank b,.rule .n,.step .lv,.cat .k,.cta,.menu,.nav ul a{letter-spacing:0;font-stretch:normal}
+h3{font-weight:600}
+.step .lv{font-weight:600;font-size:14px}
+.gest{margin-top:30px}
+.gest p.gest-intro{margin:0;font-size:17px;line-height:1.5;font-weight:500;color:var(--text);max-width:none}
+.gest .rules{margin-top:16px}
+@media (max-width:760px){.gest{margin-top:22px}.gest p.gest-intro{font-size:15px;line-height:1.45}}
+/* PC : le bandeau sombre prend tout l'écran d'arrivée, « En quelques chiffres » apparaît seulement en défilant */
+@media (min-width:761px){
+ .hero-sub{padding-top:56px}
+}
+.cta,.nav .cta{font-family:var(--title);font-weight:800}
+/* sommaire : police Clash comme avant */
+.nav ul a{font-family:var(--title);font-weight:700}
+/* hiérarchie : texte courant plus léger, mots-clés en gras bien distincts */
+body{font-weight:400}
+.rows b,.rules b,.step h3{font-weight:600}
+/* grades : avantages et exigences en avant, conditions dans la bulle */
+.gr-more{margin:18px 0 0;font-size:16px}
+.gr-more .glink{font-size:16px}
+@media (min-width:761px){.mj-pop{width:min(380px,calc(100vw - 32px))}}
+.mj-t{margin:0 0 10px;font-family:var(--title);font-weight:900;font-size:19px;color:var(--ink)}
+.mj-p+.mj-p{margin-top:8px}
+.mj-p b{font-weight:600}
+.mj-s{font-size:14.5px!important;color:var(--soft)!important;line-height:1.45}
+.mj-s a{color:var(--ink)}
+@media (max-width:760px){.gr-more{margin-top:14px}}
+/* sous-titres de section en gras */
+.head p.head-desc{font-weight:600!important;color:var(--ink)}
+/* organisation : 3 grades côte à côte, lien « monter en grade » centré */
+@media (min-width:761px){section.s#grades ul.rows{grid-template-columns:repeat(3,1fr)}}
+.gr-more{text-align:center;margin-top:26px}
+.gr-more .glink{font-size:18px;font-weight:700;text-align:center}
+@media (max-width:760px){
+ section.s#grades{min-height:0}
+ section.s#grades ul.rows{flex:none;grid-auto-rows:auto}
+ .gr-more{margin-top:20px}.gr-more .glink{font-size:17px}
+}
+@media (min-width:961px) and (max-width:1140px){.nav ul a{padding:9px 8px!important;font-size:15px!important}.nav .brand{margin-right:16px!important}.nav .cta{margin-left:10px!important}}
+@media (min-width:961px) and (max-width:1040px){.nav ul a{padding:8px 6px!important;font-size:14px!important}.nav .cta{padding-left:12px;padding-right:12px;font-size:15px}}
+@media (min-width:761px){section.s#grades ul.rows{grid-template-columns:1fr 1fr!important}}
+.org-r{margin-top:6px!important}
+.org-r b{font-weight:600}
+.gr-more{text-align:center!important;margin-top:20px!important}
+.gr-more .glink{font-size:16px!important}
+@media (max-width:760px){.gr-more .glink{font-size:14px!important}.gr-more{margin-top:12px!important}}
+/* téléphone : « Nos clans » occupe un écran, les deux cartes visibles d'un coup */
+@media (max-width:760px){
+ section.s#clans{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;padding-top:14px!important;padding-bottom:18px!important}
+}
+@media (max-width:760px){section.s#clans>.wrap{width:100%;box-sizing:border-box}}
+@media (max-width:760px) and (max-height:760px){section.s#clans .head{margin-bottom:12px!important}section.s#clans .head p.head-desc{font-size:13.5px}section.s#clans .clan .in{padding:12px 16px!important}section.s#clans .clan .in>.tagrow{min-height:34px}section.s#clans .cbadge{width:46px;height:46px;top:12px}section.s#clans .facts{gap:6px 14px!important;margin-top:8px!important;padding-top:8px!important}section.s#clans .clan p{margin:8px 0!important;font-size:14px}section.s#clans .clans{gap:10px!important}section.s#clans{padding-top:8px!important;padding-bottom:8px!important}section.s#clans .facts dt{font-size:11.5px}}
+/* empêche les navigateurs Android (Samsung…) de grossir le texte tout seuls */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* téléphones peu hauts (Galaxy A14…) : les deux cartes de clan tiennent dans l'écran */
+@media (max-width:760px) and (max-height:700px){section.s#clans .head h2{font-size:30px!important}section.s#clans .head{margin-bottom:8px!important}section.s#clans .clan p{font-size:13.5px!important;line-height:1.35}section.s#clans .facts dd{font-size:15px!important}section.s#clans .clan .in>.tagrow{min-height:30px}}
+@media (max-width:400px){section.s#clans .facts dt{letter-spacing:0!important;font-size:11px!important}section.s#clans .facts{gap:6px 12px!important}}
+@media (max-width:760px) and (max-height:700px){section.strat .head{margin-bottom:10px!important}section.strat .head h2{font-size:30px!important}section.strat .head p.head-desc{font-size:13.5px!important}section.strat .step{padding:10px 12px!important}section.strat .step h3{font-size:15px!important;margin:2px 0 4px!important}section.strat .step p{font-size:13px!important;line-height:1.35!important}section.strat .rules{margin-top:12px!important;gap:6px!important}section.strat .rules li{font-size:13px!important;line-height:1.35!important}section.s.strat{padding-top:10px!important;padding-bottom:16px!important}}
+/* organisation : petite pyramide (adjoints et chef en haut, membres à la base) */
+.pyr{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:6px}
+.pyr .pl{width:var(--w);box-sizing:border-box;background:var(--paper);border-top:4px solid var(--c);padding:12px 18px;text-align:center}
+.pyr .pl b{display:block;font-weight:600;font-size:16px;color:var(--ink);margin-bottom:2px}
+.pyr .pl span{display:block;font-size:15px;line-height:1.45;color:var(--text)}
+@media (max-width:760px){.pyr{gap:6px}.pyr .pl{padding:10px 12px}.pyr .pl:nth-child(1){width:78%}.pyr .pl:nth-child(2){width:89%}.pyr .pl:nth-child(3){width:100%}.pyr .pl b{font-size:14.5px}.pyr .pl span{font-size:13.5px;line-height:1.4}}
+/* téléphone : « Notre organisation » remplit l'écran, la pyramide prend la hauteur libre */
+@media (max-width:760px){
+ section.s#grades{min-height:calc(100vh - 60px)!important;min-height:calc(100svh - 60px)!important;box-sizing:border-box;display:flex!important;flex-direction:column;padding-top:16px!important;padding-bottom:16px!important}
+ section.s#grades>.wrap{flex:1;display:flex;flex-direction:column;width:100%;box-sizing:border-box}
+ section.s#grades .pyr{flex:1;gap:8px}
+ section.s#grades .pyr .pl{flex:1;display:flex;flex-direction:column;justify-content:center}
+}
+@media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl b{font-size:16px}section.s#grades .pyr .pl span{font-size:14.5px;line-height:1.45}}
+.pyr .pl span span{display:inline!important;font-size:inherit!important}.pyr .nb{white-space:nowrap;font-weight:600;color:var(--ink)}
+/* stratégie : sous-partie « Nos règles » en on fait / on ne fait pas */
+.regles{margin-top:26px}
+.regles h3.rg-t{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:17px;font-weight:600;color:var(--ink)}
+.regles h3.rg-t:before{content:"";width:16px;height:4px;background:var(--yellow)}
+.rg-box{background:var(--paper);display:grid;grid-template-columns:1fr 1fr;gap:0 36px;padding:16px 22px}
+.rg-k{margin:0 0 6px;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.rg-k.ok,.rg-m.ok{color:#3B6D11}.rg-k.ko,.rg-m.ko{color:#A32D2D}
+.rg-i{display:flex;gap:10px;margin:0 0 8px;font-size:15px;line-height:1.45;color:var(--text)}
+.rg-i:last-child{margin-bottom:0}
+.rg-i b{font-weight:600;color:var(--ink)}
+.rg-m{font-weight:600;flex:none;width:14px}
+@media (max-width:760px){.regles{margin-top:14px}.regles h3.rg-t{font-size:15px;margin-bottom:8px}.rg-box{grid-template-columns:1fr;padding:12px 14px;gap:10px}.rg-i{font-size:13.5px;line-height:1.38;margin-bottom:5px}.rg-k{font-size:11.5px;margin-bottom:4px}}
+@media (max-width:760px) and (max-height:700px){section.strat .step{padding:8px 10px!important}section.strat .step .lv{font-size:11.5px!important}section.strat .step h3{font-size:14px!important;margin:0 0 2px!important}section.strat .step p{font-size:12.5px!important;line-height:1.3!important;margin:0!important}.regles{margin-top:10px}.regles h3.rg-t{margin-bottom:6px;font-size:14px}.rg-box{padding:10px 12px;gap:6px}.rg-i{font-size:12.5px;line-height:1.3;margin-bottom:3px}.rg-k{margin-bottom:2px}section.s.strat{padding-bottom:8px!important}}
+
+/* ===== navigation fluide ===== */
+/* 6 : retour au toucher, menu téléphone qui glisse */
+.cta,.glink,.copytag,button{transition:transform .12s ease,background-color .18s,color .18s}
+.cta:active,.glink:active,.copytag:active,button:active{transform:scale(.97)}
+.clan,.pyr .pl,.strat .step{transition:transform .15s ease}
+.clan:active,.pyr .pl:active{transform:scale(.99)}
+@media (max-width:960px){.nav ul{transform:translateY(-14px)!important;transition:opacity .22s ease,transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s!important}.nav ul.is-open{transform:none!important}}
+/* 2 : fond gris qui glisse d'un lien à l'autre (PC) */
+.nav-ind{display:none}
+@media (min-width:961px){
+ #links{position:relative}
+ #links .nav-ind{display:block;position:absolute;left:0;top:50%;height:38px;margin-top:-19px;width:0;background:#33352F;border-radius:4px;opacity:0;pointer-events:none;z-index:0;transition:transform .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),opacity .2s}
+ #links .nav-ind.on{opacity:1}
+ #links li{position:relative;z-index:1}
+ html.ind .nav ul a[aria-current="true"]{background:transparent!important}
+}
+/* 1 : barre du haut qui s'efface en descendant (téléphone) */
+.nav{transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:960px){html.nav-hidden .nav{transform:translateY(-100%)}}
+/* 3 : calage doux section par section (téléphone) */
+@media (max-width:760px){
+ html{scroll-padding-top:60px;scroll-snap-type:y proximity}
+ html.nav-hidden{scroll-padding-top:0}
+ .hero,.hero-sub,section.s#clans,section.s#grades,section.s#strategie,section.s#questions,section.s.join,#rejoindre{scroll-snap-align:start}
+}
+/* 5 : apparition en cascade des blocs */
+html.js .rv2{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+html.js .rv2.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){html.js .rv2{opacity:1;transform:none;transition:none}.nav,.nav-ind{transition:none!important}html{scroll-snap-type:none!important}}
+
+/* rejoindre : bouton sur place et texte rassurant */
+.jn-act{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:22px!important}
+.jn-note{font-size:14px;color:#BDB8A9}
+@media (max-width:760px){.jn-act{flex-direction:column;align-items:stretch;text-align:center}.jn-act .cta{display:block;text-align:center;padding:15px}}
+/* 6 : zones de toucher de 44 px minimum */
+#mj-btn,.gr-more .glink{display:inline-flex;align-items:center;min-height:44px}
+.copytag{min-height:44px;box-sizing:border-box}
+/* 9 : lien « Aller au contenu » (clavier, lecteur d'écran) */
+.skip{position:absolute;left:12px;top:-60px;z-index:50;background:var(--yellow);color:#212320;padding:10px 14px;font-weight:600;text-decoration:none;transition:top .15s}
+.skip:focus{top:12px}
+/* 10 : étiquettes grises un peu plus foncées */
+:root{--soft:#5C5D56}
+/* 8 : mode sombre automatique pour les sections claires */
+@media not all /* mode sombre désactivé : fond crème toujours */{
+ :root{--cream:#171815;--paper:#23251F;--sand:#1F201C;--text:#D6D1C2;--soft:#A39F92;--line:#373933;--hl:#3A3420;color-scheme:dark}
+ section.s,.mj-pop,.regles,.pyr,.clans{--ink:#F2EDDE}
+ section.s .clan .top[style*="--ink"],section.s .clan .top[style*="var(--ink)"]{background:#F2EDDE!important}
+ .copytag{background:#2E302A!important;color:#E9E4D4!important}
+ .rg-k.ok,.rg-m.ok{color:#8DC75A}.rg-k.ko,.rg-m.ko{color:#F09595}
+ .skip{color:#212320}
+ .mj-pop{background:#2A2C26!important;color:#D6D1C2!important;border-color:#3A3C36!important}
+ .mj-pop .mj-p,.mj-pop b,.mj-pop .mj-t{color:#F2EDDE!important}.mj-pop .mj-s{color:#A39F92!important}
+ .mj-pop a{color:#F2EDDE!important}
+}
+/* ===== échelle typographique unique ===== */
+:root{--t-lede:19px;--t-sub:18px;--t-h3:18px;--t-body:16px;--t-small:14px;--t-label:12.5px}
+@media (max-width:760px){:root{--t-lede:16px;--t-sub:15px;--t-h3:15px;--t-body:14px;--t-small:13px;--t-label:12px}}
+@media (max-width:760px) and (max-height:700px){:root{--t-lede:15px;--t-sub:13.5px;--t-h3:14px;--t-body:12.5px;--t-small:12px;--t-label:11px}}
+.join h2{font-size:44px!important}
+@media (max-width:760px){.join h2{font-size:30px!important}}
+.hero p.slogan-sub{font-size:var(--t-lede)!important}
+.head p.head-desc,.join .wrap>div>p:not(.jn-act){font-size:var(--t-sub)!important}
+section.s .clan .in>p,.pyr .pl span,section.strat .step p,.rg-i,.mj-p,.org-r li,.gr-more .glink,#mj-btn,.hero a.more{font-size:var(--t-body)!important}
+section.strat .step h3,.regles h3.rg-t,.pyr .pl b{font-size:var(--t-h3)!important}
+.pyr .pl b{font-size:calc(var(--t-body) + 1px)!important}
+.jn-note,.ranks-date,footer span,footer a,footer p,.mj-s{font-size:var(--t-small)!important}
+section.strat .step .lv,.rg-k,.facts dt,.cap,.pill{font-size:var(--t-label)!important}
+/* deux graisses seulement pour Rubik : 400 et 600 */
+b,strong,.facts dd,.hero .rank b,.glink,.hero a.more,.facts dt,.rg-k,.pill,section.strat .step h3,.regles h3.rg-t,.pyr .pl b,.head p.head-desc{font-weight:600!important}
+section.strat .step .lv{margin-bottom:6px!important}
+/* ===== principes Apple ===== */
+/* 1 : le jaune réservé à l'action (boutons, liens) */
+section.s .clan .top,section.strat .step .top{background:var(--line)!important;height:2px!important}
+.pyr .pl{border-top:1px solid var(--line)!important}
+.hero .rank{border-left-color:#3A3C36!important}
+.join h2{color:var(--light)!important}
+/* 6 : château de clan à l'accueil */
+.hero-cc{display:block;width:150px;height:auto;margin:0 0 20px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35))}
+@media (max-width:760px){.hero-cc{width:104px;margin-bottom:14px}}
+@media (max-width:760px) and (max-height:700px){.hero-cc{width:84px}}
+/* 8 : pas de calage forcé au défilement */
+html{scroll-snap-type:none!important}
+/* 9 : rythme d'espacement unique (multiples de 8) */
+section.s{padding-top:96px!important;padding-bottom:96px!important}
+section.s .head{margin-bottom:32px!important}
+@media (min-width:761px){section.s.strat{padding-top:96px!important}}
+@media (max-width:760px){section.s{padding-top:48px!important;padding-bottom:48px!important}section.s .head{margin-bottom:16px!important}
+ section.s#clans,section.s#grades{padding-top:24px!important;padding-bottom:24px!important}}
+@media (max-width:760px) and (max-height:700px){section.s#clans,section.s#grades{padding-top:16px!important;padding-bottom:16px!important}section.s .head{margin-bottom:8px!important}}
+/* accueil : le blason du clan en grand, au centre */
+.hero-cc{display:none}
+.sr-h1{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;padding:0}
+.hero .hero-txt{text-align:center;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.hero-badge{display:block;width:clamp(180px,22vw,280px);height:auto;margin:0 auto 28px;filter:drop-shadow(0 16px 36px rgba(0,0,0,.45))}
+.hero p.slogan-sub{max-width:640px;margin-left:auto;margin-right:auto}
+@media (max-width:760px){.hero-badge{width:190px;margin-bottom:22px}}
+@media (max-width:760px) and (max-height:700px){.hero-badge{width:150px}}
+/* bandeau : « Gravaen » écrit sur l'accueil, le blason dès qu'on arrive aux chiffres */
+.nav .brand .brand-t{font-family:var(--title);font-weight:900;font-size:24px;letter-spacing:-.01em;color:var(--light);line-height:1}
+html:not(.past-hero) .nav .brand .brand-b{display:none!important}
+html:not(.past-hero) .nav .brand .brand-t{display:inline-block!important;animation:brandin .3s ease}
+html.past-hero .nav .brand.has-b .brand-t{display:none!important}
+html.past-hero .nav .brand.has-b .brand-b{animation:brandin .3s ease}
+@keyframes brandin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (max-width:760px){.nav .brand .brand-t{font-size:22px}}
+@media (prefers-reduced-motion:reduce){.nav .brand .brand-t,.nav .brand .brand-b{animation:none!important}}
+/* tirets des titres : gris en mode clair, jaunes en mode sombre */
+@media all{.head h2.eyeb i,.regles h3.rg-t:before{background:#C9C2AE!important;color:#C9C2AE!important}}
+/* règles : simple liste à puces */
+.rg-list{margin:0;padding:0 0 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px 36px}
+.rg-list li{font-size:var(--t-body);line-height:1.45;color:var(--text);padding-left:2px}
+.rg-list li::marker{color:var(--soft)}
+.rg-list b{font-weight:600;color:var(--ink)}
+@media (max-width:760px){.rg-list{grid-template-columns:1fr;gap:6px}}
+/* accueil : ancienneté */
+.hero-since{margin:0 0 10px;font-size:var(--t-small);letter-spacing:.06em;text-transform:uppercase;color:#A9A598;font-weight:600}
+/* fenêtre de candidature : étapes et confirmation */
+.jd-steps{list-style:none;margin:0 0 16px;padding:0;display:flex;gap:6px;counter-reset:st}
+.jd-steps li{flex:1;counter-increment:st;font-size:12.5px;font-weight:600;color:var(--soft);padding-top:8px;border-top:3px solid var(--line)}
+.jd-steps li::before{content:counter(st) ". "}
+.jd-steps li.on{color:var(--ink);border-top-color:var(--yellow)}
+.jr-next{margin:10px 0 16px;padding-left:20px;font-size:var(--t-body);line-height:1.5;color:var(--text)}
+.jr-next li{margin-bottom:6px}.jr-next b{color:var(--ink);font-weight:600}
+.rg-grid .step p b{color:var(--ink);font-weight:600}
+/* ===== fiche profil et étiquettes : sobriété ===== */
+/* une seule règle pour les petites étiquettes : minuscules, 600, échelle du site */
+.sim-lbl,.pc-h,.pc-cats span,.facts dt,.hero-since,.pill b,.clan .kind{text-transform:none!important;letter-spacing:0!important;font-weight:600!important}
+.sim-lbl,.pc-h,.pc-cats span,.pc-heroes small,.pc-lg span{font-size:var(--t-label)!important}
+.pc-h{color:var(--soft);margin:20px 0 8px}
+/* couleur seulement sur les barres, chiffres en noir */
+.pc-num b,.pc-cats b{color:var(--ink)!important;font-family:var(--body)!important;font-weight:600!important}
+.pc-num small{font-weight:400!important}
+.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:var(--ink)!important;color:var(--light)!important;font-weight:600!important}
+.pc-rush b{font-weight:600!important;color:var(--ink)!important}
+.pc-rush.o b{color:#B5600F!important}.pc-rush.r b{color:#A4271C!important}
+.pc-heroes b{font-family:var(--body)!important;font-weight:600!important}
+.pc-heroes i{display:none}
+.pc-cats li,.pc-heroes li{background:var(--sand)}
+@media not all /* mode sombre désactivé : fond crème toujours */{.pc-reco,.pc-reco.g,.pc-reco.o,.pc-reco.r{background:#F2EDDE!important;color:#212320!important}}
+/* ordinateur : moins de vide entre « Comment monter en grade ? » et « Notre stratégie » */
+@media (min-width:761px){section.s#grades{padding-bottom:32px!important}}
+/* « Un Discord orienté action » : bénéfices automatiques avant le bouton */
+.jn-auto{margin-top:26px;padding:22px 24px;border:1px solid rgba(255,253,245,.14);background:rgba(255,253,245,.04)}
+.jn-auto h3{font-family:var(--title);color:var(--light);font-size:var(--t-h3,22px);margin:0 0 6px;letter-spacing:.01em}
+.join .jn-auto p{font-size:var(--t-body)!important;color:#D8D3C4;margin:0 0 12px}
+.jn-auto ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.jn-auto li{position:relative;padding-left:26px;color:#D8D3C4;font-size:var(--t-body);line-height:1.45}
+.jn-auto li::before{content:"";position:absolute;left:2px;top:.42em;width:12px;height:7px;border-left:2.5px solid var(--yellow);border-bottom:2.5px solid var(--yellow);transform:rotate(-45deg)}
+.jn-auto li b{color:var(--light)}
+@media (max-width:760px){.jn-auto{margin-top:18px;padding:16px}.jn-auto ul{gap:7px}.jn-auto li{line-height:1.4}}
+@media (max-width:760px) and (max-height:700px){.join{padding:24px 0!important}.join h2{font-size:26px!important}.join .wrap>div>p:not(.jn-act){font-size:14.5px!important}.jn-auto{margin-top:12px;padding:12px 14px}.jn-auto h3{font-size:16px}.join .jn-auto p,.jn-auto li{font-size:13.5px!important}.jn-auto ul{gap:5px}.jn-act{margin-top:14px!important}.join .cta{padding:12px!important}.jn-note{display:none}}
+/* mode sombre : textes de la candidature lisibles (score, étapes, rush, confirmation) */
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .pc-num b,.join-dlg .pc-rush b,.join-dlg .jd-steps li.on,.join-dlg .jr-next b,.join-dlg .jr-ok,.join-dlg .jr-top b{color:#F2EDDE!important}.join-dlg .pc-id{background:#141512!important}}
+/* candidature : la fiche complète annoncée juste avant « Envoyer » (texte, sans encadré) */
+.jr-fiche{margin:18px 0 0;display:grid;gap:2px;text-align:center}
+.jr-fiche b{font-size:var(--t-h3,19px);font-weight:600;color:var(--ink)}
+.jr-fiche span{font-size:var(--t-body);color:var(--soft)}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .jr-fiche b{color:#F2EDDE!important}}
+/* comparaison, preuve sociale, fin mémorable, mot du cofondateur */
+.pc-cmp{margin:10px 0 0;font-size:var(--t-body);color:var(--text)}
+.pc-cmp b{color:var(--ink)}
+.jn-proof{margin:10px 0 0!important;font-size:var(--t-body)!important;color:#D8D3C4}
+.jn-proof b{color:var(--yellow)}
+.jr-war{margin:2px 0 12px;font-weight:600;color:var(--ink)}
+.founder{margin:26px auto 4px;max-width:46rem;text-align:center}
+.founder blockquote{margin:0;font-size:var(--t-body);line-height:1.55;font-style:italic;color:var(--text)}
+.founder figcaption{margin-top:8px;font-size:var(--t-small);color:var(--soft)}
+.founder figcaption b{color:var(--ink);font-style:normal}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .pc-cmp b,.join-dlg .jr-war{color:#F2EDDE!important}.founder figcaption b{color:#F2EDDE}}
+@media (max-width:760px){.founder{margin:16px auto 0}.founder blockquote{font-size:14.5px;line-height:1.45}}
+.sub-band .founder blockquote{color:#D8D3C4}.sub-band .founder figcaption{color:#BDB8A9}.sub-band .founder figcaption b{color:#F2EDDE}
+.hero-sign{margin:10px auto 0;font-size:var(--t-small);color:#A39F92}.hero .hero-sign b{color:#F2EDDE}
+.hero .hero-lede{max-width:44rem!important;margin-left:auto!important;margin-right:auto!important}
+/* « Tes questions » : 3 colonnes sur ordinateur, empilées sur téléphone */
+.faq-grid{grid-template-columns:repeat(3,1fr)!important}
+@media (max-width:760px){.faq-grid{grid-template-columns:1fr!important}.faq-grid .step{border-left:0!important}.faq-grid .step+.step{border-top:1px solid var(--line)!important}}
+.pc-goal{margin:6px 0 0;font-size:var(--t-body);color:var(--text)}.pc-goal b{color:var(--ink)}
+@media not all /* mode sombre désactivé : fond crème toujours */{.join-dlg .pc-goal b{color:#F2EDDE!important}}
+/* questions : la question est le titre (grande, en gras), la réponse en texte simple */
+.faq-grid .lv{font-size:var(--t-h3)!important;font-weight:600!important;color:var(--ink)!important;text-transform:none!important;letter-spacing:0!important;margin:0 0 8px!important;line-height:1.3}
+.faq-grid .step p{color:var(--text)}
+@media not all /* mode sombre désactivé : fond crème toujours */{.faq-grid .lv{color:#F2EDDE!important}}
+/* ligue de clans, discrète à côté du tag */
+.tagrow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+.cwl-chip{font-size:var(--t-small);font-weight:600;color:var(--soft);letter-spacing:.01em}
+@media (max-width:760px) and (max-height:700px){section.s#clans .tagrow{row-gap:2px}section.s#clans .cwl-chip{font-size:12px;line-height:1.2}section.s#clans .clan .in>p{margin-top:4px!important;margin-bottom:8px!important}}
+/* stratégie : étapes en chevrons (sens de lecture), les règles restent en blocs */
+section.strat .ladder:not(.rg-grid){background:transparent!important;gap:4px!important;grid-template-columns:repeat(4,1fr)!important}
+section.strat .ladder:not(.rg-grid) .step{border:0!important;background:var(--paper);clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%,18px 50%);padding:18px 30px 18px 34px!important;margin-left:-10px}
+section.strat .ladder:not(.rg-grid) .step:first-child{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);padding-left:22px!important;margin-left:0}
+section.strat .ladder:not(.rg-grid) .step .top{display:none!important}
+@media (max-width:760px){
+ section.strat .ladder:not(.rg-grid){grid-template-columns:1fr!important;gap:3px!important}
+ section.strat .ladder:not(.rg-grid) .step,section.strat .ladder:not(.rg-grid) .step:first-child{margin-left:0;clip-path:polygon(0 0,50% 10px,100% 0,100% calc(100% - 10px),50% 100%,0 calc(100% - 10px));padding:16px 16px 18px!important;margin-top:-8px;border-top:0!important}
+ section.strat .ladder:not(.rg-grid) .step:first-child{clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),50% 100%,0 calc(100% - 10px));margin-top:0;padding-top:12px!important}
+}
+/* téléphone : chevrons plus marqués, qui occupent mieux la hauteur et montrent l'enchaînement */
+@media (max-width:760px){
+ section.strat .ladder:not(.rg-grid){gap:4px!important}
+ section.strat .ladder:not(.rg-grid) .step,section.strat .ladder:not(.rg-grid) .step:first-child{clip-path:polygon(0 0,50% 18px,100% 0,100% calc(100% - 18px),50% 100%,0 calc(100% - 18px));padding:26px 18px 30px!important;margin-top:-14px;text-align:center}
+ section.strat .ladder:not(.rg-grid) .step:first-child{clip-path:polygon(0 0,100% 0,100% calc(100% - 18px),50% 100%,0 calc(100% - 18px));margin-top:0;padding-top:16px!important}
+}
+@media (max-width:760px) and (max-height:700px){
+ section.strat .ladder:not(.rg-grid) .step,section.strat .ladder:not(.rg-grid) .step:first-child{padding:20px 14px 24px!important}
+ section.strat .ladder:not(.rg-grid) .step:first-child{padding-top:12px!important}
+}
+/* espacements réguliers sur ordinateur : environ 96 px entre deux sections du même fond */
+@media (min-width:761px){section.s.strat#strategie{padding-top:64px!important;padding-bottom:48px!important}section.s#questions{padding-top:48px!important}}
+@media (max-width:760px) and (min-height:701px){section.s.strat#strategie{padding-top:24px!important;padding-bottom:24px!important}section.s#questions{padding-top:24px!important;padding-bottom:24px!important}}
+/* téléphone : « Tes questions » remplit l'écran comme les autres sections */
+@media (max-width:760px){
+ section.s#questions{min-height:calc(100vh - 60px)!important;min-height:calc(100svh - 60px)!important;box-sizing:border-box;display:flex!important;flex-direction:column;padding-top:16px!important;padding-bottom:16px!important}
+ section.s#questions>.wrap{flex:1;display:flex;flex-direction:column;width:100%;box-sizing:border-box}
+ section.s#questions .faq-grid{flex:1;display:flex!important;flex-direction:column}
+ section.s#questions .faq-grid .step{flex:1;display:flex;flex-direction:column;justify-content:center}
+}
+@media (max-width:760px) and (min-height:701px){section.s#questions{padding-top:24px!important;padding-bottom:24px!important}}
+/* « Tes questions » en bulles de BD : la question (queue en bas à gauche), la réponse du clan (queue en bas à droite) */
+.qa-list{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.qa{display:flex;flex-direction:column;gap:18px}
+.bq,.ba{position:relative;margin:0;padding:14px 18px;border-radius:18px;line-height:1.45}
+.bq{align-self:flex-start;max-width:88%;background:var(--paper);color:var(--ink);font-size:var(--t-h3)!important;font-weight:600;border-bottom-left-radius:4px}
+.bq::after{content:"";position:absolute;left:0;bottom:-12px;border-style:solid;border-width:12px 14px 0 0;border-color:var(--paper) transparent transparent transparent}
+.ba{align-self:flex-end;max-width:92%;background:#2B2D28;color:#EDE8D8;font-size:var(--t-body);border-bottom-right-radius:4px}
+.ba::after{content:"";position:absolute;right:0;bottom:-12px;border-style:solid;border-width:12px 0 0 14px;border-color:#2B2D28 transparent transparent transparent}
+@media not all /* mode sombre désactivé : fond crème toujours */{.bq{background:#2B2D28;color:#F2EDDE}.bq::after{border-top-color:#2B2D28}.ba{background:#F2EDDE;color:#212320}.ba::after{border-top-color:#F2EDDE}}
+@media (max-width:760px){.qa-list{grid-template-columns:1fr;gap:18px}.qa{gap:14px}.bq,.ba{padding:10px 14px;border-radius:16px}.bq{font-size:15px!important}.ba{font-size:14px}}
+@media (max-width:760px){section.s#questions .qa-list{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}}
+@media (max-width:760px) and (max-height:700px){.qa-list{gap:10px}.qa{gap:10px}.bq,.ba{padding:8px 12px}.bq{font-size:14px!important}.ba{font-size:13px;line-height:1.38}}
+/* queues de bulle façon BD, légèrement rentrées */
+.bq,.ba{border-radius:0!important}
+.bq::after{left:22px!important;bottom:-11px!important;border-width:12px 12px 0 0!important}
+.ba::after{right:22px!important;left:auto!important;bottom:-11px!important;border-width:12px 0 0 12px!important}
+/* 4 questions : 2 × 2 sur ordinateur ; lien « les conditions » surligné en jaune */
+@media (min-width:761px){.qa-list{grid-template-columns:repeat(3,1fr)!important;column-gap:28px}}
+.ba .qa-link{color:inherit;font-weight:600;text-decoration:none;background:linear-gradient(transparent 60%,rgba(248,200,1,.55) 60%);padding:0 1px}
+.ba .qa-link:hover,.ba .qa-link:focus-visible{background:rgba(248,200,1,.55)}
+/* mot de Clasheur sous le blason : police Clash of Clans, plus jovial */
+.hero .hero-lede,.hero .hero-sign{font-family:var(--title)!important;font-weight:400!important;letter-spacing:.01em}
+.hero .hero-lede{line-height:1.5!important}
+.hero .hero-lede b,.hero .hero-sign b{font-family:var(--title)!important;font-weight:900!important}
+/* sous-parties de « Notre organisation » : Nos grades, Notre stratégie, Nos 4 règles d'or (même niveau) */
+.sub-t{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:17px;font-weight:600;color:var(--ink)}
+.sub-t:before{content:"";width:16px;height:4px;background:#C9C2AE;flex:none}
+.sub-head{margin-bottom:14px}.sub-head .sub-t{margin-bottom:4px}
+.sub-desc{margin:0;font-size:var(--t-body);color:var(--text)}
+#grades .sub-t{margin-top:18px}
+@media (max-width:760px){.sub-t{font-size:15px;margin-bottom:8px}#grades .sub-t{margin-top:8px}.sub-desc{font-size:13.5px;line-height:1.4}}
+@media (min-width:761px){section.s.strat#strategie{padding-top:40px!important}}
+/* mot sous le blason : plus petit */
+.hero p.slogan-sub.hero-lede{font-size:18px!important}
+@media (max-width:760px){.hero p.slogan-sub.hero-lede{font-size:13.5px!important;line-height:1.45!important}.hero .hero-sign{font-size:12px!important}}
+@media (max-width:760px) and (max-height:700px){.jn-auto ul{gap:3px!important}.jn-auto{padding:10px 12px!important}}
+@media (max-width:760px) and (min-height:701px){.join{padding:40px 0!important}}
+@media (max-width:760px) and (max-height:700px){.join{padding:16px 0!important}.join h2{margin-bottom:4px!important}.jn-auto{margin-top:10px!important}.jn-auto h3{margin-bottom:2px!important}.join .jn-auto p{margin-bottom:6px!important}}
+/* ordinateur : la flèche « voir la suite » toujours visible dès l'accueil (blason adapté à la hauteur d'écran) */
+@media (min-width:761px){.hero-badge{width:min(clamp(180px,22vw,280px),26vh)!important;margin-bottom:20px!important}.scroll-cue{bottom:28px!important}.hero .wrap.hero-top{padding-top:24px!important;padding-bottom:70px!important}}
+/* nom du clan en titre de carte */
+.clan-name{font-family:var(--title);font-size:26px;font-weight:400;line-height:1.1;color:var(--ink);margin:0 0 12px;padding-right:84px}
+@media (max-width:760px){.clan-name{font-size:20px;margin-bottom:8px}}
+@media (max-width:760px) and (max-height:700px){.clan-name{font-size:18px;margin-bottom:4px}}
+@media (max-width:760px) and (max-height:700px){section.s#clans .clan .in{padding-top:12px!important;padding-bottom:10px!important}section.s#clans .clan dl{row-gap:4px!important;margin-top:8px!important;padding-top:8px!important}section.s#clans .clan .tagrow{margin-bottom:4px!important}section.s#clans .head{margin-bottom:10px!important}section.s#clans .clans{gap:10px!important}}
+@media (max-width:760px) and (max-height:700px){section.s#clans{padding-top:8px!important;padding-bottom:8px!important}section.s#clans .head-desc{font-size:13px!important;line-height:1.35!important}section.s#clans .clan .pill{margin-top:4px!important}}
+/* cartes de clan : blason à gauche, nom du clan à côté (taille adaptée), tag et ligue en dessous */
+.cbadge{left:20px!important;right:auto!important;top:20px!important;width:76px!important;height:76px!important}
+.clan .in>h3.clan-name,.clan .in>.tagrow{padding-left:94px!important;padding-right:0!important}
+.clan .in>h3.clan-name{font-size:clamp(24px,2.3vw,32px);margin:6px 0 8px;line-height:1.05}
+.clan .in>.tagrow{min-height:40px;margin-bottom:12px}
+@media (max-width:760px){.cbadge{left:14px!important;top:14px!important;width:58px!important;height:58px!important}.clan .in>h3.clan-name,.clan .in>.tagrow{padding-left:72px!important}.clan .in>h3.clan-name{font-size:22px;margin:2px 0 6px}.clan .in>.tagrow{min-height:0;margin-bottom:10px}}
+@media (max-width:760px) and (max-height:700px){.cbadge{width:50px!important;height:50px!important;top:12px!important;left:12px!important}.clan .in>h3.clan-name,.clan .in>.tagrow{padding-left:62px!important}.clan .in>h3.clan-name{font-size:19px;margin:0 0 4px}}
+/* « Nos meilleurs joueurs » : deux colonnes de 5, sobres */
+.pod-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.pod-col{background:var(--paper);padding:18px 20px 8px}
+.pod-h{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:var(--t-h3);font-weight:600;color:var(--ink)}
+.pod-h img{width:22px;height:22px;object-fit:contain}.pod-h b{font-weight:600}
+.pod-h span{margin-left:auto;font-size:var(--t-small);font-weight:500;color:var(--soft)}
+.pod-list{list-style:none;margin:0;padding:0}
+.pod-list li{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.pod-list li:first-child{border-top:0}
+.pod-r{flex:none;width:28px;height:28px;display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--soft);background:#F3EEE0}
+.pod-r.top{background:var(--yellow);color:#212320}
+.pod-n{flex:1;min-width:0;display:grid;align-items:center}.pod-n b{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pod-n small{font-size:var(--t-small);color:var(--soft)}
+.pod-v{flex:none;text-align:right;font-weight:700;font-size:17px;color:var(--ink);display:grid}.pod-v small{font-size:12px;font-weight:500;color:var(--soft)}
+.pod-empty{color:var(--soft);font-size:var(--t-body)}
+@media (max-width:760px){.pod-grid{grid-template-columns:1fr;gap:12px}.pod-col{padding:12px 14px 2px}.pod-list li{padding:6px 0;gap:10px}.pod-r{width:24px;height:24px;font-size:13px}.pod-v{font-size:15px}
+ section.s#meilleurs{min-height:calc(100vh - 60px)!important;min-height:calc(100svh - 60px)!important;box-sizing:border-box;padding-top:16px!important;padding-bottom:16px!important;display:flex;flex-direction:column;justify-content:center}}
+@media (max-width:760px) and (max-height:700px){.pod-list li{padding:3px 0}.pod-h{margin-bottom:2px;font-size:15px}.pod-n small,.pod-v small{font-size:11px}.pod-n b{font-size:14px}section.s#meilleurs .head{margin-bottom:8px!important}}
+@media (min-width:761px){section.s#meilleurs{padding-top:48px!important;padding-bottom:48px!important}}
+section.s#meilleurs{scroll-snap-align:start}
+@media (max-width:760px){.pod-n{display:flex;align-items:baseline;gap:6px}.pod-n small{white-space:nowrap}.pod-v small{display:none}.pod-list li{padding:7px 0}}
+@media (max-width:760px) and (max-height:700px){.pod-list li{padding:4px 0}section.s#meilleurs .head-desc{font-size:13px!important}}
+/* podium façon fiche : icône ronde en en-tête, seul le n° 1 en couleur, blason de ligue pour les trophées */
+.pod-h{gap:12px!important}
+.pod-ic{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#F3EEE0;color:var(--ink)}
+.pod-ic svg{width:19px;height:19px}
+.pod-t{margin-left:auto;font-size:var(--t-small)!important;font-weight:500!important;color:var(--soft)!important}
+.pod-r{border-radius:50%!important;background:transparent!important;color:var(--soft)!important;width:30px!important;height:30px!important}
+.pod-r.top{background:var(--yellow)!important;color:#212320!important}
+.pod-b{flex:none;width:34px;height:34px;object-fit:contain}
+@media (max-width:760px){.pod-ic{width:28px;height:28px}.pod-ic svg{width:16px;height:16px}.pod-r{width:24px!important;height:24px!important}.pod-b{width:26px;height:26px}}
+@media (max-width:760px){.pod-n{overflow:hidden;min-width:0}.pod-n b{flex:none;max-width:100%}.pod-n small{overflow:hidden;text-overflow:ellipsis;min-width:0}.pod-col{overflow:hidden}}
+.pod-h .pod-ic{margin-left:0!important}
+/* ligne « En guerre contre … » des cartes de clan : icône d'épées, adversaire, score et temps restant */
+.clan .pill.wv{display:flex!important;align-self:stretch!important;align-items:center;gap:12px;width:auto!important;max-width:none!important;margin:14px 0 0!important;padding:14px 0 0!important;border-top:1px solid rgba(33,35,32,.1)!important;background:none!important;color:var(--text);font-size:15px!important;line-height:1.35!important;white-space:normal!important;text-transform:none!important;letter-spacing:0!important;min-height:0}
+.clan .pill.wv .wv-ic{position:relative;flex:none;width:32px;height:32px;display:grid;place-items:center;background:#F3EEE0;color:var(--ink)}
+.clan .pill.wv .wv-ic svg{width:19px;height:19px}
+.clan .pill.wv .wv-t{min-width:0;display:block;overflow:hidden}
+.clan .pill.wv strong{font-weight:700;color:var(--ink)}
+.clan .pill.wv small{display:block;margin-top:2px;font-size:13.5px;color:var(--soft)}
+.clan .pill.wv .wv-sc{font-weight:700;color:var(--ink)}
+@media (max-width:760px){.clan .pill.wv{gap:10px;margin-top:10px!important;padding-top:10px!important;font-size:14px!important}.clan .pill.wv .wv-ic{width:26px;height:26px}.clan .pill.wv .wv-ic svg{width:16px;height:16px}.clan .pill.wv small{font-size:12.5px}}
+@media (max-width:760px) and (max-height:700px){.clan .pill.wv{margin-top:6px!important;padding-top:6px!important}}
+.clans .clan .facts{margin-top:0!important}
+/* classement de la saison : une seule colonne, sous-titre des critères sous chaque joueur */
+.pod-grid.pod-one{grid-template-columns:minmax(0,1fr)}
+@media (min-width:761px){.pod-one .pod-list{display:grid;grid-template-rows:repeat(5,auto);grid-auto-flow:column;column-gap:48px}.pod-one .pod-list li:nth-child(6){border-top-color:transparent}}
+.pod-one .pod-n{display:grid!important;gap:1px}
+.pod-one .pod-n b{max-width:100%!important}
+.pod-one .pod-n small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;color:var(--soft)}
+.pod-one .pod-list li{padding:11px 0}
+.pod-crit{margin:-2px 0 8px;font-size:14px;line-height:1.4;color:var(--soft)}
+@media (max-width:760px){.pod-crit{font-size:12.5px;margin:-4px 0 6px}}
+@media (max-width:760px){.pod-one .pod-list li{padding:6px 0}.pod-one .pod-n small{font-size:12px}.pod-one .pod-v small{display:block!important;font-size:11px}}
+@media (max-width:760px) and (max-height:700px){.pod-one .pod-list li{padding:6px 0}}
+@media (max-width:420px){.pod-one .pod-n small .s3{display:none}}
+/* cartes de clan : aperçu des 5 meilleurs en classé (ligue en majuscules). Sur téléphone, un clan à la fois avec des onglets */
+.crk{display:none}
+.clan .crk:not([hidden]){display:block;margin-top:auto;padding-top:12px;border-top:1px solid rgba(33,35,32,.1)}
+@media (min-width:761px){.clan .crk:not([hidden]){margin-top:auto;padding-top:14px}.clan .pill.wv+.crk:not([hidden]){margin-top:14px}}
+.crk-l{list-style:none;margin:0;padding:0}
+.crk-l li{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line)}
+.crk-l li:first-child{border-top:0;padding-top:0}
+.crk-r{flex:none;width:18px;font-size:13px;font-weight:700;color:var(--soft);text-align:center}
+.crk-b{flex:none;width:24px;height:24px;object-fit:contain}
+.crk-n{flex:1;min-width:0;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.crk-lg{flex:none;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--soft)}
+.ctabs{display:none!important}
+@media (max-width:760px){
+ .ctabs{display:flex!important;margin:0 auto 10px}
+ .clans[data-show]{display:grid!important;grid-template-columns:minmax(0,1fr)!important}
+ .clans[data-show]>.clan{grid-area:1/1;align-self:stretch!important}
+ .clans[data-show="main"] .clan:nth-child(2),.clans[data-show="second"] .clan:nth-child(1){visibility:hidden;pointer-events:none}
+ .clan .crk:not([hidden]){margin-top:10px}
+ .crk-l li{padding:5px 0;gap:8px}.crk-b{width:22px;height:22px}.crk-n{font-size:14px}.crk-lg{font-size:11px}
+}
+@media (min-width:761px){.crk-l{display:grid;grid-template-rows:repeat(5,auto);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);column-gap:28px}.crk-l li:nth-child(6){border-top:0;padding-top:0}.crk-l li{gap:7px}.crk-r{width:14px;font-size:12px}.crk-b{width:20px;height:20px}.crk-n{font-size:14px}.crk-lg{font-size:10px;letter-spacing:.03em}}
+@media (min-width:761px) and (max-width:1180px){.crk-l{column-gap:18px}.crk-l li{gap:5px}.crk-b{width:18px;height:18px}.crk-n{font-size:13.5px}.crk-lg{font-size:9.5px;letter-spacing:.02em}}
+@media (max-width:760px) and (max-height:780px){.crk-l li{padding:1px 0;line-height:20px}.crk-b{width:19px;height:19px}.crk-n{font-size:13px}}
+@media (max-width:360px){.clan .tagrow{row-gap:2px!important;margin-bottom:4px!important}.clan .cwl-chip{line-height:1.2}.clan .pill.wv .wv-t{white-space:nowrap;text-overflow:ellipsis}.clan .pill.wv{font-size:13.5px!important}}
+@media (max-width:760px) and (max-height:700px){.crk-l li{padding:1px 0;line-height:20px}.crk-b{width:19px;height:19px}.crk-n{font-size:13px}.crk-r{font-size:12px}.clan .crk:not([hidden]){margin-top:6px;padding-top:6px}.ctabs{margin-bottom:6px}.ctabs .ps-b{min-height:34px;padding:5px 12px}}
+/* ligne de guerre plus compacte : une seule ligne (adversaire puis score), moins d'espace autour ; Gravaen 2 sans vide ; espaces entre sections harmonisés */
+.clan .pill.wv{margin-top:10px!important;padding-top:10px!important;gap:10px}
+.clan .pill.wv .wv-t{white-space:nowrap;text-overflow:ellipsis}
+.clan .pill.wv small{display:inline!important;margin:0 0 0 2px!important;font-size:inherit!important}
+.clan .pill.wv small::before{content:"· ";color:var(--soft)}
+.clan .pill.wv+.crk:not([hidden]){margin-top:10px!important;padding-top:10px!important}
+@media (max-width:760px){.clan .pill.wv{margin-top:8px!important;padding-top:8px!important}.clan .pill.wv+.crk:not([hidden]){margin-top:8px!important;padding-top:8px!important}
+ .clans[data-show]>.clan{align-self:start!important}}
+@media (min-width:761px){section.s.faq#questions{padding-bottom:48px!important}}
+/* PC : les infos du clan sur une seule ligne, et les 10 joueurs en une seule colonne */
+@media (min-width:761px){
+ .clans .clan .facts{grid-template-columns:repeat(4,max-content)!important;gap:8px 28px!important}
+ .crk-l{display:block!important}
+ .crk-l li:nth-child(6){border-top:1px solid var(--line)!important;padding-top:4px!important}
+ .crk-l li{padding:4px 0!important;gap:10px!important}
+ .crk-r{width:18px!important;font-size:13px!important}.crk-b{width:22px!important;height:22px!important}.crk-n{font-size:15px!important}.crk-lg{font-size:11px!important;letter-spacing:.05em!important}
+}
+@media (min-width:961px){section.s#clans{padding-top:48px!important}}
+@media (max-width:760px) and (min-height:701px){section.s#meilleurs{padding-top:24px!important;padding-bottom:24px!important}}
+/* staff : sous-partie de l'organisation (même niveau que les grades et la stratégie) */
+section.s#staff{scroll-snap-align:start;padding-top:48px!important;padding-bottom:32px!important}
+@media (min-width:761px){section.s#grades{padding-top:40px!important}}
+@media (max-width:760px){section.s#staff{padding-top:24px!important;padding-bottom:24px!important}}
+section.s#staff>.wrap{min-width:0}
+@media (max-width:760px) and (max-height:700px){section.s#staff{padding-top:16px!important;padding-bottom:16px!important}}
+/* section staff : une carte par chef / adjoint, en ligne horizontale qu'on fait défiler ; phrases tirées du score de la saison */
+.st-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 14px;margin:0 -2px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.st-card{flex:0 0 min(320px,84%);scroll-snap-align:start;display:flex;flex-direction:column;background:#fff;border-top:3px solid var(--line);padding:22px 22px 18px;min-width:0}
+.st-card.chef{border-top-color:var(--yellow)}
+.st-role{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.04em;padding:4px 9px;background:#F3EEE0;color:var(--ink)}
+.st-card.chef .st-role{background:var(--yellow);color:#212320}
+.st-name{margin:12px 0 4px;font-family:var(--title);font-weight:400;font-size:24px;line-height:1.15;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-b{margin:2px 0 10px}
+.st-txt{margin:0;font-size:14.5px;line-height:1.55;color:var(--text)}
+.st-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);font-size:15px;font-weight:600;color:var(--soft);display:flex;justify-content:space-between;align-items:center;text-decoration:none}
+.st-foot .st-ar{font-size:18px;color:var(--ink);transition:transform .2s}
+.st-foot:hover{color:var(--ink)}.st-foot:hover .st-ar{transform:translateX(4px)}
+.st-empty{color:var(--soft)}
+/* cartes du staff sur le noir de Gravaen pour qu'elles ressortent */
+.st-card{background:#212320;border-top-color:#3A3C36}
+.st-card.chef{border-top-color:var(--yellow)}
+.st-card .st-role{background:#34362F;color:#F2EDDE}
+.st-card.chef .st-role{background:var(--yellow);color:#212320}
+.st-card .st-name{color:#FFFDF5}
+.st-card .st-txt{color:#D8D3C4}
+.st-card .st-foot{border-top-color:#3A3C36;color:#B8B3A4}
+.st-card .st-foot .st-ar{color:var(--yellow)}
+.st-card .st-foot:hover{color:#FFFDF5}
+.st-row:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+@media (max-width:760px){.st-card{padding:18px 16px 14px}.st-name{font-size:21px}.st-txt{font-size:14px}}
+/* badges de la saison sur les cartes du staff : petits carrés crème au trait, nom du badge au survol / au toucher */
+.bdgs{display:inline-flex;gap:4px;flex:none}
+.bdg{position:relative;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#FCE38A;color:#212320;cursor:default}
+.bdg svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bdg::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);white-space:nowrap;background:#212320;color:#fff;font-size:12px;font-weight:600;padding:5px 8px;opacity:0;pointer-events:none;transition:opacity .15s;z-index:5}
+.bdg:hover::after,.bdg:focus::after,.bdg:focus-visible::after{opacity:1}
+.bdg:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+@media (max-width:760px){.bdg{width:22px;height:22px}.bdg svg{width:14px;height:14px}}
+/* vérif finale des espaces : stratégie tient dans un petit téléphone, pyramide un peu plus haute sur grand téléphone */
+@media (max-width:760px) and (max-height:700px){section.s#strategie{padding-top:8px!important;padding-bottom:8px!important}section.s#strategie .sub-head{margin-bottom:8px!important}section.s#strategie .regles{margin-top:6px!important}}
+@media (max-width:760px) and (min-height:741px){section.s#grades .pyr .pl{flex-basis:132px!important}}
+/* pyramide à deux faces : conditions (par défaut) ou avantages, bascule par la flèche */
+.pyr .pl .pv{display:grid!important;align-items:center;flex:1}
+.pyr .pl .pv>span{grid-area:1/1;display:block!important;text-align:center;transition:opacity .28s ease,transform .32s cubic-bezier(.2,.8,.2,1)}
+.pyr .pa{opacity:0;transform:translateX(24px);pointer-events:none}
+.pyr.av .pc{opacity:0;transform:translateX(-24px)}
+.pyr.av .pa{opacity:1;transform:none}
+.pyr .pl b{transition:color .2s}
+.pseg{position:relative;display:flex;width:max-content;max-width:100%;margin:2px auto 12px;padding:0;background:none;isolation:isolate}
+.pseg .ps-ind{position:absolute;z-index:-1;bottom:2px;left:0;width:50%;height:3px;background:var(--yellow);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.pseg.av .ps-ind{transform:translateX(100%)}
+.ps-b{flex:1 1 0;min-width:120px;min-height:40px;padding:8px 14px;background:none;border:0;font:inherit;font-weight:700;font-size:15px;color:var(--soft);cursor:pointer;transition:color .2s}
+.ps-b[aria-selected="true"]{color:var(--ink)}
+.ps-b:hover{color:var(--ink)}
+.ps-b:focus-visible{outline:3px solid var(--ink);outline-offset:-3px}
+@media (max-width:760px){section.s#grades .pseg{margin-top:auto!important}section.s#grades .pyr{flex:0 0 auto!important;margin-bottom:auto}.pseg{margin:2px auto 10px}.ps-b{min-width:118px;min-height:38px;font-size:14px;padding:7px 14px}}
+@media (prefers-reduced-motion:reduce){.pyr .pv>span,.pseg .ps-ind{transition:none}}
+/* pyramide : on la construit de la base au sommet (Membres, puis Aînés, puis Adjoints) quand elle arrive à l'écran */
+@media (max-width:760px){section.s#grades .pyr{justify-content:center}section.s#grades .pyr .pl{flex:0 1 112px}}
+.js-pyr .pyr .pl{opacity:0;transform:translateY(18px) scale(.97)}
+.js-pyr .pyr.built .pl{opacity:1;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.9,.3,1.15)}
+.js-pyr .pyr.built .pl:nth-child(3){transition-delay:.05s}
+.js-pyr .pyr.built .pl:nth-child(2){transition-delay:.4s}
+.js-pyr .pyr.built .pl:nth-child(1){transition-delay:.75s}
+.js-pyr .pyr.done .pl{transition-delay:0s!important}
+@media (prefers-reduced-motion:reduce){.js-pyr .pyr .pl{opacity:1!important;transform:none!important;transition:none!important}}
+/* puces carrées, icône d'en-tête alignée sur le rang 1 */
+.pod-ic,.pod-r{border-radius:0!important;width:32px!important;height:32px!important}
+@media (max-width:760px){.pod-ic,.pod-r{width:26px!important;height:26px!important}}
+/* ===== portrait d'un membre du staff (joueur.html) : mêmes composants que la page d'accueil ===== */
+.pt-back{display:inline-block;margin:0 0 16px;font-weight:600;font-size:15px;color:var(--soft);text-decoration:none}
+.pt-back:hover{color:var(--ink)}
+section.s.pt{padding-top:28px;padding-bottom:28px}
+section.s.pt:first-of-type{padding-top:36px}
+.pt-card{background:#fff;padding:22px 24px}
+.pt-id .hdvsq{position:absolute;left:20px;top:22px;width:72px;height:72px;background:var(--yellow);color:var(--ink);display:grid;place-items:center;text-align:center;line-height:1}
+.pt-id .hdvsq small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em}
+.pt-id .hdvsq b{display:block;font-size:30px;font-weight:700;margin-top:2px}
+.pt-id .in{position:relative}
+.pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:94px!important}
+.pt-id .facts{margin-top:16px}
+.pt-bd{display:flex;gap:6px;margin:16px 0 0}
+.pt-bd .bdg{width:26px;height:26px}
+.pt-prof{margin:12px 0 0;font-size:16px;line-height:1.5;color:var(--text);max-width:640px}
+.pt-acts{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 0}
+.pt-split{height:12px;display:flex;background:#F3EEE0;margin:10px 0 8px}
+.pt-split i{display:block;height:100%;border-right:2px solid #fff}
+.pt-leg{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;color:var(--soft)}
+.pt-leg b{color:var(--ink);font-weight:600}
+.pt-leg u{display:inline-block;width:10px;height:10px;margin-right:6px;text-decoration:none;vertical-align:-1px}
+.pt-rounds{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:4px}
+.pt-rd{background:#F3EEE0;text-align:center;padding:10px 4px;display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:92px}
+.pt-rd.tri{background:var(--yellow)}
+.pt-rd .n{font-size:12px;font-weight:700;color:var(--soft)}.pt-rd.tri .n{color:var(--ink)}
+.pt-rd .st{font-size:15px;letter-spacing:1px;color:var(--ink);line-height:1}.pt-rd .st i{color:#CFC8B4;font-style:normal}
+.pt-rd .p{font-weight:700;color:var(--ink);font-size:15px}
+.pt-rd .h{font-size:12px;color:var(--soft)}.pt-rd.tri .h{color:var(--ink)}
+.pt-rd.off .p{font-weight:500;color:var(--soft);font-size:13px}
+.pt-card .facts{margin-top:14px}
+.pt-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.pt-mini{margin:0;font-size:12.5px;font-weight:600;color:var(--soft)}
+.pt-h{margin:0 0 4px;font-size:17px;font-weight:600;color:var(--ink)}
+.pt-fm{margin:12px 0 0}
+.pt-fm .t{display:flex;justify-content:space-between;font-weight:600;color:var(--ink);font-size:15px}
+.pt-fm .tr{position:relative;height:8px;background:#F3EEE0;margin:6px 0 4px}
+.pt-fm .tr i{display:block;height:100%;background:var(--ink)}
+.pt-fm .tr em{position:absolute;top:-4px;width:3px;height:16px;background:var(--yellow)}
+.pt-fm .d{font-size:13.5px;color:var(--soft)}.pt-fm .d b{color:var(--ink)}
+.pt-tabs{margin:0 0 12px!important}
+.pt-tabs .ps-b{min-width:0!important;flex:0 0 auto!important;padding:8px 14px!important}
+.pt-wk{display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px}
+.pt-wk div{flex:none;min-width:92px;text-align:center;background:#F3EEE0;padding:10px 8px}
+.pt-wk img{width:34px;height:34px;object-fit:contain}
+.pt-wk b{display:block;font-size:13px;color:var(--ink)}.pt-wk span{display:block;font-size:12px;color:var(--soft)}
+.pt-army li{align-items:flex-start!important}
+.pt-army .eq{display:block;font-size:12.5px;font-weight:500;color:var(--soft);white-space:normal}
+.pt-army .lvl{flex:none;font-size:13px;font-weight:700;color:var(--ink)}
+.pt-army .lvl.max{background:var(--yellow);padding:0 6px}
+.pt-army .lvl span{color:var(--soft);font-weight:500}
+.pt-army{columns:2;column-gap:36px}
+.pt-army li{break-inside:avoid}
+.pt-empty{color:var(--soft);margin:0}
+.pt-note{margin:10px 0 0;font-size:13px;color:var(--soft)}
+@media (max-width:760px){
+ section.s.pt{padding-top:20px;padding-bottom:20px}
+ .pt-card{padding:16px}
+ .pt-id .hdvsq{left:16px;top:18px;width:56px;height:56px}.pt-id .hdvsq b{font-size:24px}.pt-id .hdvsq small{font-size:10px}
+ .pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:70px!important}
+ .pt-rounds{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .pt-two{grid-template-columns:minmax(0,1fr)}
+ .pt-army{columns:1}
+}
+/* blason de classé mis en valeur dans la carte d'identité */
+.pt-id .in{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px}
+.pt-id .in>*{grid-column:1}
+.pt-lg{grid-column:2!important;grid-row:1 / span 6;align-self:start;text-align:center;min-width:150px;padding:14px 16px;background:#F3EEE0}
+.pt-lg img{display:block;width:92px;height:92px;object-fit:contain;margin:0 auto 6px}
+.pt-lg b{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.pt-lg span{display:block;font-size:13px;color:var(--soft);margin-top:2px}
+@media (max-width:760px){.pt-id .in{grid-template-columns:minmax(0,1fr)}.pt-lg{grid-column:1!important;grid-row:auto;display:flex;align-items:center;gap:12px;text-align:left;margin-top:14px;min-width:0;padding:10px 12px}.pt-lg img{width:52px;height:52px;margin:0}}
+/* ajustements : espaces entre sections comme les sous-parties de l'accueil, infos sur une ligne */
+body.portrait section.s.pt{padding-top:24px!important;padding-bottom:24px!important;min-height:0!important}
+body.portrait section.s.pt:first-of-type{padding-top:32px!important}
+body.portrait section.s.pt .head{margin-bottom:16px!important}
+.pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:100px!important}
+.pt-id .hdvsq{top:24px}
+.pt-card>.facts:first-child,.pt-card .pt-two .facts{border-top:0!important;margin-top:0!important;padding-top:0!important}
+@media (min-width:761px){.pt-id .facts,.pt-card .facts{grid-template-columns:repeat(4,max-content)!important;gap:8px 40px!important}}
+.pt-card .pt-two .facts{grid-template-columns:repeat(3,max-content)!important;gap:8px 28px!important}
+@media (max-width:760px){body.portrait section.s.pt{padding-top:16px!important;padding-bottom:16px!important}.pt-id h3.clan-name,.pt-id .in>.tagrow{padding-left:70px!important}.pt-card .pt-two .facts{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px 12px!important}}
+/* en-tête sombre, comme le haut de la page d'accueil */
+.pt-hero{background:var(--ink);color:var(--light);padding:22px 0 30px}
+.pt-hero .pt-back{color:#BDB8A8}.pt-hero .pt-back:hover{color:var(--light)}
+.pt-hgrid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:start}
+.pt-who{display:flex;gap:18px;align-items:flex-start}
+.pt-hero .hdvsq{position:static;flex:none;width:80px;height:80px;background:var(--yellow);color:var(--ink);display:grid;place-items:center;text-align:center;line-height:1}
+.pt-hero .hdvsq small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em}.pt-hero .hdvsq b{display:block;font-size:34px;font-weight:700;margin-top:2px}
+.pt-nm{min-width:0}
+.pt-role{margin:0 0 4px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#D8D3C4}
+.pt-chip{font-size:12px;font-weight:700;letter-spacing:.03em;padding:3px 8px;background:#3A3C37;color:var(--light)}.pt-chip.chef{background:var(--yellow);color:var(--ink)}
+.pt-hero h1{margin:0;font-family:var(--title);font-weight:400;font-size:clamp(28px,4vw,42px);line-height:1.05;color:var(--light);overflow-wrap:anywhere}
+.pt-tag{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:#2E302C;color:#D8D3C4;border:0;padding:4px 8px;font:inherit;font-size:13px;cursor:pointer}
+.pt-tag .tt{font-family:ui-monospace,Menlo,Consolas,monospace}
+.pt-xp{margin-left:10px;font-size:13px;color:#BDB8A8}
+.pt-hero .pt-bd{margin-top:16px}
+.pt-hero .pt-prof{color:#E6E1D2}
+.pt-hero .pt-lg{background:#2E302C;color:var(--light)}
+.pt-hero .pt-lg b{color:var(--light)}.pt-hero .pt-lg span{color:#BDB8A8}
+.pt-lgph{display:block;width:92px;height:92px;margin:0 auto 6px;border-radius:50%;background:#3A3C37}
+.pt-k .pt-card{margin-top:-1px}
+.pt-det>summary{cursor:pointer;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.pt-det>summary::-webkit-details-marker{display:none}
+.pt-det>summary::after{content:"→";transition:transform .2s}
+.pt-det[open]>summary{margin-bottom:12px}.pt-det[open]>summary::after{transform:rotate(90deg)}
+.pt-tabs{max-width:100%!important;overflow-x:auto;scrollbar-width:none}
+@media (max-width:760px){
+ .pt-hgrid{grid-template-columns:minmax(0,1fr);gap:16px}
+ .pt-hero .hdvsq{width:60px;height:60px}.pt-hero .hdvsq b{font-size:26px}
+ .pt-hero .pt-lg{grid-column:auto!important;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 12px;margin:0}
+ .pt-hero .pt-lg img,.pt-lgph{width:52px;height:52px;margin:0}
+}
+.pt-hero .pt-lg{grid-row:auto!important;grid-column:auto!important;align-self:start}
+.pt-left{min-width:0}
+
+/* en-tête : vraie image d'hôtel de ville, grade discret */
+.pt-hdv{flex:none;width:84px;height:auto;max-height:98px;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.pt-role{font-size:13px!important;font-weight:600!important;color:#A9A496!important;letter-spacing:.02em;margin-bottom:2px!important}
+@media (max-width:760px){.pt-hdv{width:62px}}
+.pt-hero .pt-tag{height:26px!important;min-height:0!important;padding:0 8px!important;margin-top:8px!important;line-height:1!important}
+.pt-hero .pt-nm{align-self:center}
+/* en-tête sombre : même police que le haut de l'accueil (Clash), comme la phrase d'accroche et la signature */
+.pt-hero,.pt-hero p,.pt-hero span,.pt-hero b,.pt-hero a{font-family:var(--title)}
+.pt-hero .pt-tag .tt{font-family:ui-monospace,Menlo,Consolas,monospace}
+.pt-hero .pt-prof{font-weight:400;font-size:18px;line-height:1.45;letter-spacing:.005em}
+.pt-hero .pt-role{font-weight:400!important;font-size:14px!important;letter-spacing:.03em}
+.pt-hero .pt-xp{font-weight:400}
+.pt-hero .pt-lg b{font-weight:900;letter-spacing:.04em}
+.pt-hero .pt-lg span{font-weight:400}
+.pt-hero .pt-back{font-weight:400}
+/* titres internes des cartes : même police que les sous-titres de l'accueil (« Le staff », « La stratégie ») */
+.pt-h,.pt-det>summary{font-family:var(--title)!important;font-weight:600!important;font-size:17px!important}
+.pt-mini{font-family:var(--title);font-weight:600;font-size:13px;letter-spacing:.02em}
+/* évolution : une case par semaine, blason de ligue et diminutif, comme dans le jeu */
+.pt-wk{display:flex;align-items:center;gap:0;overflow-x:auto;padding:6px 0 4px}
+.pt-wk .pt-w{flex:none;min-width:96px;background:none;padding:0 6px;text-align:center}
+.pt-wk .pt-w img,.pt-wph{display:block;width:56px;height:56px;object-fit:contain;margin:0 auto 6px}
+.pt-wph{border-radius:50%;background:#EDE6D3}
+.pt-wk .pt-w b{display:block;font-size:14px;font-weight:700;color:var(--ink)}
+.pt-wk .pt-w span{display:block;font-size:12.5px;color:var(--soft)}
+.pt-wk .pt-tro{display:inline-flex!important;align-items:center;gap:3px;font-weight:600;color:var(--ink)!important}
+.pt-ti{width:13px;height:13px;fill:none;stroke:#C9A43A;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pt-sep{flex:none;width:18px;height:2px;background:#D9D2BE;margin-bottom:34px}
+/* phrase de profil : police des textes, plus petite */
+.pt-hero .pt-prof{font-family:var(--body)!important;font-weight:400!important;font-size:16px!important;line-height:1.5!important;color:#D8D3C4!important}
+/* icône « ouvrir » dans le bouton */
+.pt-ext{width:16px;height:16px;margin-left:8px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pt-acts .cta{display:inline-flex;align-items:center}
+/* classé : blason en grand à gauche des infos */
+.pt-rk{display:flex;align-items:center;gap:22px}
+.pt-rk>img,.pt-rk>.pt-wph{flex:none;width:88px;height:88px;object-fit:contain;margin:0}
+.pt-rk .facts{margin:0!important;border-top:0!important;padding-top:0!important}
+@media (max-width:760px){.pt-rk{gap:14px;align-items:flex-start}.pt-rk>img,.pt-rk>.pt-wph{width:60px;height:60px}}
+
+</style>
+</head>
+<body class="portrait">
+<header class="nav">
+ <div class="wrap">
+  <a class="brand" href="./" aria-label="Gravaen, page d’accueil"><img class="brand-b" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="34" height="34" alt="" hidden><span class="brand-t">Gravaen</span></a>
+  <a class="cta open nav-cta" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join aria-label="Postuler sur Discord">Postuler<span class="cta-long">&nbsp;sur Discord</span></a>
+  <ul id="links"><li class="nav-ind" aria-hidden="true"></li>
+   <li><a href="./#vision">Accueil</a></li>
+   <li><a href="./#clans">Clans</a></li>
+   <li><a href="./#staff" aria-current="true">Organisation</a></li>
+   <li><a href="./#meilleurs">Classement</a></li>
+   
+   <li class="drawer-cta"><a class="cta open" href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener" data-join>Postuler sur Discord</a></li>
+  </ul>
+  <button class="menu" id="menu" aria-expanded="false" aria-controls="links" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path id="mi" d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+ </div>
+</header>
+<main id="top"><div id="fiche"><section class="s pt"><div class="wrap"><p class="pt-empty">Chargement du portrait…</p></div></section></div></main>
+<footer><div class="wrap"><span>Gravaen · Clash of Clans</span><span>Clan principal #2C0CVRCPV · Clan secondaire #2J0UPJVQJ · <a href="https://discord.gg/XAUWg3rnj" target="_blank" rel="noopener">Discord</a></span><p class="legal">Ce contenu n’est pas officiel et n’a pas reçu le soutien de Supercell. Pour plus d’informations, veuillez consulter le règlement de Supercell sur les contenus créés par les fans : <a href="https://supercell.com/en/fan-content-policy/fr/" target="_blank" rel="noopener">supercell.com/en/fan-content-policy/fr</a>. Icônes de ligue : <a href="https://github.com/ClashKingInc/ClashKingAssets" target="_blank" rel="noopener">ClashKing</a>.</p>
+</div></footer>
+<script>
+const m=document.getElementById('menu'),l=document.getElementById('links'),mi=document.getElementById('mi');
+function setMenu(o){l.classList.toggle('is-open',o);m.setAttribute('aria-expanded',o);m.setAttribute('aria-label',o?'Fermer le menu':'Ouvrir le menu');mi.setAttribute('d',o?'M6 6l12 12M18 6L6 18':'M4 7h16M4 12h16M4 17h16')}
+m.onclick=()=>setMenu(!l.classList.contains('is-open'));l.onclick=e=>{if(e.target.closest('a'))setMenu(false)};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
+</script>
+<script>
+(function(){
+var root=document.getElementById('fiche');
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var nb=function(n){return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:1})};
+var FR={Legend:'Légende',Electro:'Électro',Dragon:'Dragon',Titan:'Titan',Golem:'Golem',Witch:'Sorcière',Valkyrie:'Valkyrie',Wizard:'Sorcier',Archer:'Archère',Barbarian:'Barbare',Skeleton:'Squelette'};
+var lig=function(n){n=String(n||'');var m=n.match(/^(.+?)\s*League\s*(.*)$/);return m?((FR[m[1]]||m[1])+(m[2]?' '+m[2]:'')):(n&&!/Unranked/.test(n)?n:'Non classé')};
+var G={cwl:['Ligue de clans',5,15],gdc:['Guerre',4,10],cap:['Capitale',3,10],rk:['Classé',2,10],act:['Activité',1.5,10],don:['Dons',1,10]};
+var COL={cwl:'#212320',gdc:'#4A4B45',cap:'#76776F',rk:'#9C9A90',act:'#BDB9AC',don:'#DCD6C6'};
+var I={cwl:['Leader technique','tire le clan vers le haut en Ligue de clans'],gdc:['Attaquant sur qui on compte','assure les étoiles en guerre'],cap:['Moteur de la capitale','fait grandir la capitale à chaque raid'],rk:['Vitrine du clan','montre jusqu’où un joueur de Gravaen peut aller'],act:['Repère du clan','garde le rythme du clan au quotidien'],don:['Soutien de l’équipe','permet à chacun d’attaquer à pleine puissance']};
+var B={champ:['Champion de la saison','M3.5 8.5l4.2 3.3L12 5.5l4.3 6.3 4.2-3.3-1.8 10H5.3z'],cwl:['Maître de la Ligue','M12 3l7 3v5.5c0 4.3-2.9 7.6-7 9.5-4.1-1.9-7-5.2-7-9.5V6z M9 12l2 2 4-4'],gdc:['Chef de guerre','M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M14.5 6.5L18 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3M3 19l2 2'],cap:['Bâtisseur de capitale','M4 21V9h3V5h2v4h2V5h2v4h2V5h2v4h3v12z M10 21v-4a2 2 0 014 0v4'],rk:['Compétiteur','M8 4h8v4a4 4 0 01-8 0z M8 6H5c0 2 1.3 3.6 3.2 4 M16 6h3c0 2-1.3 3.6-3.2 4 M12 12v4 M8.5 20h7 M10 16h4l.5 4h-5z'],act:['Infatigable','M12 3c1.2 3 4.5 5 4.5 9.5a4.5 4.5 0 01-9 0c0-2.2 1.1-3.6 2.3-4.6 0 2 .9 3.3 2.2 3.6-.9-3-.2-6.1 0-8.5z'],don:['Cœur du clan','M12 20s-7-4.4-7-10a4 4 0 017-2.7A4 4 0 0119 10c0 5.6-7 10-7 10z']};
+var force=function(p,k){var r=(p.r||{})[k];return r?(G[k][2]+1-r)/G[k][2]:0};
+var MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],MC=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+var CRT={'Légende':'Lég.','Électro':'Élec.','Dragon':'Drag.','Sorcière':'Sorc.','Sorcier':'Sorc.','Valkyrie':'Valk.','Archère':'Arch.','Barbare':'Barb.','Squelette':'Squel.'};
+function court(n){var l=lig(n);var w=l.split(' ');if(CRT[w[0]])w[0]=CRT[w[0]];return w.join(' ')}
+var TRO='<svg class="pt-ti" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v4a4 4 0 01-8 0z M8 6H5c0 2 1.3 3.6 3.2 4 M16 6h3c0 2-1.3 3.6-3.2 4 M12 12v4 M8.5 20h7 M10 16h4l.5 4h-5z"/></svg>';
+function svg(d){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+d+'"/></svg>'}
+function stars(n){var s='';for(var i=0;i<3;i++)s+=i<n?'★':'<i>★</i>';return s}
+function head(t,d){return '<div class="head"><h2 class="eyeb"><i>—</i>'+t+'</h2>'+(d?'<p class="head-desc">'+d+'</p>':'')+'</div>'}
+function facts(a){return '<dl class="facts">'+a.map(function(x){return '<div><dt>'+x[0]+'</dt><dd>'+x[1]+'</dd></div>'}).join('')+'</dl>'}
+function tabs(id,items,on){return '<div class="pseg pt-tabs" id="'+id+'" role="tablist"><span class="ps-ind" aria-hidden="true"></span>'+items.map(function(x){return '<button type="button" role="tab" class="ps-b" data-v="'+x[0]+'" aria-selected="'+(x[0]===on)+'">'+x[1]+'</button>'}).join('')+'</div>'}
+function tabsOn(id,fn){var g=document.getElementById(id);if(!g)return;var ind=g.querySelector('.ps-ind');
+ function mv(){var b=g.querySelector('[aria-selected="true"]');if(b&&ind){ind.style.width=b.offsetWidth+'px';ind.style.transform='translateX('+(b.offsetLeft-4)+'px)'}}
+ g.querySelectorAll('.ps-b').forEach(function(b){b.addEventListener('click',function(){g.querySelectorAll('.ps-b').forEach(function(x){x.setAttribute('aria-selected',x===b)});mv();fn(b.dataset.v)})});
+ mv();window.addEventListener('resize',mv)}
+function fail(msg){root.innerHTML='<section class="s pt"><div class="wrap"><p class="pt-empty">'+msg+'</p><p><a class="cta" href="./#staff">Voir le staff</a></p></div></section>'}
+var q=new URLSearchParams(location.search).get('t')||'';if(q&&q.charAt(0)!=='#')q='#'+q;
+Promise.all(['data/fiches.json','data/players.json'].map(function(u){return fetch(u,{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()})})).then(function(res){
+ var F=res[0].players||{},P=res[1].players||{},season=res[1].season||res[0].season||'';
+ var staff=Object.keys(P).filter(function(t){return P[t].role==='leader'||P[t].role==='coLeader'}).map(function(t){var x=P[t];x._t=t;return x}).sort(function(a,b){return (a.role==='leader'?0:1)-(b.role==='leader'?0:1)||(b.score||0)-(a.score||0)});
+ var used={};staff.forEach(function(p){var c=Object.keys(I).filter(function(k){return force(p,k)>0}).sort(function(a,b){return force(p,b)-force(p,a)});var m=c.filter(function(k){return !used[k]})[0]||c[0];if(m)used[m]=1;p._c=m?[m].concat(c.filter(function(k){return k!==m}).slice(0,1)):[]});
+ if(!q){if(!staff[0])return fail('Le staff s’affichera ici dès le prochain relevé.');q=staff[0]._t}
+ var f=F[q],p=P[q];if(!f&&!p)return fail('Ce portrait n’existe pas, ou ce joueur ne fait plus partie du staff.');
+ f=f||{};p=p||{v:{}};var v=p.v||{};
+ var name=f.n||p.n,th=f.th||p.th,chef=(f.role||p.role)==='leader',clan=(f.c||p.c)==='second'?'Gravaen 2':'Gravaen 1';
+ document.title=name+' · Gravaen';
+ var cats=(staff.filter(function(x){return x._t===q})[0]||{})._c||[];
+ var prof=cats.length?(function(){var a=I[cats[0]],b=cats[1]?I[cats[1]]:null;return a[0]+(b?' et '+b[0].charAt(0).toLowerCase()+b[0].slice(1):'')+'&nbsp;: '+a[1]+'.'})():'Garant de l’organisation&nbsp;: lance les guerres et valide les montées.';
+ var bd=[];if(p.rank===1)bd.push('champ');Object.keys(G).forEach(function(k){var r=(p.r||{})[k];if(r&&r<=3)bd.push(k)});
+ var link='https://link.clashofclans.com/fr?action=OpenPlayerProfile&tag='+encodeURIComponent(q.replace('#',''));
+ var lgi=f.lgi||p.lgi,lgn=lig(f.lg||p.lg),tr=f.tr!=null?f.tr:(v.rk||0);
+ var mo=season?MOIS[+season.slice(5,7)-1]+' '+season.slice(0,4):'';
+ var h='';
+ /* 1. En-tête sombre : identité, blason de classé, badges, profil */
+ var w=f.war||{},atk=w.atk||0,play=atk+(w.missed||0),HT=f.hits||{atk:[],def:[]},FA=f.fam;
+ h+='<section class="pt-hero"><div class="wrap"><a class="pt-back" href="./#staff">← Le staff</a><div class="pt-hgrid"><div class="pt-left"><div class="pt-who">';
+ var hdvf='hdv-'+Math.max(1,Math.min(18,+th||1))+'.webp';h+='<img class="pt-hdv" src="'+((window.__IMG||{})[hdvf]||hdvf)+'" alt="Hôtel de ville niveau '+esc(th)+'" width="84" height="98"><div class="pt-nm"><p class="pt-role">'+(chef?'Chef':'Chef adjoint')+' · HDV '+esc(th)+'</p><h1>'+esc(name)+'</h1>';
+ h+='<button class="pt-tag copytag" type="button" data-copy="'+esc(q)+'" aria-label="Copier le tag '+esc(q)+'"><span class="tt">'+esc(q)+'</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1.5"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg></button>'+(f.xp?'<span class="pt-xp">Niveau '+esc(f.xp)+'</span>':'')+'</div></div>';
+ if(bd.length)h+='<div class="pt-bd">'+bd.map(function(k){return '<span class="bdg" tabindex="0" role="img" aria-label="'+B[k][0]+'" data-tip="'+B[k][0]+'">'+svg(B[k][1])+'</span>'}).join('')+'</div>';
+ h+='<p class="pt-prof">'+prof+'</p><div class="pt-acts"><a class="cta" href="'+link+'" target="_blank" rel="noopener">Ouvrir dans le jeu<svg class="pt-ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a></div></div>';
+ h+='<div class="pt-lg">'+(lgi?'<img src="'+esc(lgi)+'" alt="Blason '+esc(lgn)+'">':'<span class="pt-lgph" aria-hidden="true"></span>')+'<div><b>'+esc(lgn).toUpperCase()+'</b><span>'+nb(tr)+' trophée'+(tr>1?'s':'')+'</span>'+(f.best?'<span>Record&nbsp;: '+nb(f.best)+'</span>':'')+'</div></div></div></div></section>';
+ /* chiffres clés + d'où viennent les points */
+ var triR=FA?FA.tri:(atk?Math.round((w.tri||0)/atk*100):null);
+ h+='<section class="s pt pt-k"><div class="wrap"><div class="pt-card">'+facts([['Points de la saison',nb(p.score||0)],['Étoiles en ligue',nb(v.cwl||0)],['Étoiles en guerre',nb(v.gdc||0)],['Taux de triples',triR!=null?triR+'&nbsp;%':'—']]);
+ var tot=Object.keys(G).reduce(function(a,k){return a+((p.p||{})[k]||0)},0);
+ if(tot)h+='<p class="pt-mini" style="margin-top:16px">D’où viennent ses points</p><div class="pt-split">'+Object.keys(G).map(function(k){var x=(p.p||{})[k]||0;return x?'<i style="width:'+(x/tot*100)+'%;background:'+COL[k]+'" title="'+G[k][0]+'"></i>':''}).join('')+'</div><div class="pt-leg">'+Object.keys(G).filter(function(k){return (p.p||{})[k]}).map(function(k){return '<span><u style="background:'+COL[k]+'"></u>'+G[k][0]+' <b>'+nb(p.p[k])+'</b></span>'}).join('')+'</div>';
+ h+='</div></div></section>';
+ /* 2. Ligue de clans */
+ var rd=f.cwl||[];
+ h+='<section class="s pt"><div class="wrap">'+head('Ligue de clans','Sa ligue chez Gravaen en '+esc(mo)+', manche par manche.')+'<div class="pt-card">';
+ if(rd.length){var tiles='';for(var i=0;i<7;i++){var r=rd[i];if(!r){tiles+='<div class="pt-rd off"><span class="n">M'+(i+1)+'</span><span class="p">Pas aligné</span></div>';continue}
+   if(!r[3]){tiles+='<div class="pt-rd off"><span class="n">M'+(i+1)+'</span><span class="st">'+stars(0)+'</span><span class="p">Pas jouée</span></div>';continue}
+   tiles+='<div class="pt-rd'+(r[0]===3?' tri':'')+'"><span class="n">M'+(i+1)+'</span><span class="st">'+stars(r[0])+'</span><span class="p">'+Math.round(r[1])+'&nbsp;%</span><span class="h">HDV '+esc(r[2])+'</span></div>'}
+  var pl=rd.filter(function(r){return r[3]}),tri=pl.filter(function(r){return r[0]===3}).length,pc=pl.length?pl.reduce(function(a,r){return a+r[1]},0)/pl.length:0;
+  h+='<div class="pt-rounds">'+tiles+'</div>'+facts([['Étoiles',nb(v.cwl||pl.reduce(function(a,r){return a+r[0]},0))],['Attaques',pl.length+'/'+rd.length],['Triples',tri],['Destruction',nb(Math.round(pc*10)/10)+'&nbsp;%']]);
+ }else h+=facts([['Étoiles',nb(v.cwl||0)],['Destruction',nb(p.cwlPct||0)+'&nbsp;%']])+'<p class="pt-note">Le détail manche par manche arrive au prochain relevé.</p>';
+ h+='</div></div></section>';
+ /* 3. Guerre et moyennes, combat par combat */
+ h+='<section class="s pt"><div class="wrap">'+head('Guerre','Ses guerres et ses moyennes, combat par combat.')+'<div class="pt-card">'+facts([['Étoiles cette saison',nb(v.gdc||0)],['Triples',nb(w.tri||0)+' sur '+nb(atk)],['Destruction moyenne',nb(w.pct||0)+'&nbsp;%'],['Attaques jouées',play?Math.round(atk/play*100)+'&nbsp;%':'—']])+'</div>';
+ h+='<div class="pt-card" style="margin-top:12px">'+tabs('sm',[['war','Guerre'],['cwl','Ligue de clans']],'war')+tabs('sp',[['7','7 jours'],['30','30 jours'],['90','90 jours']],'30')+'<div id="stats"></div></div>';
+ if(FA)h+='<div class="pt-card" style="margin-top:12px"><p class="pt-h">Face à Gravaen</p>'+[['Taux de triples',FA.tri,FA.triBetter,FA.triAvg],['Destruction moyenne',FA.pct,FA.pctBetter,FA.pctAvg]].map(function(x){return '<div class="pt-fm"><div class="t">'+x[0]+'<span>'+x[1]+'&nbsp;%</span></div><div class="tr"><i style="width:'+Math.min(100,x[1])+'%"></i><em style="left:'+Math.min(99,x[3])+'%"></em></div><div class="d">Meilleur que <b>'+x[2]+'&nbsp;%</b> des joueurs de Gravaen · moyenne du clan&nbsp;: '+x[3]+'&nbsp;%</div></div>'}).join('')+'<p class="pt-note">Parmi les '+FA.n+' joueurs des deux clans avec au moins 5 attaques cette saison. Le trait jaune marque la moyenne du clan.</p></div>';
+ h+='</div></section>';
+ /* 4. Capitale */
+ h+='<section class="s pt"><div class="wrap">'+head('Capitale','Ses raids du week-end cette saison.')+'<div class="pt-card">'+facts([['Or de capitale pillé',nb(v.cap||0)],['Points en capitale',nb((p.p||{}).cap||0)+' / 30']])+'</div></div></section>';
+ /* 5. Classé : ligue actuelle, record, puis semaine après semaine */
+ var HI=f.hist||{s:{},w:{}},SS=Object.keys(HI.s||{}).sort(),WK=Object.keys(HI.w||{}).sort();
+ h+='<section class="s pt"><div class="wrap">'+head('Classé','Sa ligue, semaine après semaine.')+'<div class="pt-card pt-rk">'+(lgi?'<img src="'+esc(lgi)+'" alt="Blason '+esc(lgn)+'">':'<span class="pt-wph" aria-hidden="true"></span>')+'<div>'+facts([['Ligue',esc(lgn)],['Trophées',nb(tr)],['Record de trophées',nb(f.best||0)],['Points en classé',nb((p.p||{}).rk||0)+' / 20']])+'</div></div>';
+ if(WK.length)h+='<div class="pt-card" style="margin-top:12px"><p class="pt-h">Ses dernières semaines</p><div class="pt-wk">'+WK.map(function(k,ix){var x=HI.w[k];return (ix?'<i class="pt-sep" aria-hidden="true"></i>':'')+'<div class="pt-w">'+(x[1]?'<img src="'+esc(x[1])+'" alt="">':'<span class="pt-wph" aria-hidden="true"></span>')+'<b>'+esc(court(x[0]))+'</b><span class="pt-tro">'+TRO+nb(x[2])+'</span><span>'+(+k.slice(8,10))+' '+MC[+k.slice(5,7)-1]+'</span></div>'}).join('')+'</div><p class="pt-note">Une case par semaine&nbsp;: sa ligue et ses trophées en fin de semaine'+(HI.since?', suivi depuis le '+(+HI.since.slice(8,10))+' '+MOIS[+HI.since.slice(5,7)-1]:'')+'.</p></div>';
+ if(SS.length>1)h+='<div class="pt-card" style="margin-top:12px"><p class="pt-h">Ses saisons</p><ol class="crk-l">'+SS.slice().reverse().map(function(k){var x=HI.s[k];return '<li><span class="crk-n">'+MOIS[+k.slice(5,7)-1].replace(/^./,function(c){return c.toUpperCase()})+' '+k.slice(0,4)+'</span><span class="crk-lg">'+nb(x.score)+' PTS · '+esc(lig(x.lg)).toUpperCase()+'</span></li>'}).join('')+'</ol></div>';
+ h+='</div></section>';
+ /* 6. Activité et dons */
+ h+='<section class="s pt"><div class="wrap">'+head('Activité','Sa présence au quotidien et ses dons.')+'<div class="pt-card">'+facts([['Jours actifs cette saison',nb(v.act||0)],['Troupes données',nb(v.don||0)],['Points en activité',nb((p.p||{}).act||0)+' / 15'],['Points en dons',nb((p.p||{}).don||0)+' / 10']])+'</div></div></section>';
+ /* 7. Armée */
+ var A=f.army||{},T=[['heroes','Héros'],['equip','Équipements'],['troops','Troupes'],['spells','Sorts'],['pets','Familiers'],['siege','Engins']].filter(function(x){return (A[x[0]]||[]).length});
+ if(T.length)h+='<section class="s pt"><div class="wrap">'+head('Armée','Son village, niveau par niveau.')+'<details class="pt-card pt-det"><summary>Voir son armée</summary>'+tabs('sa',T.map(function(x){var l=A[x[0]];return [x[0],x[1]+' '+l.filter(function(u){return u[1]>=u[2]}).length+'/'+l.length]}),T[0][0])+'<ol class="crk-l pt-army" id="army"></ol></details></div></section>';
+ root.innerHTML=h;
+ document.querySelectorAll('.copytag').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.copy,s=b.querySelector('.tt');var ok=function(){s.textContent='Copié';setTimeout(function(){s.textContent=t},1400)};if(navigator.clipboard)navigator.clipboard.writeText(t).then(ok,function(){});})});
+ var M='war',PD=30;
+ function stats(){var lim=Date.now()/1000-PD*86400,A2=HT.atk.filter(function(a){return a[1]===M&&a[0]>=lim}),D2=HT.def.filter(function(a){return a[1]===M&&a[0]>=lim}),el=document.getElementById('stats');
+  if(!A2.length){el.innerHTML='<p class="pt-empty">Pas d’attaque '+(M==='war'?'en guerre':'en Ligue de clans')+' sur les '+PD+' derniers jours.</p>';return}
+  var c=[0,0,0,0];A2.forEach(function(a){c[a[2]]++});var n=A2.length,cl=['#D9D2BE','#A7A292','#212320','#F8C801'];
+  var o='<p class="pt-mini">Répartition des étoiles en attaque</p><div class="pt-split">'+[3,2,1,0].map(function(k){return c[k]?'<i style="width:'+(c[k]/n*100)+'%;background:'+cl[k]+'"></i>':''}).join('')+'</div><div class="pt-leg">'+[3,2,1,0].map(function(k){return '<span><u style="background:'+cl[k]+'"></u><b>'+c[k]+'</b> × '+k+' étoile'+(k>1?'s':'')+'</span>'}).join('')+'<span>sur '+n+' attaque'+(n>1?'s':'')+'</span></div>';
+  function av(L,att){if(!L.length)return '<div><p class="pt-h">'+(att?'En attaque':'En défense')+'</p><p class="pt-empty">Pas encore de donnée.</p></div>';var s=L.reduce(function(a,x){return a+x[2]},0)/L.length,pc=L.reduce(function(a,x){return a+x[3]},0)/L.length,tr=L.filter(function(x){return x[2]===3}).length/L.length*100;
+   return '<div><p class="pt-h">'+(att?'En attaque':'En défense')+'</p>'+facts([[att?'Étoiles en moyenne':'Étoiles concédées',nb(Math.round(s*10)/10)],[att?'Destruction':'Destruction subie',Math.round(pc)+'&nbsp;%'],[att?'Triples':'Triples subis',Math.round(tr)+'&nbsp;%']])+'<p class="pt-note">sur '+L.length+' '+(att?'attaque':'défense')+(L.length>1?'s':'')+'</p></div>'}
+  el.innerHTML=o+'<div class="pt-two">'+av(A2,1)+av(D2,0)+'</div>'}
+ stats();tabsOn('sm',function(x){M=x;stats()});tabsOn('sp',function(x){PD=+x;stats()});
+ function army(k){var l=A[k]||[];document.getElementById('army').innerHTML=l.map(function(u){var m=u[1]>=u[2];return '<li><span class="crk-n">'+esc(u[0])+(u[3]&&u[3].length?'<span class="eq">'+u[3].map(function(e){return esc(e[0])+' '+e[1]}).join(' · ')+'</span>':'')+'</span><span class="lvl'+(m?' max':'')+'">'+u[1]+'<span> / '+u[2]+'</span></span></li>'}).join('')}
+ if(T.length){army(T[0][0]);var dt=document.querySelector('.pt-det');tabsOn('sa',army);if(dt)dt.addEventListener('toggle',function(){window.dispatchEvent(new Event('resize'))})}
+}).catch(function(){fail('Le portrait n’a pas pu être chargé. Réessaie dans un instant.')});
+})();
+/* barre du haut : le blason du clan remplace « Gravaen » quand on a dépassé l'en-tête, comme sur l'accueil */
+(function(){var r=document.documentElement,t=false;
+ fetch('data/clan.json',{cache:'no-store'}).then(function(x){return x.json()}).then(function(d){var hb=document.querySelector('.brand-b'),src=((d.clans||{}).main||{}).badge||(d.icons||{}).badge||d.badgeUrl;if(hb&&src){hb.onload=function(){hb.hidden=false;hb.parentNode.classList.add('has-b')};hb.src=src}}).catch(function(){});
+ function u(){var hs=document.querySelector('.pt-hero');r.classList.toggle('past-hero',!!hs&&hs.getBoundingClientRect().bottom<90)}
+ addEventListener('scroll',function(){if(t)return;t=true;requestAnimationFrame(function(){t=false;u()})},{passive:true});addEventListener('resize',u);setTimeout(u,300)})();
+</script>
+</body>
+</html>
