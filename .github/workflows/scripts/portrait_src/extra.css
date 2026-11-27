@@ -120,7 +120,8 @@ body.portrait section.s.pt .head{margin-bottom:16px!important}
 .pt-hero .pt-tag{height:26px!important;min-height:0!important;padding:0 8px!important;margin-top:8px!important;line-height:1!important}
 .pt-hero .pt-nm{align-self:center}
 /* en-tête sombre : même police que le haut de l'accueil (Clash), comme la phrase d'accroche et la signature */
-.pt-hero,.pt-hero p,.pt-hero span,.pt-hero b,.pt-hero a{font-family:var(--title)}
+.pt-hero,.pt-hero p,.pt-hero span,.pt-hero b,.pt-hero a{font-family:var(--body)}
+.pt-hero h1,.pt-hero .cta{font-family:var(--title)}
 .pt-hero .pt-tag .tt{font-family:ui-monospace,Menlo,Consolas,monospace}
 .pt-hero .pt-prof{font-weight:400;font-size:18px;line-height:1.45;letter-spacing:.005em}
 .pt-hero .pt-role{font-weight:400!important;font-size:14px!important;letter-spacing:.03em}
@@ -129,8 +130,8 @@ body.portrait section.s.pt .head{margin-bottom:16px!important}
 .pt-hero .pt-lg span{font-weight:400}
 .pt-hero .pt-back{font-weight:400}
 /* titres internes des cartes : même police que les sous-titres de l'accueil (« Le staff », « La stratégie ») */
-.pt-h,.pt-det>summary{font-family:var(--title)!important;font-weight:600!important;font-size:17px!important}
-.pt-mini{font-family:var(--title);font-weight:600;font-size:13px;letter-spacing:.02em}
+.pt-h,.pt-det>summary{font-family:var(--body)!important;font-weight:600!important;font-size:17px!important}
+.pt-mini{font-family:var(--body);font-weight:600;font-size:13px;letter-spacing:.02em}
 /* évolution : une case par semaine, blason de ligue et diminutif, comme dans le jeu */
 .pt-wk{display:flex;align-items:center;gap:0;overflow-x:auto;padding:6px 0 4px}
 .pt-wk .pt-w{flex:none;min-width:96px;background:none;padding:0 6px;text-align:center}
@@ -151,3 +152,8 @@ body.portrait section.s.pt .head{margin-bottom:16px!important}
 .pt-rk>img,.pt-rk>.pt-wph{flex:none;width:88px;height:88px;object-fit:contain;margin:0}
 .pt-rk .facts{margin:0!important;border-top:0!important;padding-top:0!important}
 @media (max-width:760px){.pt-rk{gap:14px;align-items:flex-start}.pt-rk>img,.pt-rk>.pt-wph{width:60px;height:60px}}
+
+/* uniquement Clash sur le nom, les titres de section et les boutons : tout le reste en Rubik comme l'accueil */
+.pt-hero .pt-role,.pt-lg b,.pt-lg span,.pt-back{font-family:var(--body)!important}
+.pt-hero .pt-role{font-weight:600!important;letter-spacing:0!important}
+.pt-lg b{font-weight:700!important;letter-spacing:.03em!important}
