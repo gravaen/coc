@@ -1491,6 +1491,15 @@ section.s#staff>.wrap{min-width:0}
 .pl .glink:hover,.pl .glink[aria-expanded="true"]{text-decoration-thickness:3px}
 .mj-go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:15px;font-weight:700;color:var(--ink);text-decoration:none}
 .mj-go span{color:var(--yellow);transition:transform .2s}.mj-go:hover span{transform:translateX(3px)}
+/* blason de l'accueil : pas d'ombre en filtre (Safari dessinait parfois un carré autour) */
+.hero-badge{filter:none!important}
+/* « Notre classement » : chaque ligne ouvre le profil du joueur, chevron à droite du score */
+[data-pod="saison"] li{position:relative}
+.pod-go{flex:none;display:grid;place-items:center;width:22px;height:22px;margin-left:6px;color:var(--soft)}
+.pod-go svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.pod-go::after{content:"";position:absolute;inset:0}
+[data-pod="saison"] li:hover .pod-go{color:var(--ink)}[data-pod="saison"] li:hover .pod-go svg{transform:translateX(3px)}
+.pod-go:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -1515,7 +1524,7 @@ section.s#staff>.wrap{min-width:0}
 <section class="hero" id="vision">
  <div class="wrap hero-top">
   <div class="hero-txt">
-  <img class="hero-badge" data-badge="hero" src="icon-512.png" alt="Blason du clan Gravaen" width="512" height="512" fetchpriority="high">
+  <img class="hero-badge" data-badge="hero" src="data/blason.webp" onerror="this.onerror=null;this.style.visibility='hidden'" alt="Blason du clan Gravaen" width="512" height="512" fetchpriority="high">
   <h1 class="slogan sr-h1">Clash of Clans&nbsp;: Gravaen</h1>
   <p class="slogan-sub hero-lede"><b>Un clan adulte, actif et organisé,</b> créé en août 2025 avec un ami. Le guerrier Gravaen répond présent en guerre, en ligue, en capitale comme en classé.</p><p class="hero-sign"><b>Clasheur</b>, chef adjoint</p>
   </div>
@@ -1766,7 +1775,7 @@ secs.forEach(x=>io.observe(x));
   if(typeof d.warWins==='number'&&typeof d.warLosses==='number'&&d.warWins+d.warLosses>0)put('rate',Math.round(d.warWins/(d.warWins+d.warLosses)*100)+'\u00a0%');
   if(typeof d.warWins==='number'&&typeof d.warLosses==='number'&&d.warWins+d.warLosses>0)put('ratio','Ratio V/D : '+Math.round(d.warWins/(d.warWins+d.warLosses)*100)+'\u00a0%');
   card('main',(d.clans||{}).main);card('second',(d.clans||{}).second);
-  (function(){var hb=document.querySelector('.hero-badge'),src=((d.clans||{}).main||{}).badge||ic.badge||d.badgeUrl;if(hb&&src){var im=new Image();im.onload=function(){hb.src=src};im.src=src}})();
+  (function(){var hb=document.querySelector('.hero-badge'),src=((d.clans||{}).main||{}).badge||ic.badge||d.badgeUrl;if(hb&&src&&!(hb.complete&&hb.naturalWidth)){var im=new Image();im.onload=function(){hb.src=src;hb.style.visibility=''};im.src=src}})();
   ['main','second'].forEach(function(k){var im=document.querySelector('.cbadge[data-badge="'+k+'"]'),c=(d.clans||{})[k]||{},src=c.badge||(k==='main'?(ic.badge||d.badgeUrl):null);
    if(im&&src){im.onload=function(){im.hidden=false};im.src=src}});
   (function(){var hb=document.querySelector('.brand-b'),src=((d.clans||{}).main||{}).badge||ic.badge||d.badgeUrl;if(hb&&src){hb.onload=function(){hb.hidden=false;hb.parentNode.classList.add('has-b')};hb.src=src}})();
@@ -2004,11 +2013,11 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
  var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
  var nb=function(n){return Number(n).toLocaleString('fr-FR',{maximumFractionDigits:1})};
  fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
-  var ps=Object.values(d.players||{}).filter(function(p){return p&&p.v&&p.score>0});
+  var ps=Object.keys(d.players||{}).map(function(t){var p=d.players[t];if(p)p._t=t;return p}).filter(function(p){return p&&p.v&&p.score>0});
   ps.sort(function(a,b){return (a.rank||999)-(b.rank||999)||b.score-a.score});
   var top=ps.slice(0,10),el=document.querySelector('[data-pod="saison"]');if(!el)return;
   el.innerHTML=top.length?top.map(function(p,i){
-    return '<li><span class="pod-r'+(i===0?' top':'')+'">'+(i+1)+'</span><span class="pod-n"><b>'+esc(p.n)+'</b></span><span class="pod-v">'+nb(p.score)+'</span></li>'}).join(''):'<li class="pod-empty">Le classement arrive avec les premières guerres de la saison.</li>';
+    return '<li><span class="pod-r'+(i===0?' top':'')+'">'+(i+1)+'</span><span class="pod-n"><b>'+esc(p.n)+'</b></span><span class="pod-v">'+nb(p.score)+'</span><a class="pod-go" href="joueur.html?t='+encodeURIComponent(String(p._t||'').replace('#',''))+'" aria-label="Voir le profil de '+esc(p.n)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li>'}).join(''):'<li class="pod-empty">Le classement arrive avec les premières guerres de la saison.</li>';
  }).catch(function(){document.querySelectorAll('.pod-list').forEach(function(e){e.innerHTML='<li class="pod-empty">Classement indisponible pour le moment.</li>'})});
 })();
 </script>
@@ -2084,7 +2093,7 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
   rk:['Compétiteur','M8 4h8v4a4 4 0 01-8 0z M8 6H5c0 2 1.3 3.6 3.2 4 M16 6h3c0 2-1.3 3.6-3.2 4 M12 12v4 M8.5 20h7 M10 16h4l.5 4h-5z'],
   act:['Infatigable','M12 3c1.2 3 4.5 5 4.5 9.5a4.5 4.5 0 01-9 0c0-2.2 1.1-3.6 2.3-4.6 0 2 .9 3.3 2.2 3.6-.9-3-.2-6.1 0-8.5z'],
   don:['Cœur du clan','M12 20s-7-4.4-7-10a4 4 0 017-2.7A4 4 0 0119 10c0 5.6-7 10-7 10z']};
- var badges=function(p){var o=[];if(p.rank===1)o.push('champ');['cwl','gdc','cap','rk','act','don'].forEach(function(k){var r=(p.r||{})[k];if(r&&r<=3)o.push(k)});return o};
+ var badges=function(p){if(p.b)return p.b.filter(function(k){return B[k]});var o=[];if(p.rank===1)o.push('champ');['cwl','gdc','cap','rk','act','don'].forEach(function(k){var r=(p.r||{})[k];if(r&&r<=3)o.push(k)});return o};
  fetch('data/players.json',{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
   var all=Object.keys(d.players||{}).map(function(t){var x=d.players[t];if(x)x._t=t;return x}).filter(function(p){return p&&(p.role==='leader'||p.role==='coLeader')});
   /* une seule carte par personne : les comptes secondaires (« Fred 2 », « Losscho 3.0 », « panaone mini »…) sont regroupés avec le compte principal */
@@ -2095,7 +2104,7 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
   var used={};st.forEach(function(p){var c=Object.keys(I).filter(function(k){return force(p,k)>0}).sort(function(a,b){return force(p,b)-force(p,a)});
    var main=c.filter(function(k){return !used[k]})[0]||c[0];if(main)used[main]=1;p._c=main?[main].concat(c.filter(function(k){return k!==main}).slice(0,1)):[]});
   var USED={};
-  box.innerHTML=st.map(function(p){var v=p.v||{},pt=p.p||{},rk=p.r||{};
+  box.innerHTML=st.map(function(p){var v=p.v||{},pt=p.p||{},rk=p.br||p.r||{};  /* points forts : ceux de la saison des badges */
    var cats=p._c;
    var chef=p.role==='leader'||p._chef,txt;
    /* un sous-titre court, façon « meilleurs joueurs » du Discord : ses deux points forts en une phrase, jamais de classement, jamais deux fois la même */
@@ -2120,7 +2129,7 @@ document.querySelectorAll('[data-open-mj]').forEach(function(a){a.addEventListen
    var pick=function(L){for(var i=0;i<L.length;i++){var c=L[(h0+i)%L.length];if(!USED[c]){USED[c]=1;return c}}return L[h0%L.length]};
    if(!k0)txt=pick(['Il veille sur le clan en coulisses','Garant de l’organisation du clan','L’organisateur discret de Gravaen','Il garde le cap quand ça tangue']);
    else{var a0=pick(PA[k0]),b0=k1?pick(PB[k1]):'';
-    txt=p.rank===1?pick(CH)+'&nbsp;: '+low(a0)+(b0?' et '+b0:''):(b0?a0+' et '+b0:a0+'&nbsp;: '+PC[k0])}
+    txt=(p.brank!=null?p.brank:p.rank)===1?pick(CH)+'&nbsp;: '+low(a0)+(b0?' et '+b0:''):(b0?a0+' et '+b0:a0+'&nbsp;: '+PC[k0])}
    var href='joueur.html?t='+encodeURIComponent(String(p._t||'').replace('#',''));
    return '<article class="st-card'+(chef?' chef':'')+'" role="listitem"><h3 class="st-name">'+esc(p.n)+'</h3>'+'<p class="st-grade">'+(chef?'Chef':'Chef adjoint')+'</p>'+(function(){var b=badges(p);return b.length?'<ul class="st-bl">'+b.map(function(k){return '<li><span class="bdg b-'+k+'" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="'+B[k][1]+'"/></svg></span>'+B[k][0]+'</li>'}).join('')+'</ul>':''})()+'<p class="st-txt">'+txt+'</p><a class="st-foot" href="'+href+'"><span>Profil</span><span class="st-ar" aria-hidden="true">→</span></a></article>'}).join('');
   box.tabIndex=0;box.setAttribute('aria-label','Membres du staff, faire défiler pour tout voir');

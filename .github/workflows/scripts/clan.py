@@ -157,6 +157,11 @@ if badge:
     p = icon("blason-o-" + badge.rstrip("/").split("/")[-1].split(".")[0][:12], badge, raw=True)
     if p:
         data["icons"]["badge"] = p
+        try:   # copie au nom fixe : le site l'affiche dès le chargement, sans attendre les serveurs de Supercell
+            import shutil
+            shutil.copyfile(p, "data/blason.webp")
+        except Exception as e:
+            print(f"  blason.webp non copié : {e}", file=sys.stderr)
     # vignette des liens partagés (Discord…) : le blason en grand, centré, sur le fond sombre du site
     try:
         from PIL import Image
@@ -679,7 +684,7 @@ def season_scores():
                                  "dee": max(0, heist - b["dee"]), "hp": hero_progress(p),
                                  # pour la section staff du site : grade et quelques chiffres de carrière
                                  "role": p.get("role"), "wsT": p.get("warStars", 0), "xp": p.get("expLevel")}
-            if p.get("role") in ("leader", "coLeader"):
+            if True:   # fiche pour chaque membre : profil ouvert depuis le staff et depuis « Notre classement »
                 try:
                     fiches[t] = fiche(p, k_, key)
                 except Exception as e:
@@ -721,6 +726,23 @@ def season_scores():
     for i, t in enumerate(sorted([t for t in tags if out["players"][t]["bl"] < 0], key=lambda t: out["players"][t]["bl"])):
         out["players"][t]["blr"] = i + 1
 
+    # badges affichés sur le site : ceux de la dernière saison terminée, gardés tels quels pendant toute la saison suivante
+    # (à la fin de la saison suivante, ils sont remplacés par les siens) ; tant qu'aucune saison n'est figée, la saison en cours
+    def bset(x):
+        r_ = x.get("r") or {}
+        return (["champ"] if x.get("rank") == 1 else []) + [k for k in GRID if r_.get(k) and r_[k] <= 3]
+    frozen = old.get("badges") if same else None
+    if not same and old.get("players"):
+        frozen = {"season": old.get("season"),
+                  "p": {t: {"b": bset(x), "r": x.get("r") or {}, "rank": x.get("rank")} for t, x in old["players"].items()}}
+    elif not same:
+        frozen = old.get("badges")
+    if frozen:
+        out["badges"] = frozen
+        for t in tags:
+            fz = frozen["p"].get(t) or {}
+            out["players"][t].update(b=fz.get("b", []), br=fz.get("r", {}), brank=fz.get("rank"))
+
     with open("data/players.json", "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
     # fiches du staff : moyennes sur 90 jours, comparaison au reste de Gravaen, historique saison après saison
@@ -733,11 +755,15 @@ def season_scores():
             fam[t_] = (sum(1 for h in hits if h[0] == 3) / len(hits) * 100, sum(h[1] for h in hits) / len(hits))
     monday = (now - datetime.timedelta(days=now.weekday())).strftime("%Y-%m-%d")
     for t_, fi in fiches.items():
-        try:
-            fi["hits"] = ck_hits90(t_, (TAG, TAG2))
+        pf_ = prevf.get(t_) or {}
+        try:   # 90 jours relus au plus toutes les 2 h par joueur (ClashKing), sinon la dernière lecture
+            if pf_.get("hitsAt") and pf_.get("hits") and (now - datetime.datetime.fromisoformat(pf_["hitsAt"])) < datetime.timedelta(hours=2):
+                fi["hits"], fi["hitsAt"] = pf_["hits"], pf_["hitsAt"]
+            else:
+                fi["hits"], fi["hitsAt"] = ck_hits90(t_, (TAG, TAG2)), now.isoformat(timespec="seconds")
         except Exception as e:
             print(f"  ClashKing 90 j {t_} : {e}", file=sys.stderr)
-            fi["hits"] = (prevf.get(t_) or {}).get("hits") or {"atk": [], "def": []}
+            fi["hits"], fi["hitsAt"] = pf_.get("hits") or {"atk": [], "def": []}, pf_.get("hitsAt")
         if t_ in fam and len(fam) > 1:
             me, others = fam[t_], [v_ for k2, v_ in fam.items() if k2 != t_]
             fi["fam"] = {"n": len(fam), "tri": round(me[0]), "triBetter": round(sum(1 for o in others if o[0] < me[0]) / len(others) * 100),
