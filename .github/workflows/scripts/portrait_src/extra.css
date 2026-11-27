@@ -157,3 +157,16 @@ body.portrait section.s.pt .head{margin-bottom:16px!important}
 .pt-hero .pt-role,.pt-lg b,.pt-lg span,.pt-back{font-family:var(--body)!important}
 .pt-hero .pt-role{font-weight:600!important;letter-spacing:0!important}
 .pt-lg b{font-weight:700!important;letter-spacing:.03em!important}
+/* portrait entièrement sur le noir de Gravaen : une fiche de joueur, comme un profil en jeu */
+body{background:#212320}
+#fiche section.s.pt{--ink:#FFFDF5;--text:#D8D3C4;--soft:#A9A496;--line:#3A3C36;--sand:#383A33;background:#212320!important;color:#D8D3C4}
+#fiche .pt-card{background:#2E302C}
+#fiche .pt-split,#fiche .pt-rd,#fiche .pt-fm .tr{background:#383A33}
+#fiche .pt-rd.tri{background:var(--yellow)}
+#fiche .pt-hero{border-bottom:1px solid #3A3C36}
+#fiche .s.pt .cta{color:#212320}
+#fiche .pt-split i{border-right-color:#2E302C}
+#fiche .pt-rd .st i{color:#5C5E56}
+#fiche .pt-rd.tri .n,#fiche .pt-rd.tri .st,#fiche .pt-rd.tri .p,#fiche .pt-rd.tri .h{color:#212320}
+#fiche .pt-wph{background:#3A3C36}
+#fiche .pt-sep{background:#4A4C45}
